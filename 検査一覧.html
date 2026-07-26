@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>検査一覧</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:sans-serif;
+    background:#f2f7fa;
+}
+
+header{
+    background:#2196f3;
+    color:white;
+    text-align:center;
+    font-size:28px;
+    padding:20px;
+    font-weight:bold;
+}
+
+.container{
+    max-width:500px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    margin-bottom:15px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.card button{
+    width:100%;
+    border:none;
+    background:white;
+    padding:20px;
+    text-align:left;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.card button:hover{
+    background:#f5faff;
+}
+
+.content{
+    display:none;
+    border-top:1px solid #ddd;
+}
+
+.content a{
+    display:block;
+    text-decoration:none;
+    color:#333;
+    padding:18px 20px;
+    border-bottom:1px solid #eee;
+    font-size:20px;
+}
+
+.content a:hover{
+    background:#f7fbff;
+}
+
+.note{
+
+    margin-top:30px;
+    text-align:center;
+    color:#666;
+    font-size:14px;
+    line-height:1.6;
+
+}
+
+.home{
+
+    display:block;
+    margin:30px auto;
+    width:220px;
+    text-align:center;
+    text-decoration:none;
+    color:white;
+    background:#2196f3;
+    padding:15px;
+    border-radius:12px;
+    font-size:20px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+🔬 検査一覧
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<button onclick="toggle('blood')">
+
+🩸 血液検査
+
+</button>
+
+<div class="content" id="blood">
+
+<a href="cbc.html">🟣 血算（CBC）</a>
+
+<a href="biochemistry.html">🟤 生化学</a>
+
+<a href="coagulation.html">🔵 凝固</a>
+
+<a href="bloodgas.html">🟢 血液ガス</a>
+
+<a href="immunology.html">🟠 免疫・血清</a>
+
+<a href="endocrine.html">🩺 内分泌</a>
+
+<a href="infection.html">🦠 感染症</a>
+
+<a href="tumor.html">🎗 腫瘍マーカー</a>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<button onclick="toggle('urine')">
+
+🚽 尿検査
+
+</button>
+
+<div class="content" id="urine">
+
+<a href="urine.html">尿定性</a>
+
+<a href="#">尿沈渣</a>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<button onclick="toggle('stool')">
+
+💩 便検査
+
+</button>
+
+<div class="content" id="stool">
+
+<a href="stool.html">便潜血</a>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<button onclick="toggle('other')">
+
+🧫 その他
+
+</button>
+
+<div class="content" id="other">
+
+<a href="other.html">その他検査</a>
+
+</div>
+
+</div>
+
+<div class="note">
+
+※採血管は施設によって異なる場合があります。<br>
+所属施設の手順に従ってください。
+
+</div>
+
+<a href="index.html" class="home">
+
+🏠 ホームへ戻る
+
+</a>
+
+</div>
+
+<script>
+
+function toggle(id){
+
+const box=document.getElementById(id);
+
+if(box.style.display==="block"){
+
+box.style.display="none";
+
+}else{
+
+box.style.display="block";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
