@@ -1,0 +1,335 @@
+/* =====================================
+   Nurse-Tools common.css Ver1.0
+   Base Design : 検査一覧
+===================================== */
+
+
+/* =====================
+   全体
+===================== */
+
+body{
+
+    margin:0;
+
+    font-family:sans-serif;
+
+    background:#f2f7fa;
+
+}
+
+
+/* =====================
+   ヘッダー
+===================== */
+
+header{
+
+    background:#2196f3;
+
+    color:white;
+
+    text-align:center;
+
+    font-size:28px;
+
+    padding:20px;
+
+    font-weight:bold;
+
+}
+
+
+/* =====================
+   メイン枠
+===================== */
+
+.container{
+
+    max-width:500px;
+
+    margin:auto;
+
+    padding:20px;
+
+}
+
+
+/* =====================
+   カード
+===================== */
+
+.card{
+
+    background:white;
+
+    border-radius:15px;
+
+    margin-bottom:15px;
+
+    overflow:hidden;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+
+}
+
+
+/* =====================
+   カード内ボタン
+===================== */
+
+.card button{
+
+    width:100%;
+
+    border:none;
+
+    background:white;
+
+    padding:20px;
+
+    text-align:left;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+
+.card button:hover{
+
+    background:#f5faff;
+
+}
+
+
+/* =====================
+   開閉エリア
+===================== */
+
+.content{
+
+    display:none;
+
+    border-top:1px solid #ddd;
+
+}
+
+
+/* =====================
+   リンク一覧
+===================== */
+
+.content a{
+
+    display:block;
+
+    text-decoration:none;
+
+    color:#333;
+
+    padding:18px 20px;
+
+    border-bottom:1px solid #eee;
+
+    font-size:20px;
+
+}
+
+
+.content a:hover{
+
+    background:#f7fbff;
+
+}
+
+
+/* =====================
+   入力欄
+===================== */
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    box-sizing:border-box;
+
+    padding:12px;
+
+    border:1px solid #ccc;
+
+    border-radius:10px;
+
+    font-size:18px;
+
+}
+
+
+/* =====================
+   通常ボタン
+===================== */
+
+.btn{
+
+    display:block;
+
+    width:100%;
+
+    border:none;
+
+    background:#2196f3;
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    font-size:20px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+}
+
+
+.btn:hover{
+
+    opacity:.85;
+
+}
+
+
+/* =====================
+   ホームボタン
+===================== */
+
+.home{
+
+    display:block;
+
+    margin:30px auto;
+
+    width:220px;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    color:white;
+
+    background:#2196f3;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    font-size:20px;
+
+}
+
+
+/* =====================
+   説明文
+===================== */
+
+.note{
+
+    margin-top:30px;
+
+    text-align:center;
+
+    color:#666;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+}
+
+
+/* =====================
+   フッター
+===================== */
+
+.footer{
+
+    text-align:center;
+
+    color:#666;
+
+    font-size:14px;
+
+    margin:40px 0;
+
+}
+
+
+/* =====================
+   右下戻るボタン
+===================== */
+
+.back-button{
+
+    position:fixed;
+
+    right:20px;
+
+    bottom:20px;
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    background:#2196f3;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:26px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
+
+    text-decoration:none;
+
+}
+
+
+/* =====================
+   スマホ調整
+===================== */
+
+@media(max-width:600px){
+
+    header{
+
+        font-size:24px;
+
+    }
+
+
+    .card button{
+
+        font-size:20px;
+
+    }
+
+
+    .content a{
+
+        font-size:18px;
+
+    }
+
+}
