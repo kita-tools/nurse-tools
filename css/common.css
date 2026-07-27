@@ -90,7 +90,7 @@ h1{
 
     margin:25px auto;
 
-    font-size:30px;
+    font-size:36px;
 
     font-weight:bold;
 
@@ -105,14 +105,6 @@ h1{
     cursor:pointer;
 
 }
-
-
-.tool-button:hover{
-
-    background:#357abd;
-
-}
-
 
 /* =====================
    検査一覧など
