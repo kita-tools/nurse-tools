@@ -16,6 +16,8 @@ body{
 
     background:#f2f7fa;
 
+}
+
 
 /* =====================
    ヘッダー
@@ -338,11 +340,17 @@ textarea{
 ===================== */
 
 .datetime{
+
     font-size:32px;
+
     font-weight:bold;
+
     margin-bottom:50px;
+
     line-height:1.6;
+
     text-align:center;
+
 }
 
 
@@ -353,6 +361,7 @@ textarea{
 .tool-button{
 
     width:90%;
+
     max-width:500px;
 
     height:120px;
@@ -378,10 +387,12 @@ textarea{
    タイトル
 ===================== */
 
-h1{
+.main-title{
 
-    font-size:30px;
+    font-size:40px;
 
-    margin-bottom:30px;
+    color:#333;
+
+    margin-bottom:60px;
 
 }
