@@ -334,6 +334,29 @@ textarea{
 
 
 /* =====================
+   日付表示
+===================== */
+
+#datetime{
+
+    width:100%;
+
+    text-align:center;
+
+    margin-top:25px;
+
+    font-size:26px;
+
+    line-height:1.7;
+
+    font-weight:bold;
+
+    color:#333;
+
+}
+
+
+/* =====================
    Nurse-Tools メインボタン
 ===================== */
 
@@ -341,18 +364,19 @@ textarea{
 
     display:block;
 
-    width:90%;
-    max-width:360px;
+    width:92%;
 
-    height:70px;
+    max-width:400px;
 
-    margin:18px auto;
+    height:85px;
 
-    font-size:22px;
+    margin:22px auto;
+
+    font-size:24px;
 
     font-weight:bold;
 
-    border-radius:15px;
+    border-radius:18px;
 
     border:none;
 
@@ -361,25 +385,6 @@ textarea{
     color:white;
 
     cursor:pointer;
-
-}
-
-
-/* =====================
-   日付表示
-===================== */
-
-#datetime{
-
-    margin-top:20px;
-
-    font-size:20px;
-
-    line-height:1.6;
-
-    font-weight:bold;
-
-    color:#333;
 
 }
 
