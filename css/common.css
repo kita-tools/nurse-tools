@@ -17,6 +17,17 @@ body{
     background:#f2f7fa;
 
 }
+body{
+
+    margin:0;
+
+    font-family:sans-serif;
+
+    background:red !important;
+
+    text-align:center;
+
+}
 
 
 /* =====================
