@@ -21,6 +21,29 @@ body{
 }
 
 
+/* =====================================
+   Nurse-Tools common.css Ver1.1
+   index復元 + 共通化
+===================================== */
+
+
+/* =====================
+   全体
+===================== */
+
+body{
+
+    margin:0;
+
+    font-family:sans-serif;
+
+    background:#f2f7fb;
+
+    text-align:center;
+
+}
+
+
 /* =====================
    タイトル
 ===================== */
@@ -52,6 +75,223 @@ h1{
 
 }
 
+
+/* =====================
+   メインボタン
+===================== */
+
+.tool-button{
+
+    width:90%;
+
+    max-width:500px;
+
+    height:120px;
+
+    margin:25px auto;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    border-radius:20px;
+
+    border:none;
+
+    background:#4a90e2;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+
+.tool-button:hover{
+
+    background:#357abd;
+
+}
+
+
+/* =====================
+   検査一覧など
+===================== */
+
+.container{
+
+    max-width:500px;
+
+    margin:auto;
+
+    padding:20px;
+
+}
+
+
+.card{
+
+    background:white;
+
+    border-radius:15px;
+
+    margin-bottom:15px;
+
+    overflow:hidden;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+
+}
+
+
+.card button{
+
+    width:100%;
+
+    height:auto;
+
+    margin:0;
+
+    padding:20px;
+
+    background:white;
+
+    color:#333;
+
+    font-size:22px;
+
+    text-align:left;
+
+}
+
+
+/* =====================
+   入力
+===================== */
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    box-sizing:border-box;
+
+    padding:12px;
+
+    border:1px solid #ccc;
+
+    border-radius:10px;
+
+    font-size:18px;
+
+}
+
+
+/* =====================
+   通常ボタン
+===================== */
+
+.btn{
+
+    display:block;
+
+    width:100%;
+
+    background:#2196f3;
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    font-size:20px;
+
+    border:none;
+
+}
+
+
+/* =====================
+   戻るボタン
+===================== */
+
+.back-button{
+
+    position:fixed;
+
+    right:20px;
+
+    bottom:20px;
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    background:#2196f3;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:26px;
+
+    text-decoration:none;
+
+}
+
+
+/* =====================
+   フッター
+===================== */
+
+.footer{
+
+    margin-top:80px;
+
+    font-size:18px;
+
+    color:#555;
+
+}
+
+
+/* =====================
+   スマホ調整
+===================== */
+
+@media(max-width:600px){
+
+    h1{
+
+        font-size:36px;
+
+    }
+
+
+    #datetime{
+
+        font-size:28px;
+
+    }
+
+
+    .tool-button{
+
+        font-size:26px;
+
+        height:100px;
+
+    }
+
+}
 
 /* =====================
    メインボタン
