@@ -350,7 +350,7 @@ textarea{
    日付表示
 ===================== */
 
-.datetime{
+#datetime{
 
     font-size:32px;
 
@@ -369,7 +369,7 @@ textarea{
    Nurse-Tools メインボタン
 ===================== */
 
-.tool-button{
+button{
 
     width:90%;
 
@@ -398,7 +398,7 @@ textarea{
    タイトル
 ===================== */
 
-.main-title{
+h1{
 
     font-size:40px;
 
