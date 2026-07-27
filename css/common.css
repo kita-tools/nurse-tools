@@ -337,22 +337,12 @@ textarea{
    日付表示
 ===================== */
 
-#datetime{
-
-    width:100%;
-
-    text-align:center;
-
-    margin-top:25px;
-
-    font-size:26px;
-
-    line-height:1.7;
-
+.datetime{
+    font-size:32px;
     font-weight:bold;
-
-    color:#333;
-
+    margin-bottom:50px;
+    line-height:1.6;
+    text-align:center;
 }
 
 
