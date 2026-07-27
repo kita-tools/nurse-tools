@@ -338,20 +338,25 @@ textarea{
 
 
 /* =====================
-   index アプリボタン
+   Nurse-Tools メインボタン
 ===================== */
 
 .tool-button{
 
-    width:300px;
+    display:block;
 
-    height:60px;
+    width:90%;
+    max-width:360px;
 
-    margin:15px;
+    height:70px;
 
-    font-size:18px;
+    margin:18px auto;
 
-    border-radius:10px;
+    font-size:22px;
+
+    font-weight:bold;
+
+    border-radius:15px;
 
     border:none;
 
@@ -364,8 +369,33 @@ textarea{
 }
 
 
-.tool-button:hover{
+/* =====================
+   日付表示
+===================== */
 
-    background:#357abd;
+#datetime{
+
+    margin-top:20px;
+
+    font-size:20px;
+
+    line-height:1.6;
+
+    font-weight:bold;
+
+    color:#333;
+
+}
+
+
+/* =====================
+   タイトル
+===================== */
+
+h1{
+
+    font-size:30px;
+
+    margin-bottom:30px;
 
 }
