@@ -372,3 +372,8 @@ button:active{
     text-align:center;
 
 }
+.box button{
+
+    display:inline-block;
+
+}
