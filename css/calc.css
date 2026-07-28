@@ -1,5 +1,5 @@
 /* =====================================
-   Nurse-Tools calc.css Ver1.2
+   Nurse-Tools calc.css Ver1.3
    計算アプリ共通
 ===================================== */
 
@@ -115,7 +115,6 @@ select{
 
 /* =====================
    ボタン
-   BMI・点滴共通
 ===================== */
 
 button{
@@ -143,14 +142,16 @@ button{
 }
 
 
-/* 押した時の青反転防止 */
+button:hover{
 
-button:hover,
+    background:#e5e5e5;
+
+}
+
+
 button:active{
 
-    background:white;
-
-    color:#333;
+    background:#ddd;
 
 }
 
@@ -228,7 +229,6 @@ td{
 
 /* =====================
    戻るボタン
-   全アプリ共通
 ===================== */
 
 .back-button{
@@ -270,7 +270,6 @@ td{
    点滴専用
 ===================== */
 
-
 #drop{
 
     font-size:80px;
@@ -285,8 +284,6 @@ td{
 
 }
 
-
-/* ミュートボタン */
 
 #mute{
 
@@ -334,22 +331,5 @@ td{
         font-size:18px;
 
     }
-   /* BMI・計算ボタン中央寄せ */
-
-.box button{
-
-    display:inline-block;
-
-}
-
-
-}
-/* =====================
-   ボタン中央寄せ
-===================== */
-
-.box{
-
-    text-align:center;
 
 }
