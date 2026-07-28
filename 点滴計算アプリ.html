@@ -2,104 +2,35 @@
 <html lang="ja">
 
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SPCWDVP7F5"></script>
 
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-SPCWDVP7F5');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>点滴シミュレーター</title>
 
-<style>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/calc.css">
 
-body {
-    font-family:sans-serif;
-    text-align:center;
-    background:#f2f7fa;
-    margin:0;
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SPCWDVP7F5"></script>
+
+<script>
+
+window.dataLayer = window.dataLayer || [];
+
+function gtag(){
+
+dataLayer.push(arguments);
+
 }
 
-.box {
-    background:white;
-    margin:45px auto 20px;
-    padding:20px;
-    border-radius:15px;
-    width:90%;
-    max-width:400px;
-}
+gtag('js', new Date());
 
-h2 {
-    margin-top:5px;
-}
+gtag('config', 'G-SPCWDVP7F5');
 
-.input-row {
-    margin:15px auto;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+</script>
 
-label {
-    width:90px;
-    text-align:right;
-    margin-right:10px;
-}
-
-input {
-    width:120px;
-    font-size:18px;
-    padding:7px;
-    text-align:center;
-}
-
-select {
-    font-size:18px;
-    padding:7px;
-}
-
-.unit {
-    width:50px;
-    text-align:left;
-    margin-left:8px;
-}
-
-button {
-    font-size:18px;
-    padding:8px 20px;
-    margin:5px;
-}
-
-#drop {
-    font-size:80px;
-    height:120px;
-}
-
-#mute {
-    font-size:30px;
-    padding:5px 15px;
-}
-
-.home {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 12px 18px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-</style>
 
 </head>
 
@@ -107,74 +38,120 @@ button {
 <body>
 
 
+<header>
+
+💧 点滴シミュレーター
+
+</header>
+
+
+
 <div class="box">
 
-<h2>点滴シミュレーター</h2>
 
 
 <div class="input-row">
+
 <label>滴下量</label>
+
 <input id="ml" type="number">
+
 <span class="unit">mL</span>
+
 </div>
 
 
+
 <div class="input-row">
+
 <label>滴下時間</label>
+
 <input id="hour" type="number" min="0.1" step="0.1">
+
 <span class="unit">時間</span>
+
 </div>
+
 
 
 <div class="input-row">
+
 <label>滴下係数</label>
+
 <select id="type">
+
 <option value="20">20滴</option>
+
 <option value="60">60滴</option>
+
 </select>
+
 <span class="unit">/mL</span>
+
 </div>
+
 
 
 <button onclick="start()">
+
 開始
+
 </button>
 
 
-<h3>滴下速度</h3>
 
+<div class="result" id="result">
 
-<div id="result"></div>
+輸液速度　－<br>
+滴下速度　－<br>
+滴下間隔　－
+
+</div>
+
 
 
 <div id="drop">
+
 💧
+
 </div>
+
 
 
 <button id="mute" onclick="toggleMute()">
+
 🔇
+
 </button>
+
 
 
 </div>
 
 
-<button class="home" onclick="goHome()">
-🏠 戻る
-</button>
+
+<a href="index.html" class="back-button">
+
+🏠戻る
+
+</a>
+
 
 
 
 <script>
 
+
 let timer;
+
 let mute = true;
+
 let audioCtx;
 
 
 
 function start(){
+
 
     let ml =
     Number(document.getElementById("ml").value);
@@ -209,15 +186,21 @@ function start(){
 
 
 
+    // 1分あたりの滴数
+
     let perMin =
     (ml * drip) / (hour * 60);
 
 
 
+    // 10秒あたりの滴数
+
     let per10 =
     perMin / 6;
 
 
+
+    // 1滴間隔
 
     let dropInterval =
     10000 / per10;
@@ -226,12 +209,24 @@ function start(){
 
     document.getElementById("result").innerHTML =
 
-        "10秒あたり "
-        + per10.toFixed(2)
-        + "滴<br>"
-        + "滴間隔 "
-        + (dropInterval / 1000).toFixed(2)
-        + "秒";
+
+    "輸液速度　"
+    + (ml / hour).toFixed(1)
+    + " mL/h<br>"
+
+
+    +
+
+    "滴下速度　"
+    + per10.toFixed(2)
+    + "滴/10秒<br>"
+
+
+    +
+
+    "滴下間隔　"
+    + (dropInterval / 1000).toFixed(2)
+    + "秒/滴";
 
 
 
@@ -244,6 +239,7 @@ function start(){
 
 
     timer =
+
     setInterval(drop, dropInterval);
 
 
@@ -251,13 +247,19 @@ function start(){
 
 
 
+
+
 function drop(){
 
 
     let d =
+
     document.getElementById("drop");
 
+
+
     d.innerHTML="💧";
+
 
 
     if(!mute){
@@ -265,6 +267,7 @@ function drop(){
         beep();
 
     }
+
 
 
     setTimeout(function(){
@@ -279,28 +282,36 @@ function drop(){
 
 
 
+
 function beep(){
 
 
     if(!audioCtx){
 
         audioCtx =
+
         new AudioContext();
 
     }
 
 
+
     let osc =
+
     audioCtx.createOscillator();
+
 
 
     osc.connect(audioCtx.destination);
 
 
+
     osc.frequency.value=800;
 
 
+
     osc.start();
+
 
 
     osc.stop(audioCtx.currentTime + 0.05);
@@ -311,27 +322,22 @@ function beep(){
 
 
 
+
 function toggleMute(){
 
 
     mute=!mute;
 
 
+
     document.getElementById("mute").innerHTML =
+
 
     mute ? "🔇" : "🔈";
 
 
 }
 
-
-
-
-function goHome(){
-
-    location.href="index.html";
-
-}
 
 
 </script>
