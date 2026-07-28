@@ -122,19 +122,17 @@ textarea{
 
     position:fixed;
 
-    right:20px;
+    right:15px;
 
-    bottom:20px;
+    bottom:15px;
 
-    width:70px;
-
-    height:70px;
+    padding:8px 14px;
 
     background:#4CAF50;
 
     color:#fff;
 
-    border-radius:50%;
+    border-radius:20px;
 
     display:flex;
 
@@ -144,11 +142,11 @@ textarea{
 
     text-decoration:none;
 
-    font-size:34px;
+    font-size:16px;
 
     font-weight:bold;
 
-    box-shadow:0 4px 10px rgba(0,0,0,.25);
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
 
     z-index:9999;
 
@@ -160,9 +158,8 @@ textarea{
 
     background:#43A047;
 
-    transform:scale(1.08);
-
 }
+
 
 /* =====================
    フッター
