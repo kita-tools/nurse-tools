@@ -14,8 +14,8 @@ body{
 
     font-family:sans-serif;
 
-    background:#f2f7fb;
-
+    /*background:#f2f7fb;*/
+    background:red;
     color:#333;
 
 }
