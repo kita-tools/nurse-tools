@@ -7,177 +7,237 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPCWDVP7F5"></script>
 
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
 
-  gtag('config', 'G-SPCWDVP7F5');
+gtag('config','G-SPCWDVP7F5');
 </script>
 
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 
 <title>酸素ボンベ残量計算</title>
 
-<style>
 
-body{
-    font-family:sans-serif;
-    text-align:center;
-    background:#f2f7fa;
-    margin:0;
-}
+<link rel="stylesheet" href="css/common.css">
 
-.box{
-    background:white;
-    margin:30px auto;
-    padding:25px;
-    border-radius:15px;
-    width:85%;
-    max-width:360px;
-}
+<link rel="stylesheet" href="css/calc.css">
 
-h2{
-    margin-top:5px;
-}
-
-.input-row{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin:18px 0;
-}
-
-label{
-    width:100px;
-    text-align:right;
-    margin-right:10px;
-}
-
-input,select{
-    width:150px;
-    font-size:18px;
-    padding:8px;
-    text-align:center;
-}
-
-.unit{
-    margin-left:8px;
-}
-
-button{
-    font-size:18px;
-    padding:10px 30px;
-    margin:10px;
-}
-
-#result{
-    margin-top:20px;
-    padding:15px;
-    background:#eef7ff;
-    border-radius:10px;
-    font-size:18px;
-    line-height:1.8;
-}
-
-.home{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    background:#4CAF50;
-    color:white;
-    border:none;
-    border-radius:30px;
-    padding:12px 18px;
-    font-size:16px;
-    cursor:pointer;
-    box-shadow:0 3px 8px rgba(0,0,0,0.3);
-    z-index:999;
-}
-
-</style>
 
 </head>
 
+
 <body>
+
 
 <div class="box">
 
+
 <h2>酸素ボンベ残量計算</h2>
 
+
+
 <div class="input-row">
+
 <label>内容積</label>
+
 <select id="capacity">
-    <option value="3.4">3.4L（500L）</option>
-    <option value="10" selected>10L（1500L）</option>
-    <option value="20">20L（3000L）</option>
+
+<option value="3.4">
+3.4L（500L）
+</option>
+
+<option value="10" selected>
+10L（1500L）
+</option>
+
+<option value="20">
+20L（3000L）
+</option>
+
 </select>
+
 </div>
 
-<div class="input-row">
-<label>圧力</label>
-<input id="pressure" type="number" value="14.7" step="0.1">
-<span class="unit">MPa</span>
-</div>
+
+
 
 <div class="input-row">
+
+<label>現在圧力</label>
+
+<input 
+id="pressure"
+type="number"
+value="14.7"
+step="0.1">
+
+<span class="unit">
+MPa
+</span>
+
+</div>
+
+
+
+
+<div class="input-row">
+
 <label>流量</label>
-<input id="flow" type="number">
-<span class="unit">L/分</span>
+
+<input 
+id="flow"
+type="number"
+step="0.1">
+
+<span class="unit">
+L/分
+</span>
+
 </div>
+
+
+
+
+<div class="input-row">
+
+<label>交換圧力</label>
+
+<input
+id="changePressure"
+type="number"
+value="2"
+step="0.1">
+
+<span class="unit">
+MPa
+</span>
+
+</div>
+
+
+
 
 <button onclick="calc()">
+
 計算
+
 </button>
+
+
 
 <div id="result">
+
 結果表示
-</div>
 
 </div>
 
-<button class="home" onclick="goHome()">
-🏠 戻る
-</button>
 
+
+</div>
+
+
+
+<a href="index.html" class="back-button">
+
+🏠戻る
+
+</a>
 <script>
 
+
 function calc(){
+
 
     let capacity =
     Number(document.getElementById("capacity").value);
 
+
     let pressure =
     Number(document.getElementById("pressure").value);
+
 
     let flow =
     Number(document.getElementById("flow").value);
 
-    if(pressure <= 0 || flow <= 0){
-        alert("圧力と流量を入力してください");
+
+    let changePressure =
+    Number(document.getElementById("changePressure").value);
+
+
+
+    if(flow <= 0){
+
+        alert("流量を入力してください");
+
         return;
+
     }
 
-    // 酸素残量(L)
-    let oxygen =
-    capacity * pressure * 10;
 
-    // 使用可能時間(分)
+    if(pressure <= changePressure){
+
+        document.getElementById("result").innerHTML =
+
+        "⚠ 交換圧力以下です<br><br>" +
+
+        "現在圧力 " +
+        pressure.toFixed(1) +
+        " MPa";
+
+
+        return;
+
+    }
+
+
+
+    // 使用可能酸素量
+    // 交換圧力まで使用
+
+    let oxygen =
+
+    capacity *
+    (pressure - changePressure) *
+    10;
+
+
+
+    // 使用可能時間（分）
+
     let minutes =
+
     oxygen / flow;
 
-    // 時間と分に変換
+
+
     let hour =
+
     Math.floor(minutes / 60);
 
+
+
     let min =
+
     Math.floor(minutes % 60);
 
+
+
+
     // 現在時刻
+
     let now = new Date();
 
-    let nowTime =
-    (now.getMonth() + 1)
+
+    let nowText =
+
+    now.getFullYear()
+    + "年"
+    + (now.getMonth()+1)
     + "月"
     + now.getDate()
     + "日 "
@@ -186,15 +246,28 @@ function calc(){
     + String(now.getMinutes()).padStart(2,"0")
     + "分";
 
-    // 終了予定
+
+
+
+    // 交換予想時間
+
     let end = new Date();
 
+
     end.setMinutes(
-        end.getMinutes() + minutes
+
+        end.getMinutes()
+        + minutes
+
     );
 
-    let endTime =
-    (end.getMonth() + 1)
+
+
+    let endText =
+
+    end.getFullYear()
+    + "年"
+    + (end.getMonth()+1)
     + "月"
     + end.getDate()
     + "日 "
@@ -203,30 +276,49 @@ function calc(){
     + String(end.getMinutes()).padStart(2,"0")
     + "分";
 
+
+
+
+
     document.getElementById("result").innerHTML =
 
-        "酸素残量<br>"
-        + oxygen.toFixed(0)
-        + " L<br><br>"
 
-        + hour
-        + "時間 "
-        + min
-        + "分 使用可能<br><br>"
+    "現在時刻<br>"
+    + nowText
+    + "<br><br>"
 
-        + "現在時刻<br>"
-        + nowTime
-        + "<br><br>"
 
-        + "終了予定<br>"
-        + endTime;
+    + "酸素残量（交換まで）<br>"
+    + oxygen.toFixed(0)
+    + " L"
+    + "<br><br>"
+
+
+    + "交換まで<br>"
+    + hour
+    + "時間 "
+    + min
+    + "分"
+    + "<br><br>"
+
+
+    + "交換予想時間<br>"
+    + endText
+    + "<br><br>"
+
+
+    + "※設定した交換圧力 "
+    + changePressure.toFixed(1)
+    + "MPaまでの計算です"
+    + "<br>"
+    + "※実際の使用時は残圧計を確認してください";
+
+
 }
 
-function goHome(){
-    location.href = "index.html";
-}
 
 </script>
+
 
 </body>
 
