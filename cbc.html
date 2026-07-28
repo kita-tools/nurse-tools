@@ -34,6 +34,7 @@ header{
 }
 
 
+
 .container{
 
     max-width:700px;
@@ -112,27 +113,30 @@ ul{
 
 .home{
 
-    display:block;
+    position:fixed;
 
-    width:220px;
+    right:15px;
 
-    margin:35px auto;
+    bottom:15px;
 
-    text-align:center;
-
-    text-decoration:none;
-
-    color:white;
+    padding:10px 16px;
 
     background:#2196f3;
 
-    padding:15px;
+    color:white;
 
-    border-radius:12px;
+    border-radius:20px;
 
-    font-size:20px;
+    text-decoration:none;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
 
 }
+
 
 
 </style>
@@ -172,7 +176,9 @@ ul{
 
 fetch("data/CBC.json")
 
+
 .then(res=>res.json())
+
 
 .then(data=>{
 
@@ -183,16 +189,17 @@ const list=document.getElementById("list");
 list.innerHTML="";
 
 
+
 data.forEach(item=>{
 
 
-const high = item.high.map(x=>"<li>"+x+"</li>").join("");
+const high=item.high.map(x=>"<li>"+x+"</li>").join("");
 
-const low = item.low.map(x=>"<li>"+x+"</li>").join("");
+const low=item.low.map(x=>"<li>"+x+"</li>").join("");
 
 
 
-list.innerHTML += `
+list.innerHTML+=`
 
 
 <div class="item">
@@ -200,7 +207,9 @@ list.innerHTML += `
 
 <div onclick="toggle(this)">
 
+
 <strong>${item.shortName}</strong>
+
 
 </div>
 
@@ -214,6 +223,7 @@ list.innerHTML += `
 ${item.name}
 
 </div>
+
 
 
 <br>
@@ -293,10 +303,11 @@ ${item.comment}
 
 
 
+
 function toggle(el){
 
 
-const d = el.nextElementSibling;
+const d=el.nextElementSibling;
 
 
 
