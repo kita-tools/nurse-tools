@@ -306,3 +306,70 @@ td{
     }
 
 }
+/* =====================
+   点滴専用
+===================== */
+
+#drop{
+
+    font-size:80px;
+
+    height:120px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+#mute{
+
+    font-size:30px;
+
+    padding:5px 15px;
+
+    margin:5px;
+
+    background:white;
+
+    color:#333;
+
+    border:1px solid #ccc;
+
+}
+
+
+button{
+
+    background:white;
+
+    color:#333;
+
+}
+
+
+button:hover{
+
+    background:white;
+
+}
+
+
+button:active{
+
+    background:white;
+
+}
+
+
+/* ボタン中央寄せ */
+
+body > button,
+.box > button{
+
+    display:inline-block;
+
+}
