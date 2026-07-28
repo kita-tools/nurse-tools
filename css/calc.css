@@ -1,5 +1,5 @@
 /* =====================================
-   Nurse-Tools calc.css Ver1.0
+   Nurse-Tools calc.css Ver1.1
    計算アプリ共通
 ===================================== */
 
@@ -28,7 +28,7 @@ header{
 
 
 /* =====================
-   メイン
+   メイン枠
 ===================== */
 
 .container{
@@ -43,169 +43,9 @@ header{
 
 
 /* =====================
-   入力タイトル
+   計算アプリ枠
 ===================== */
 
-label{
-
-    display:block;
-
-    text-align:left;
-
-    font-size:24px;
-
-    font-weight:bold;
-
-    margin:25px 0 10px;
-
-    color:#333;
-
-}
-
-
-/* =====================
-   入力欄
-===================== */
-
-input,
-select{
-
-    width:100%;
-
-    box-sizing:border-box;
-
-    padding:18px;
-
-    border:1px solid #ccc;
-
-    border-radius:12px;
-
-    font-size:24px;
-
-    background:#fff;
-
-}
-
-
-/* =====================
-   実行ボタン
-===================== */
-
-.btn{
-
-    width:100%;
-
-    margin-top:35px;
-
-    padding:20px;
-
-    border:none;
-
-    border-radius:15px;
-
-    background:#2196f3;
-
-    color:#fff;
-
-    font-size:30px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-}
-
-.btn:hover{
-
-    background:#1976d2;
-
-}
-
-
-/* =====================
-   結果
-===================== */
-
-.result{
-
-    margin-top:35px;
-
-    padding:25px;
-
-    border-radius:15px;
-
-    background:#fff;
-
-    box-shadow:0 2px 10px rgba(0,0,0,.15);
-
-    font-size:30px;
-
-    font-weight:bold;
-
-    color:#333;
-
-    text-align:center;
-
-}
-
-
-/* =====================
-   説明
-===================== */
-
-.note{
-
-    margin-top:35px;
-
-    font-size:18px;
-
-    color:#666;
-
-    line-height:1.8;
-
-    text-align:left;
-
-}
-
-
-/* =====================
-   スマホ
-===================== */
-
-@media (max-width:600px){
-
-    header{
-
-        font-size:30px;
-
-    }
-
-    label{
-
-        font-size:22px;
-
-    }
-
-    input,
-    select{
-
-        font-size:22px;
-
-    }
-
-    .btn{
-
-        font-size:28px;
-
-    }
-
-    .result{
-
-        font-size:28px;
-
-    }
-
-}
 .box{
 
     background:white;
@@ -222,6 +62,10 @@ select{
 
 }
 
+
+/* =====================
+   入力
+===================== */
 
 .input-row{
 
@@ -244,6 +88,30 @@ label{
 
     margin-right:10px;
 
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+
+input,
+select{
+
+    width:120px;
+
+    box-sizing:border-box;
+
+    padding:10px;
+
+    border:1px solid #ccc;
+
+    border-radius:10px;
+
+    font-size:20px;
+
+    text-align:center;
+
 }
 
 
@@ -258,6 +126,44 @@ label{
 }
 
 
+/* =====================
+   ボタン
+===================== */
+
+button{
+
+    font-size:22px;
+
+    padding:12px 30px;
+
+    margin:8px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#2196f3;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+button:hover{
+
+    background:#1976d2;
+
+}
+
+
+/* =====================
+   結果表示
+===================== */
+
 .result{
 
     margin-top:20px;
@@ -266,8 +172,16 @@ label{
 
     line-height:2;
 
+    text-align:center;
+
+    font-weight:bold;
+
 }
 
+
+/* =====================
+   表
+===================== */
 
 table{
 
@@ -296,5 +210,100 @@ td{
     border:1px solid #ccc;
 
     padding:8px;
+
+}
+
+
+/* =====================
+   説明
+===================== */
+
+.note{
+
+    margin-top:10px;
+
+    font-size:13px;
+
+    color:#666;
+
+    line-height:1.8;
+
+}
+
+
+/* =====================
+   戻るボタン
+===================== */
+
+.back-button{
+
+    position:fixed;
+
+    right:15px;
+
+    bottom:15px;
+
+    padding:8px 14px;
+
+    background:#4CAF50;
+
+    color:white;
+
+    border-radius:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-decoration:none;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
+
+    z-index:9999;
+
+}
+
+
+/* =====================
+   スマホ
+===================== */
+
+@media(max-width:600px){
+
+    header{
+
+        font-size:30px;
+
+    }
+
+
+    .box{
+
+        margin-top:30px;
+
+    }
+
+
+    button{
+
+        font-size:20px;
+
+        padding:10px 25px;
+
+    }
+
+
+    input,
+    select{
+
+        font-size:18px;
+
+    }
 
 }
