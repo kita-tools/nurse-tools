@@ -334,4 +334,22 @@ td{
         font-size:18px;
 
     }
+   /* BMI・計算ボタン中央寄せ */
 
+.box button{
+
+    display:inline-block;
+
+}
+
+
+}
+/* =====================
+   ボタン中央寄せ
+===================== */
+
+.box{
+
+    text-align:center;
+
+}
