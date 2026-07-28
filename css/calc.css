@@ -367,9 +367,8 @@ button:active{
 
 /* ボタン中央寄せ */
 
-body > button,
-.box > button{
+.box{
 
-    display:inline-block;
+    text-align:center;
 
 }
