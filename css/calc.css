@@ -1,24 +1,7 @@
 /* =====================================
-   Nurse-Tools common.css Ver2.0
-   全ページ共通
+   Nurse-Tools calc.css Ver1.0
+   計算アプリ共通
 ===================================== */
-
-
-/* =====================
-   全体
-===================== */
-
-body{
-
-    margin:0;
-
-    font-family:sans-serif;
-
-    background:#f2f7fb;
-
-    color:#333;
-
-}
 
 
 /* =====================
@@ -45,12 +28,12 @@ header{
 
 
 /* =====================
-   メイン枠
+   メイン
 ===================== */
 
 .container{
 
-    max-width:900px;
+    max-width:700px;
 
     margin:30px auto;
 
@@ -60,49 +43,73 @@ header{
 
 
 /* =====================
-   入力欄
+   入力タイトル
 ===================== */
 
-input,
-select,
-textarea{
+label{
 
-    width:100%;
+    display:block;
 
-    box-sizing:border-box;
+    text-align:left;
 
-    padding:12px;
+    font-size:24px;
 
-    border:1px solid #ccc;
+    font-weight:bold;
 
-    border-radius:10px;
+    margin:25px 0 10px;
 
-    font-size:18px;
+    color:#333;
 
 }
 
 
 /* =====================
-   共通ボタン
+   入力欄
+===================== */
+
+input,
+select{
+
+    width:100%;
+
+    box-sizing:border-box;
+
+    padding:18px;
+
+    border:1px solid #ccc;
+
+    border-radius:12px;
+
+    font-size:24px;
+
+    background:#fff;
+
+}
+
+
+/* =====================
+   実行ボタン
 ===================== */
 
 .btn{
 
-    display:block;
-
     width:100%;
 
-    padding:15px;
+    margin-top:35px;
+
+    padding:20px;
 
     border:none;
 
-    border-radius:12px;
+    border-radius:15px;
 
     background:#2196f3;
 
     color:#fff;
 
-    font-size:20px;
+    font-size:30px;
+
+    font-weight:bold;
 
     cursor:pointer;
 
@@ -116,55 +123,47 @@ textarea{
 
 
 /* =====================
-   戻るボタン
+   結果
 ===================== */
 
-.back-button{
+.result{
 
-    position:fixed;
+    margin-top:35px;
 
-    right:20px;
+    padding:25px;
 
-    bottom:20px;
+    border-radius:15px;
 
-    width:60px;
+    background:#fff;
 
-    height:60px;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
 
-    border-radius:50%;
+    font-size:30px;
 
-    background:#2196f3;
+    font-weight:bold;
 
-    color:#fff;
+    color:#333;
 
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    text-decoration:none;
-
-    font-size:26px;
-
-    box-shadow:0 2px 8px rgba(0,0,0,.2);
+    text-align:center;
 
 }
 
 
 /* =====================
-   フッター
+   説明
 ===================== */
 
-.footer{
+.note{
 
-    margin:40px 0;
+    margin-top:35px;
 
-    text-align:center;
-
-    font-size:16px;
+    font-size:18px;
 
     color:#666;
+
+    line-height:1.8;
+
+    text-align:left;
 
 }
 
@@ -179,13 +178,30 @@ textarea{
 
         font-size:30px;
 
-        padding:20px;
+    }
+
+    label{
+
+        font-size:22px;
 
     }
 
-    .container{
+    input,
+    select{
 
-        padding:15px;
+        font-size:22px;
+
+    }
+
+    .btn{
+
+        font-size:28px;
+
+    }
+
+    .result{
+
+        font-size:28px;
 
     }
 

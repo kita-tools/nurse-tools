@@ -1,0 +1,127 @@
+ =====================================
+   Nurse-Tools index.css Ver1.0
+   TOPページ専用
+===================================== 
+
+
+ =====================
+   日付
+===================== 
+
+#datetime{
+
+    font-size60px;
+
+    font-weightbold;
+
+    text-aligncenter;
+
+    line-height1.5;
+
+    margin40px 0 70px;
+
+}
+
+
+ =====================
+   タイトル
+===================== 
+
+h1{
+
+    font-size60px;
+
+    color#333;
+
+    margin0 0 80px;
+
+    text-aligncenter;
+
+}
+
+
+ =====================
+   アプリボタン
+===================== 
+
+.tool-button{
+
+    displayblock;
+
+    width90%;
+
+    max-width500px;
+
+    height120px;
+
+    margin25px auto;
+
+    bordernone;
+
+    border-radius20px;
+
+    background#4a90e2;
+
+    color#fff;
+
+    font-size38px;
+
+    font-weightbold;
+
+    cursorpointer;
+
+    transition.2s;
+
+}
+
+.tool-buttonhover{
+
+    background#357abd;
+
+}
+
+
+ =====================
+   フッター
+===================== 
+
+.footer{
+
+    margin80px 0 40px;
+
+    font-size18px;
+
+    color#555;
+
+    text-aligncenter;
+
+}
+
+
+ =====================
+   スマホ
+===================== 
+
+@media (max-width600px){
+
+    #datetime{
+
+        font-size52px;
+
+    }
+
+    h1{
+
+        font-size52px;
+
+    }
+
+    .tool-button{
+
+        height110px;
+
+        font-size34px;
+
+    }
+
+}
