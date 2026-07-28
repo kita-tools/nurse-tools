@@ -1,5 +1,5 @@
 /* =====================================
-   Nurse-Tools calc.css Ver1.1
+   Nurse-Tools calc.css Ver1.2
    計算アプリ共通
 ===================================== */
 
@@ -28,21 +28,6 @@ header{
 
 
 /* =====================
-   メイン枠
-===================== */
-
-.container{
-
-    max-width:700px;
-
-    margin:30px auto;
-
-    padding:20px;
-
-}
-
-
-/* =====================
    計算アプリ枠
 ===================== */
 
@@ -60,11 +45,13 @@ header{
 
     max-width:400px;
 
+    text-align:center;
+
 }
 
 
 /* =====================
-   入力
+   入力エリア
 ===================== */
 
 .input-row{
@@ -128,9 +115,12 @@ select{
 
 /* =====================
    ボタン
+   BMI・点滴共通
 ===================== */
 
 button{
+
+    display:inline-block;
 
     font-size:22px;
 
@@ -152,9 +142,15 @@ button{
 
 }
 
-button:hover{
 
-    background:#1976d2;
+/* 押した時の青反転防止 */
+
+button:hover,
+button:active{
+
+    background:white;
+
+    color:#333;
 
 }
 
@@ -232,6 +228,7 @@ td{
 
 /* =====================
    戻るボタン
+   全アプリ共通
 ===================== */
 
 .back-button{
@@ -270,7 +267,40 @@ td{
 
 
 /* =====================
-   スマホ
+   点滴専用
+===================== */
+
+
+#drop{
+
+    font-size:80px;
+
+    height:120px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+/* ミュートボタン */
+
+#mute{
+
+    font-size:30px;
+
+    padding:5px 15px;
+
+    margin:5px;
+
+}
+
+
+/* =====================
+   スマホ調整
 ===================== */
 
 @media(max-width:600px){
@@ -304,76 +334,5 @@ td{
         font-size:18px;
 
     }
-
-}
-/* =====================
-   点滴専用
-===================== */
-
-#drop{
-
-    font-size:80px;
-
-    height:120px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-}
-
-
-#mute{
-
-    font-size:30px;
-
-    padding:5px 15px;
-
-    margin:5px;
-
-    background:white;
-
-    color:#333;
-
-    border:1px solid #ccc;
-
-}
-
-
-button{
-
-    background:white;
-
-    color:#333;
-
-}
-
-
-button:hover{
-
-    background:white;
-
-}
-
-
-button:active{
-
-    background:white;
-
-}
-
-
-/* ボタン中央寄せ */
-
-.box{
-
-    text-align:center;
-
-}
-.box button{
-
-    display:inline-block;
 
 }
