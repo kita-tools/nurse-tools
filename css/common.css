@@ -228,8 +228,9 @@ header{
 
     font-size:24px;
 
-}
+    text-align:left;
 
+}
 .content a:hover{
 
     background:#f7fbff;
