@@ -1,126 +1,126 @@
- =====================================
-   Nurse-Tools index.css Ver1.0
+/* =====================================
+   Nurse-Tools index.css Ver2.0
    TOPページ専用
-===================================== 
+===================================== */
 
 
- =====================
+/* =====================
    日付
-===================== 
+===================== */
 
 #datetime{
 
-    font-size60px;
+    font-size:60px;
 
-    font-weightbold;
+    font-weight:bold;
 
-    text-aligncenter;
+    text-align:center;
 
-    line-height1.5;
+    line-height:1.6;
 
-    margin40px 0 70px;
+    margin:40px 0 60px;
 
 }
 
 
- =====================
+/* =====================
    タイトル
-===================== 
+===================== */
 
 h1{
 
-    font-size60px;
+    font-size:60px;
 
-    color#333;
+    font-weight:bold;
 
-    margin0 0 80px;
+    color:#333;
 
-    text-aligncenter;
+    text-align:center;
+
+    margin:0 0 70px;
 
 }
 
 
- =====================
-   アプリボタン
-===================== 
+/* =====================
+   メインボタン
+===================== */
 
 .tool-button{
 
-    displayblock;
+    display:block;
 
-    width90%;
+    width:90%;
 
-    max-width500px;
+    max-width:500px;
 
-    height120px;
+    height:120px;
 
-    margin25px auto;
+    margin:25px auto;
 
-    bordernone;
+    border:none;
 
-    border-radius20px;
+    border-radius:20px;
 
-    background#4a90e2;
+    background:#4a90e2;
 
-    color#fff;
+    color:#fff;
 
-    font-size38px;
+    font-size:40px;
 
-    font-weightbold;
+    font-weight:bold;
 
-    cursorpointer;
-
-    transition.2s;
+    cursor:pointer;
 
 }
 
-.tool-buttonhover{
+.tool-button:hover{
 
-    background#357abd;
+    background:#357abd;
 
 }
 
 
- =====================
+/* =====================
    フッター
-===================== 
+===================== */
 
 .footer{
 
-    margin80px 0 40px;
+    margin-top:80px;
 
-    font-size18px;
+    text-align:center;
 
-    color#555;
+    font-size:18px;
 
-    text-aligncenter;
+    color:#555;
 
 }
 
 
- =====================
+/* =====================
    スマホ
-===================== 
+===================== */
 
-@media (max-width600px){
+@media (max-width:600px){
 
     #datetime{
 
-        font-size52px;
+        font-size:48px;
 
     }
 
     h1{
 
-        font-size52px;
+        font-size:48px;
 
     }
 
     .tool-button{
 
-        height110px;
+        height:100px;
 
-        font-size34px;
+        font-size:30px;
 
     }
 
