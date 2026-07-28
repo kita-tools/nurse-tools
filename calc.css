@@ -1,0 +1,208 @@
+/* =====================================
+   Nurse-Tools calc.css Ver1.0
+   計算アプリ共通
+===================================== */
+
+
+/* =====================
+   ヘッダー
+===================== */
+
+header{
+
+    background:#2196f3;
+
+    color:#fff;
+
+    text-align:center;
+
+    font-size:34px;
+
+    font-weight:bold;
+
+    padding:24px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+
+}
+
+
+/* =====================
+   メイン
+===================== */
+
+.container{
+
+    max-width:700px;
+
+    margin:30px auto;
+
+    padding:20px;
+
+}
+
+
+/* =====================
+   入力タイトル
+===================== */
+
+label{
+
+    display:block;
+
+    text-align:left;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    margin:25px 0 10px;
+
+    color:#333;
+
+}
+
+
+/* =====================
+   入力欄
+===================== */
+
+input,
+select{
+
+    width:100%;
+
+    box-sizing:border-box;
+
+    padding:18px;
+
+    border:1px solid #ccc;
+
+    border-radius:12px;
+
+    font-size:24px;
+
+    background:#fff;
+
+}
+
+
+/* =====================
+   実行ボタン
+===================== */
+
+.btn{
+
+    width:100%;
+
+    margin-top:35px;
+
+    padding:20px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:#2196f3;
+
+    color:#fff;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.btn:hover{
+
+    background:#1976d2;
+
+}
+
+
+/* =====================
+   結果
+===================== */
+
+.result{
+
+    margin-top:35px;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    background:#fff;
+
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    color:#333;
+
+    text-align:center;
+
+}
+
+
+/* =====================
+   説明
+===================== */
+
+.note{
+
+    margin-top:35px;
+
+    font-size:18px;
+
+    color:#666;
+
+    line-height:1.8;
+
+    text-align:left;
+
+}
+
+
+/* =====================
+   スマホ
+===================== */
+
+@media (max-width:600px){
+
+    header{
+
+        font-size:30px;
+
+    }
+
+    label{
+
+        font-size:22px;
+
+    }
+
+    input,
+    select{
+
+        font-size:22px;
+
+    }
+
+    .btn{
+
+        font-size:28px;
+
+    }
+
+    .result{
+
+        font-size:28px;
+
+    }
+
+}
