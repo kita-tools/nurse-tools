@@ -138,22 +138,19 @@ button{
 
     margin:8px;
 
-    border:none;
+    border:1px solid #ccc;
 
     border-radius:10px;
 
-    background:#2196f3;
+    background:white;
 
-    color:white;
+    color:#333;
 
     font-weight:bold;
 
     cursor:pointer;
 
-    display:inline-block;
-
 }
-
 
 button:hover{
 
