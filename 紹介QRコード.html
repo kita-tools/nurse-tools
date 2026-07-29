@@ -121,14 +121,15 @@ button{
 
 </div>
 
-
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-
 <script>
+
+alert("ページ読み込みOK");
+
+
 let deferredPrompt = null;
+
 
 window.addEventListener("beforeinstallprompt", (e) => {
 
@@ -140,28 +141,23 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 });
 
-const url = 
-"https://kita-tools.github.io/nurse-tools/";
 
+const url = "https://kita-tools.github.io/nurse-tools/";
 
 
 // QRコード作成
 
 new QRCode(
-
-document.getElementById("qrcode"),
-
-{
-
-text:url,
-
-width:200,
-
-height:200
-
-}
-
+    document.getElementById("qrcode"),
+    {
+        text:url,
+        width:200,
+        height:200
+    }
 );
+
+
+</script>
 
 
 
