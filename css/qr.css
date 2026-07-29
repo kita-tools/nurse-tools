@@ -50,3 +50,12 @@ h2{
     color:white;
 
 }
+button{
+
+    font-size:18px;
+    padding:10px 25px;
+    margin:10px;
+    border:none;
+    border-radius:10px;
+
+}
