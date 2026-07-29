@@ -108,15 +108,5 @@
 "unit":"",
 "high":["糖尿病性腎症","腎障害"],
 "low":[],
-"comment":"微量アルブミン評価"},
-{
-"id":"URI012",
-"category":"尿定性",
-"shortName":"沈渣",
-"name":"尿沈渣",
-"reference":"",
-"unit":"個/HPF",
-"high":["赤血球増加","白血球増加"],
-"low":[],
-"comment":"尿中細胞成分の確認"}
+"comment":"微量アルブミン評価"}
 ]
