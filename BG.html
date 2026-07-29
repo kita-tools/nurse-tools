@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>血液ガス</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:sans-serif;
+    background:#f2f7fa;
+}
+
+header{
+    background:#00838f;
+    color:white;
+    text-align:center;
+    font-size:28px;
+    padding:20px;
+    font-weight:bold;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+}
+
+.item{
+    background:white;
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:12px;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    font-size:24px;
+}
+
+.item:hover{
+    background:#f8fbff;
+}
+
+.detail{
+    display:none;
+    margin-top:10px;
+    border-top:1px solid #ddd;
+    padding-top:12px;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.title{
+    font-weight:bold;
+    color:#1976d2;
+}
+
+ul{
+    margin-top:5px;
+}
+
+
+.home{
+
+    position:fixed;
+
+    right:15px;
+
+    bottom:15px;
+
+    padding:10px 16px;
+
+    background:#2196f3;
+
+    color:white;
+
+    border-radius:20px;
+
+    text-decoration:none;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+🫁 血液ガス
+
+</header>
+
+
+
+<div class="container" id="list">
+
+読み込み中...
+
+</div>
+
+
+
+<a href="検査一覧.html" class="home">
+
+🏠 検査一覧へ戻る
+
+</a>
+
+
+
+<script>
+
+
+fetch("data/BG.json")
+
+
+.then(res=>res.json())
+
+
+.then(data=>{
+
+
+const list=document.getElementById("list");
+
+
+list.innerHTML="";
+
+
+
+data.forEach(item=>{
+
+
+const high=item.high.map(x=>"<li>"+x+"</li>").join("");
+
+const low=item.low.map(x=>"<li>"+x+"</li>").join("");
+
+
+
+list.innerHTML+=`
+
+
+<div class="item">
+
+
+<div onclick="toggle(this)">
+
+
+<strong>${item.shortName}</strong>
+
+
+</div>
+
+
+
+<div class="detail">
+
+
+<div class="title">
+
+${item.name}
+
+</div>
+
+
+<br>
+
+
+<div class="title">
+
+基準値
+
+</div>
+
+
+${item.reference} ${item.unit}
+
+
+
+<br><br>
+
+
+
+<div class="title">
+
+高値で考えられるもの
+
+</div>
+
+
+<ul>
+
+${high}
+
+</ul>
+
+
+
+<div class="title">
+
+低値で考えられるもの
+
+</div>
+
+
+<ul>
+
+${low}
+
+</ul>
+
+
+
+<div class="title">
+
+ワンポイント
+
+</div>
+
+
+${item.comment}
+
+
+
+</div>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+});
+
+
+
+function toggle(el){
+
+
+const d=el.nextElementSibling;
+
+
+if(d.style.display==="block"){
+
+d.style.display="none";
+
+}else{
+
+d.style.display="block";
+
+}
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
