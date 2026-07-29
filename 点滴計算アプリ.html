@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="css/calc.css">
 
 
-<!-- Google tag -->
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPCWDVP7F5"></script>
 
 <script>
@@ -20,7 +20,9 @@
 window.dataLayer = window.dataLayer || [];
 
 function gtag(){
-    dataLayer.push(arguments);
+
+dataLayer.push(arguments);
+
 }
 
 gtag('js', new Date());
@@ -28,24 +30,6 @@ gtag('js', new Date());
 gtag('config', 'G-SPCWDVP7F5');
 
 </script>
-
-
-<style>
-
-.drop-svg{
-
-    width:40px;
-
-    height:50px;
-
-    vertical-align:middle;
-
-    margin-right:8px;
-
-}
-
-</style>
-
 
 </head>
 
@@ -55,27 +39,13 @@ gtag('config', 'G-SPCWDVP7F5');
 
 <header>
 
-<svg class="drop-svg" viewBox="0 0 40 50">
-
-<path d="
-M20 2
-C20 2 5 22 5 32
-C5 42 12 48 20 48
-C28 48 35 42 35 32
-C35 22 20 2 20 2Z"
-
-fill="#2196f3"/>
-
-</svg>
-
-点滴計算
+💧 点滴計算
 
 </header>
 
 
 
 <div class="box">
-
 
 
 <div class="input-row">
@@ -116,6 +86,8 @@ fill="#2196f3"/>
 
 <span class="unit">/mL</span>
 
+</select>
+
 </div>
 
 
@@ -138,7 +110,11 @@ fill="#2196f3"/>
 
 
 
-<div id="drop"></div>
+<div id="drop">
+
+💧
+
+</div>
 
 
 
@@ -147,7 +123,6 @@ fill="#2196f3"/>
 🔇
 
 </button>
-
 
 
 </div>
@@ -163,16 +138,13 @@ fill="#2196f3"/>
 
 
 
-
 <script>
-
 
 let timer;
 
 let mute = true;
 
 let audioCtx;
-
 
 
 
@@ -229,15 +201,18 @@ function start(){
 
     document.getElementById("result").innerHTML =
 
+
     "輸液速度　"
     + (ml / hour).toFixed(1)
     + " mL/h<br>"
+
 
     +
 
     "滴下速度　"
     + per10.toFixed(2)
     + "滴/10秒<br>"
+
 
     +
 
@@ -272,22 +247,7 @@ function drop(){
 
 
 
-    d.innerHTML = `
-
-<svg class="drop-svg" viewBox="0 0 40 50">
-
-<path d="
-M20 2
-C20 2 5 22 5 32
-C5 42 12 48 20 48
-C28 48 35 42 35 32
-C35 22 20 2 20 2Z"
-
-fill="#2196f3"/>
-
-</svg>
-
-`;
+    d.innerHTML="💧";
 
 
 
@@ -323,21 +283,16 @@ function beep(){
 
 
 
-    let osc =
-    audioCtx.createOscillator();
-
+    let osc = audioCtx.createOscillator();
 
 
     osc.connect(audioCtx.destination);
 
 
-
     osc.frequency.value=800;
 
 
-
     osc.start();
-
 
 
     osc.stop(audioCtx.currentTime + 0.05);
@@ -352,7 +307,7 @@ function beep(){
 function toggleMute(){
 
 
-    mute = !mute;
+    mute=!mute;
 
 
 
