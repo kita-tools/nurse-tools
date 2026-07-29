@@ -7,7 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>紹介QRコード</title>
+
 <link rel="manifest" href="manifest.json">
+
 <style>
 
 body{
@@ -67,6 +69,14 @@ button{
 }
 
 
+.install{
+
+    background:#4CAF50;
+    color:white;
+
+}
+
+
 .back{
 
     background:#777;
@@ -96,8 +106,15 @@ button{
 </h3>
 
 
-
 <div id="qrcode"></div>
+
+
+
+<button class="install" onclick="installApp()">
+
+📲 インストール
+
+</button>
 
 
 
@@ -121,43 +138,89 @@ button{
 
 </div>
 
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-<script>
 
-alert("ページ読み込みOK");
+<script>
 
 
 let deferredPrompt = null;
 
 
-window.addEventListener("beforeinstallprompt", (e) => {
 
-    alert("beforeinstallprompt 発生");
+// インストール要求を受け取る
+
+window.addEventListener("beforeinstallprompt", (e)=>{
+
 
     e.preventDefault();
 
+
     deferredPrompt = e;
 
+
 });
+
+
+
+// インストールボタン
+
+function installApp(){
+
+
+    if(deferredPrompt){
+
+
+        deferredPrompt.prompt();
+
+
+        deferredPrompt.userChoice.then(()=>{
+
+
+            deferredPrompt = null;
+
+
+        });
+
+
+    }else{
+
+
+        alert("現在インストールできません");
+
+
+    }
+
+
+}
+
+
 
 
 const url = "https://kita-tools.github.io/nurse-tools/";
 
 
+
 // QRコード作成
 
 new QRCode(
+
     document.getElementById("qrcode"),
+
     {
+
         text:url,
+
         width:200,
+
         height:200
+
     }
+
 );
 
-
-</script>
 
 
 
@@ -166,13 +229,14 @@ new QRCode(
 function copyURL(){
 
 
-navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(url);
 
 
-alert("URLをコピーしました");
+    alert("URLをコピーしました");
 
 
 }
+
 
 
 </script>
