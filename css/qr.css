@@ -51,8 +51,16 @@ h2{
 
 }
 button{
+
     display:block;
     width:80%;
     max-width:280px;
+
+    font-size:18px;
+    padding:10px 25px;
     margin:10px auto;
+
+    border:none;
+    border-radius:10px;
+
 }
