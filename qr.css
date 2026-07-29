@@ -1,0 +1,52 @@
+body{
+
+    font-family:sans-serif;
+    text-align:center;
+    background:#f2f7fa;
+    margin:0;
+
+}
+
+
+.box{
+
+    background:white;
+    margin:40px auto;
+    padding:25px;
+    border-radius:15px;
+    width:85%;
+    max-width:360px;
+
+}
+
+
+h2{
+
+    margin-top:5px;
+
+}
+
+
+#qrcode{
+
+    margin:25px auto;
+    display:flex;
+    justify-content:center;
+
+}
+
+
+.install{
+
+    background:#4CAF50;
+    color:white;
+
+}
+
+
+.copy{
+
+    background:#2196F3;
+    color:white;
+
+}
