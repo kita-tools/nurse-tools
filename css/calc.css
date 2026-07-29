@@ -333,3 +333,20 @@ td{
     }
 
 }
+.drop-icon{
+
+    display:inline-block;
+
+    width:22px;
+
+    height:22px;
+
+    background:#2196f3;
+
+    border-radius:50% 50% 50% 0;
+
+    transform:rotate(-45deg);
+
+    margin-right:8px;
+
+}
