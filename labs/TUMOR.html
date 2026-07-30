@@ -8,99 +8,17 @@
 
 <title>腫瘍マーカー</title>
 
-<style>
-
-body{
-    margin:0;
-    font-family:sans-serif;
-    background:#f2f7fa;
-}
-
-header{
-    background:#8e24aa;
-    color:white;
-    text-align:center;
-    font-size:28px;
-    padding:20px;
-    font-weight:bold;
-}
-
-.container{
-    max-width:700px;
-    margin:auto;
-    padding:20px;
-}
-
-.item{
-    background:white;
-    border-radius:12px;
-    padding:18px;
-    margin-bottom:12px;
-    cursor:pointer;
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
-    font-size:24px;
-}
-
-.item:hover{
-    background:#f8fbff;
-}
-
-.detail{
-    display:none;
-    margin-top:10px;
-    border-top:1px solid #ddd;
-    padding-top:12px;
-    font-size:18px;
-    line-height:1.8;
-}
-
-.title{
-    font-weight:bold;
-    color:#1976d2;
-}
-
-ul{
-    margin-top:5px;
-}
-
-
-.home{
-
-    position:fixed;
-
-    right:15px;
-
-    bottom:15px;
-
-    padding:10px 16px;
-
-    background:#2196f3;
-
-    color:white;
-
-    border-radius:20px;
-
-    text-decoration:none;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    box-shadow:0 3px 8px rgba(0,0,0,.25);
-
-}
-
-</style>
+<link rel="stylesheet" href="../css/common.css">
+<link rel="stylesheet" href="../css/lab.css">
 
 </head>
 
 
-<body>
-
+<body class="lab-tumor">
 
 <header>
 
-🎗️ 腫瘍マーカー
+🧪 腫瘍マーカー
 
 </header>
 
@@ -114,9 +32,17 @@ ul{
 
 
 
+<button class="copy" onclick="copySelected()">
+
+📋コピー
+
+</button>
+
+
+
 <a href="../検査一覧.html" class="home">
 
-🏠 検査一覧へ戻る
+🔬 戻る
 
 </a>
 
@@ -124,24 +50,91 @@ ul{
 
 <script>
 
-
 fetch("../data/TUMOR.json")
 
-
 .then(res=>res.json())
-
 
 .then(data=>{
 
 
 const list=document.getElementById("list");
 
-
 list.innerHTML="";
 
 
 
+let groups={};
+
+
+
 data.forEach(item=>{
+
+
+if(!groups[item.category]){
+
+groups[item.category]={};
+
+}
+
+
+if(!groups[item.category][item.group]){
+
+groups[item.category][item.group]=[];
+
+}
+
+
+groups[item.category][item.group].push(item);
+
+
+});
+
+
+
+let groupCount=0;
+
+
+
+for(let category in groups){
+
+
+for(let group in groups[category]){
+
+
+groupCount++;
+
+
+let groupId="group_"+groupCount;
+
+
+
+list.innerHTML += `
+
+<div class="group">
+
+
+<input 
+type="checkbox" 
+class="group-check"
+id="${groupId}"
+data-group="${groupId}"
+onclick="toggleGroup(this)">
+
+
+【${group}】
+
+
+</div>
+
+`;
+
+
+
+groups[category][group].forEach((item,index)=>{
+
+
+const itemId=groupId+"_item_"+index;
+
 
 
 const high=item.high.map(x=>"<li>"+x+"</li>").join("");
@@ -150,16 +143,42 @@ const low=item.low.map(x=>"<li>"+x+"</li>").join("");
 
 
 
-list.innerHTML+=`
+list.innerHTML += `
 
 
 <div class="item">
 
 
+
 <div onclick="toggle(this)">
 
 
-<strong>${item.shortName}</strong>
+
+<input 
+type="checkbox"
+class="check"
+data-parent="${groupId}"
+id="${itemId}"
+onclick="event.stopPropagation(); setTimeout(()=>updateGroup('${groupId}'),0)"
+>
+
+<span class="tube ${item.tube}">
+●
+</span>
+
+
+<div class="short">
+
+${item.shortName}
+
+</div>
+
+
+<div class="kana">
+
+${item.name}
+
+</div>
 
 
 </div>
@@ -167,16 +186,6 @@ list.innerHTML+=`
 
 
 <div class="detail">
-
-
-<div class="title">
-
-${item.name}
-
-</div>
-
-
-<br>
 
 
 <div class="title">
@@ -189,9 +198,7 @@ ${item.name}
 ${item.reference} ${item.unit}
 
 
-
 <br><br>
-
 
 
 <div class="title">
@@ -208,7 +215,6 @@ ${high}
 </ul>
 
 
-
 <div class="title">
 
 低値で考えられるもの
@@ -223,7 +229,6 @@ ${low}
 </ul>
 
 
-
 <div class="title">
 
 ワンポイント
@@ -232,7 +237,6 @@ ${low}
 
 
 ${item.comment}
-
 
 
 </div>
@@ -248,12 +252,18 @@ ${item.comment}
 });
 
 
+}
+
+}
+
+
 });
 
 
 
-function toggle(el){
 
+
+function toggle(el){
 
 const d=el.nextElementSibling;
 
@@ -268,8 +278,117 @@ d.style.display="block";
 
 }
 
+}
+
+
+
+
+
+function toggleGroup(parent){
+
+
+const checked=parent.checked;
+
+
+const group=parent.dataset.group;
+
+
+const items=document.querySelectorAll(
+'.check[data-parent="'+group+'"]'
+);
+
+
+items.forEach(item=>{
+
+item.checked=checked;
+
+});
+
 
 }
+
+
+
+
+
+function updateGroup(group){
+
+
+const parent=document.querySelector(
+'.group-check[data-group="'+group+'"]'
+);
+
+
+const items=document.querySelectorAll(
+'.check[data-parent="'+group+'"]'
+);
+
+
+let all=true;
+
+
+items.forEach(item=>{
+
+if(!item.checked){
+
+all=false;
+
+}
+
+});
+
+
+parent.checked=all;
+
+
+}
+
+
+
+
+
+function copySelected(){
+
+
+const checks=document.querySelectorAll(".check:checked");
+
+
+let text=[];
+
+
+checks.forEach(check=>{
+
+
+const item=check.closest(".item");
+
+
+text.push(
+item.querySelector(".short").innerText
+);
+
+
+});
+
+
+
+if(text.length===0){
+
+alert("項目を選択してください");
+
+return;
+
+}
+
+
+
+navigator.clipboard.writeText(text.join("\n"));
+
+
+alert("コピーしました");
+
+
+}
+
 
 
 </script>
