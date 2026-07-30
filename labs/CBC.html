@@ -18,30 +18,38 @@ body{
 
 
 header{
-
     background:#9c27b0;
-
     color:white;
-
     text-align:center;
-
     font-size:28px;
-
     padding:20px;
-
     font-weight:bold;
+}
+
+
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+}
+
+
+.category{
+
+    font-size:22px;
+    font-weight:bold;
+    color:#9c27b0;
+    margin:15px 0 8px;
 
 }
 
 
+.group{
 
-.container{
-
-    max-width:700px;
-
-    margin:auto;
-
-    padding:20px;
+    font-size:18px;
+    font-weight:bold;
+    color:#1976d2;
+    margin:10px 0;
 
 }
 
@@ -50,19 +58,13 @@ header{
 .item{
 
     background:white;
-
     border-radius:12px;
-
     padding:12px;
-
     margin-bottom:12px;
-
     cursor:pointer;
-
     box-shadow:0 2px 8px rgba(0,0,0,.15);
 
 }
-
 
 
 .item:hover{
@@ -76,11 +78,8 @@ header{
 .check{
 
     width:22px;
-
     height:22px;
-
     vertical-align:middle;
-
     margin-right:10px;
 
 }
@@ -89,11 +88,29 @@ header{
 
 .tube{
 
+    font-size:16px;
+    margin-right:8px;
+
+}
+
+
+.tube.EDTA{
+
     color:#9c27b0;
 
-    font-size:12px;
+}
 
-    margin-right:8px;
+
+.tube.血清{
+
+    color:#fbc02d;
+
+}
+
+
+.tube.クエン酸{
+
+    color:#1976d2;
 
 }
 
@@ -102,11 +119,8 @@ header{
 .short{
 
     display:inline-block;
-
     font-size:24px;
-
     font-weight:bold;
-
     vertical-align:middle;
 
 }
@@ -116,13 +130,9 @@ header{
 .kana{
 
     margin-left:65px;
-
     margin-top:3px;
-
     color:#1976d2;
-
     font-size:12px;
-
     font-weight:bold;
 
 }
@@ -132,15 +142,10 @@ header{
 .detail{
 
     display:none;
-
     margin-top:10px;
-
     border-top:1px solid #ddd;
-
     padding-top:12px;
-
     font-size:18px;
-
     line-height:1.8;
 
 }
@@ -150,7 +155,6 @@ header{
 .title{
 
     font-weight:bold;
-
     color:#1976d2;
 
 }
@@ -170,23 +174,18 @@ ul{
 .copy{
 
     position:fixed;
-
     right:15px;
-
     bottom:75px;
 
     padding:10px 16px;
 
     background:#4caf50;
-
     color:white;
 
     border-radius:20px;
-
     border:none;
 
     font-size:16px;
-
     font-weight:bold;
 
     box-shadow:0 3px 8px rgba(0,0,0,.25);
@@ -200,15 +199,12 @@ ul{
 .home{
 
     position:fixed;
-
     right:15px;
-
     bottom:15px;
 
     padding:10px 16px;
 
     background:#2196f3;
-
     color:white;
 
     border-radius:20px;
@@ -216,7 +212,6 @@ ul{
     text-decoration:none;
 
     font-size:16px;
-
     font-weight:bold;
 
     box-shadow:0 3px 8px rgba(0,0,0,.25);
@@ -247,6 +242,7 @@ ul{
 </div>
 
 
+
 <button class="copy" onclick="copySelected()">
 
 📋項目コピー
@@ -260,6 +256,7 @@ ul{
 🔬 戻る
 
 </a>
+
 
 
 <script>
@@ -276,12 +273,73 @@ fetch("../data/CBC.json")
 
 const list=document.getElementById("list");
 
-
 list.innerHTML="";
 
 
 
+let groups={};
+
+
+
 data.forEach(item=>{
+
+
+if(!groups[item.category]){
+
+    groups[item.category]={};
+
+}
+
+
+if(!groups[item.category][item.group]){
+
+    groups[item.category][item.group]=[];
+
+}
+
+
+groups[item.category][item.group].push(item);
+
+
+});
+
+
+
+
+for(let category in groups){
+
+
+
+list.innerHTML += `
+
+<div class="category">
+
+🩸 ${category}
+
+</div>
+
+`;
+
+
+
+for(let group in groups[category]){
+
+
+
+list.innerHTML += `
+
+<div class="group">
+
+【${group}】
+
+</div>
+
+`;
+
+
+
+groups[category][group].forEach(item=>{
+
 
 
 const high=item.high.map(x=>"<li>"+x+"</li>").join("");
@@ -290,7 +348,8 @@ const low=item.low.map(x=>"<li>"+x+"</li>").join("");
 
 
 
-list.innerHTML+=`
+list.innerHTML += `
+
 
 
 <div class="item">
@@ -305,7 +364,7 @@ list.innerHTML+=`
 
 
 
-<span class="tube">
+<span class="tube ${item.tube}">
 
 ●
 
@@ -400,7 +459,9 @@ ${item.comment}
 </div>
 
 
+
 </div>
+
 
 
 `;
@@ -408,6 +469,12 @@ ${item.comment}
 
 
 });
+
+}
+
+}
+
+
 
 
 });
@@ -424,20 +491,17 @@ const d=el.nextElementSibling;
 
 if(d.style.display==="block"){
 
-
 d.style.display="none";
-
 
 }else{
 
-
 d.style.display="block";
 
-
 }
 
 
 }
+
 
 
 
@@ -473,7 +537,6 @@ if(text.length===0){
 
 alert("項目を選択してください");
 
-
 return;
 
 
@@ -484,12 +547,10 @@ return;
 navigator.clipboard.writeText(text.join("\n"));
 
 
-
 alert("コピーしました");
 
 
 }
-
 
 
 </script>
