@@ -233,6 +233,40 @@
 
 }
 
+/* 鼻咽頭ぬぐい液 */
+.tube.鼻咽頭ぬぐい液{
+
+    color:#fff;
+    border:1px solid #999;
+
+}
+
+
+/* 咽頭ぬぐい液 */
+.tube.咽頭ぬぐい液{
+
+    color:#fff;
+    border:1px solid #999;
+
+}
+
+
+/* 便 */
+.tube.便{
+
+    color:#fff;
+    border:1px solid #999;
+
+}
+
+
+/* 血清 */
+.tube.血清{
+
+    color:#fff;
+    border:1px solid #999;
+
+}
 /* =====================
    項目名
 ===================== */
