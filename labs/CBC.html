@@ -18,38 +18,45 @@ body{
 
 
 header{
+
     background:#9c27b0;
     color:white;
     text-align:center;
     font-size:28px;
     padding:20px;
     font-weight:bold;
+
 }
+
 
 
 .container{
+
     max-width:700px;
     margin:auto;
     padding:20px;
-}
-
-
-.category{
-
-    font-size:22px;
-    font-weight:bold;
-    color:#9c27b0;
-    margin:15px 0 8px;
 
 }
+
 
 
 .group{
 
-    font-size:18px;
+    font-size:22px;
     font-weight:bold;
     color:#1976d2;
-    margin:10px 0;
+    margin:18px 0 10px;
+
+}
+
+
+
+.group-check{
+
+    width:22px;
+    height:22px;
+    vertical-align:middle;
+    margin-right:8px;
 
 }
 
@@ -63,13 +70,6 @@ header{
     margin-bottom:12px;
     cursor:pointer;
     box-shadow:0 2px 8px rgba(0,0,0,.15);
-
-}
-
-
-.item:hover{
-
-    background:#f8fbff;
 
 }
 
@@ -92,6 +92,7 @@ header{
     margin-right:8px;
 
 }
+
 
 
 .tube.EDTA{
@@ -161,16 +162,6 @@ header{
 
 
 
-ul{
-
-    margin-top:5px;
-
-}
-
-
-
-/* コピー */
-
 .copy{
 
     position:fixed;
@@ -183,18 +174,15 @@ ul{
     color:white;
 
     border-radius:20px;
+
     border:none;
 
     font-size:16px;
     font-weight:bold;
 
-    box-shadow:0 3px 8px rgba(0,0,0,.25);
-
 }
 
 
-
-/* 戻る */
 
 .home{
 
@@ -205,6 +193,7 @@ ul{
     padding:10px 16px;
 
     background:#2196f3;
+
     color:white;
 
     border-radius:20px;
@@ -214,13 +203,9 @@ ul{
     font-size:16px;
     font-weight:bold;
 
-    box-shadow:0 3px 8px rgba(0,0,0,.25);
-
 }
 
-
 </style>
-
 </head>
 
 
@@ -283,14 +268,14 @@ data.forEach(item=>{
 
 if(!groups[item.category]){
 
-    groups[item.category]={};
+groups[item.category]={};
 
 }
 
 
 if(!groups[item.category][item.group]){
 
-    groups[item.category][item.group]=[];
+groups[item.category][item.group]=[];
 
 }
 
@@ -302,163 +287,170 @@ groups[item.category][item.group].push(item);
 
 
 
+let groupCount=0;
+
+
+
 for(let category in groups){
 
 
-    for(let group in groups[category]){
+for(let group in groups[category]){
 
 
-        list.innerHTML += `
+groupCount++;
 
-        <div class="group">
 
-        【${group}】
+let groupId="group_"+groupCount;
 
-        </div>
 
-        `;
 
+list.innerHTML += `
 
+<div class="group">
 
-        groups[category][group].forEach(item=>{
 
+<input 
+type="checkbox" 
+class="group-check"
+id="${groupId}"
+data-group="${groupId}"
+onclick="toggleGroup(this)">
 
 
-            const high=item.high.map(x=>"<li>"+x+"</li>").join("");
+【${group}】
 
-            const low=item.low.map(x=>"<li>"+x+"</li>").join("");
 
+</div>
 
+`;
 
-            list.innerHTML += `
 
 
-            <div class="item">
+groups[category][group].forEach((item,index)=>{
 
 
+const itemId=groupId+"_item_"+index;
 
-            <div onclick="toggle(this)">
 
 
+const high=item.high.map(x=>"<li>"+x+"</li>").join("");
 
-            <input type="checkbox" class="check" onclick="event.stopPropagation()">
+const low=item.low.map(x=>"<li>"+x+"</li>").join("");
 
 
 
-            <span class="tube ${item.tube}">
+list.innerHTML += `
 
-            ●
 
-            </span>
+<div class="item">
 
 
 
-            <div class="short">
+<div onclick="toggle(this)">
 
-            ${item.shortName}
 
-            </div>
 
+<input 
+type="checkbox"
+class="check"
+data-parent="${groupId}"
+id="${itemId}"
+onclick="event.stopPropagation(); updateGroup('${groupId}')">
 
 
-            <div class="kana">
+<span class="tube ${item.tube}">
+●
+</span>
 
-            ${item.name}
 
-            </div>
+<div class="short">
 
+${item.shortName}
 
+</div>
 
-            </div>
 
+<div class="kana">
 
+${item.name}
 
+</div>
 
-            <div class="detail">
 
+</div>
 
 
-            <div class="title">
 
-            基準値
+<div class="detail">
 
-            </div>
 
+<div class="title">
 
+基準値
 
-            ${item.reference} ${item.unit}
+</div>
 
 
+${item.reference} ${item.unit}
 
-            <br><br>
 
+<br><br>
 
 
-            <div class="title">
+<div class="title">
 
-            高値で考えられるもの
+高値で考えられるもの
 
-            </div>
+</div>
 
 
+<ul>
 
-            <ul>
+${high}
 
-            ${high}
+</ul>
 
-            </ul>
 
+<div class="title">
 
+低値で考えられるもの
 
-            <div class="title">
+</div>
 
-            低値で考えられるもの
 
-            </div>
+<ul>
 
+${low}
 
+</ul>
 
-            <ul>
 
-            ${low}
+<div class="title">
 
-            </ul>
+ワンポイント
 
+</div>
 
 
-            <div class="title">
+${item.comment}
 
-            ワンポイント
 
-            </div>
+</div>
 
 
+</div>
 
-            ${item.comment}
 
+`;
 
 
-            </div>
 
-
-
-            </div>
-
-
-
-            `;
-
-
-
-        });
-
-
-
-    }
+});
 
 
 }
 
+}
 
 
 });
@@ -467,26 +459,82 @@ for(let category in groups){
 
 
 
-
 function toggle(el){
-
 
 const d=el.nextElementSibling;
 
 
 if(d.style.display==="block"){
 
-
-    d.style.display="none";
-
+d.style.display="none";
 
 }else{
 
+d.style.display="block";
 
-    d.style.display="block";
+}
+
+}
+
+
+
+
+
+function toggleGroup(parent){
+
+
+const checked=parent.checked;
+
+
+const group=parent.dataset.group;
+
+
+const items=document.querySelectorAll(
+'.check[data-parent="'+group+'"]'
+);
+
+
+items.forEach(item=>{
+
+item.checked=checked;
+
+});
 
 
 }
+
+
+
+
+
+function updateGroup(group){
+
+
+const parent=document.querySelector(
+'.group-check[data-group="'+group+'"]'
+);
+
+
+const items=document.querySelectorAll(
+'.check[data-parent="'+group+'"]'
+);
+
+
+let all=true;
+
+
+items.forEach(item=>{
+
+if(!item.checked){
+
+all=false;
+
+}
+
+});
+
+
+parent.checked=all;
 
 
 }
@@ -504,17 +552,15 @@ const checks=document.querySelectorAll(".check:checked");
 let text=[];
 
 
-
 checks.forEach(check=>{
 
 
 const item=check.closest(".item");
 
 
-const name=item.querySelector(".short").innerText;
-
-
-text.push(name);
+text.push(
+item.querySelector(".short").innerText
+);
 
 
 });
@@ -523,12 +569,9 @@ text.push(name);
 
 if(text.length===0){
 
+alert("項目を選択してください");
 
-    alert("項目を選択してください");
-
-
-    return;
-
+return;
 
 }
 
