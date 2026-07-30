@@ -1,0 +1,239 @@
+/* =====================================
+   Nurse-Tools lab.css Ver1.0
+   検査項目表示専用
+===================================== */
+
+
+/* =====================
+   検査グループ
+===================== */
+
+.group{
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    color:#1976d2;
+
+    margin:18px 0 10px;
+
+}
+
+
+.group-check{
+
+    width:22px;
+
+    height:22px;
+
+    vertical-align:middle;
+
+    margin-right:8px;
+
+}
+
+
+
+/* =====================
+   検査項目カード
+===================== */
+
+.item{
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    margin-bottom:12px;
+
+    cursor:pointer;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+
+}
+
+
+
+/* =====================
+   チェックボックス
+===================== */
+
+.check{
+
+    width:22px;
+
+    height:22px;
+
+    vertical-align:middle;
+
+    margin-right:10px;
+
+}
+
+
+
+/* =====================
+   採血管表示
+===================== */
+
+.tube{
+
+    font-size:16px;
+
+    margin-right:8px;
+
+}
+
+
+.tube.EDTA{
+
+    color:#9c27b0;
+
+}
+
+
+.tube.血清{
+
+    color:#fbc02d;
+
+}
+
+
+.tube.クエン酸{
+
+    color:#1976d2;
+
+}
+
+
+
+/* =====================
+   項目名
+===================== */
+
+.short{
+
+    display:inline-block;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    vertical-align:middle;
+
+}
+
+
+
+.kana{
+
+    margin-left:65px;
+
+    margin-top:3px;
+
+    color:#1976d2;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+}
+
+
+
+/* =====================
+   詳細表示
+===================== */
+
+.detail{
+
+    display:none;
+
+    margin-top:10px;
+
+    border-top:1px solid #ddd;
+
+    padding-top:12px;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+}
+
+
+
+.title{
+
+    font-weight:bold;
+
+    color:#1976d2;
+
+}
+
+
+
+/* =====================
+   コピー
+===================== */
+
+.copy{
+
+    position:fixed;
+
+    right:15px;
+
+    bottom:75px;
+
+    padding:10px 16px;
+
+    background:#4caf50;
+
+    color:white;
+
+    border-radius:20px;
+
+    border:none;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
+
+}
+
+
+
+/* =====================
+   戻る
+===================== */
+
+.home{
+
+    position:fixed;
+
+    right:15px;
+
+    bottom:15px;
+
+    padding:10px 16px;
+
+    background:#2196f3;
+
+    color:white;
+
+    border-radius:20px;
+
+    text-decoration:none;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
+
+}
