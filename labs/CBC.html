@@ -261,12 +261,9 @@ ul{
 
 <script>
 
-
 fetch("../data/CBC.json")
 
-
 .then(res=>res.json())
-
 
 .then(data=>{
 
@@ -305,163 +302,167 @@ groups[item.category][item.group].push(item);
 
 
 
+for(let category in groups){
 
-for(let group in groups[category]){
 
+    for(let group in groups[category]){
 
 
-list.innerHTML += `
+        list.innerHTML += `
 
-<div class="group">
+        <div class="group">
 
-【${group}】
+        【${group}】
 
-</div>
+        </div>
 
-`;
+        `;
 
 
 
-groups[category][group].forEach(item=>{
+        groups[category][group].forEach(item=>{
 
 
 
-const high=item.high.map(x=>"<li>"+x+"</li>").join("");
+            const high=item.high.map(x=>"<li>"+x+"</li>").join("");
 
-const low=item.low.map(x=>"<li>"+x+"</li>").join("");
+            const low=item.low.map(x=>"<li>"+x+"</li>").join("");
 
 
 
-list.innerHTML += `
+            list.innerHTML += `
 
 
+            <div class="item">
 
-<div class="item">
 
 
+            <div onclick="toggle(this)">
 
-<div onclick="toggle(this)">
 
 
+            <input type="checkbox" class="check" onclick="event.stopPropagation()">
 
-<input type="checkbox" class="check" onclick="event.stopPropagation()">
 
 
+            <span class="tube ${item.tube}">
 
-<span class="tube ${item.tube}">
+            ●
 
-●
+            </span>
 
-</span>
 
 
+            <div class="short">
 
-<div class="short">
+            ${item.shortName}
 
-${item.shortName}
+            </div>
 
-</div>
 
 
+            <div class="kana">
 
-<div class="kana">
+            ${item.name}
 
-${item.name}
+            </div>
 
-</div>
 
 
+            </div>
 
-</div>
 
 
 
-<div class="detail">
+            <div class="detail">
 
 
 
-<div class="title">
+            <div class="title">
 
-基準値
+            基準値
 
-</div>
+            </div>
 
 
 
-${item.reference} ${item.unit}
+            ${item.reference} ${item.unit}
 
 
 
-<br><br>
+            <br><br>
 
 
 
-<div class="title">
+            <div class="title">
 
-高値で考えられるもの
+            高値で考えられるもの
 
-</div>
+            </div>
 
 
 
-<ul>
+            <ul>
 
-${high}
+            ${high}
 
-</ul>
+            </ul>
 
 
 
-<div class="title">
+            <div class="title">
 
-低値で考えられるもの
+            低値で考えられるもの
 
-</div>
+            </div>
 
 
 
-<ul>
+            <ul>
 
-${low}
+            ${low}
 
-</ul>
+            </ul>
 
 
 
-<div class="title">
+            <div class="title">
 
-ワンポイント
+            ワンポイント
 
-</div>
+            </div>
 
 
 
-${item.comment}
+            ${item.comment}
 
 
 
-</div>
+            </div>
 
 
 
-</div>
+            </div>
 
 
 
-`;
+            `;
+
+
+
+        });
+
+
+
+    }
+
+
+}
 
 
 
 });
 
-}
-
-}
-
-
-
-
-});
 
 
 
@@ -475,11 +476,15 @@ const d=el.nextElementSibling;
 
 if(d.style.display==="block"){
 
-d.style.display="none";
+
+    d.style.display="none";
+
 
 }else{
 
-d.style.display="block";
+
+    d.style.display="block";
+
 
 }
 
@@ -519,9 +524,10 @@ text.push(name);
 if(text.length===0){
 
 
-alert("項目を選択してください");
+    alert("項目を選択してください");
 
-return;
+
+    return;
 
 
 }
@@ -535,6 +541,7 @@ alert("コピーしました");
 
 
 }
+
 
 
 </script>
