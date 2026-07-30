@@ -236,8 +236,10 @@
 /* 鼻咽頭ぬぐい液 */
 .tube.鼻咽頭ぬぐい液{
 
-    color:#fff;
-    border:1px solid #999;
+    color:#000;
+    background:#fff;
+    border:1px solid #000;
+    border-radius:50%;
 
 }
 
@@ -245,8 +247,10 @@
 /* 咽頭ぬぐい液 */
 .tube.咽頭ぬぐい液{
 
-    color:#fff;
-    border:1px solid #999;
+    color:#000;
+    background:#fff;
+    border:1px solid #000;
+    border-radius:50%;
 
 }
 
@@ -254,8 +258,10 @@
 /* 便 */
 .tube.便{
 
-    color:#fff;
-    border:1px solid #999;
+    color:#000;
+    background:#fff;
+    border:1px solid #000;
+    border-radius:50%;
 
 }
 
@@ -263,8 +269,10 @@
 /* 血清 */
 .tube.血清{
 
-    color:#fff;
-    border:1px solid #999;
+    color:#000;
+    background:#fff;
+    border:1px solid #000;
+    border-radius:50%;
 
 }
 /* =====================
