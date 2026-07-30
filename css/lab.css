@@ -2,7 +2,97 @@
    Nurse-Tools lab.css Ver1.0
    検査項目表示専用
 ===================================== */
+/* =====================
+   検査タイトル色
+===================== */
 
+
+/* 血算 */
+.lab-cbc header{
+
+    background:#9c27b0;
+
+}
+
+
+/* 生化学 */
+.lab-bio header{
+
+    background:#fbc02d;
+
+}
+
+
+/* 凝固 */
+.lab-coag header{
+
+    background:#1976d2;
+
+}
+
+
+/* 内分泌 */
+.lab-endo header{
+
+    background:#e91e63;
+
+}
+
+
+/* 免疫 */
+.lab-immune header{
+
+    background:#009688;
+
+}
+
+
+/* 感染症 */
+.lab-infect header{
+
+    background:#ff5722;
+
+}
+
+
+/* 尿沈渣 */
+.lab-sediment header{
+
+    background:#795548;
+
+}
+
+
+/* 便 */
+.lab-stool header{
+
+    background:#8bc34a;
+
+}
+
+
+/* 腫瘍マーカー */
+.lab-tumor header{
+
+    background:#673ab7;
+
+}
+
+
+/* 尿検査 */
+.lab-urine header{
+
+    background:#03a9f4;
+
+}
+
+
+/* 血液ガス */
+.lab-bg header{
+
+    background:#455a64;
+
+}
 
 /* =====================
    検査グループ
