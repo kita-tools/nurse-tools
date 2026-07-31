@@ -1,7 +1,7 @@
-﻿[
+[
 {
 "id":"SED001",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"RBC",
 "name":"赤血球",
 "reference":"0～4",
@@ -11,7 +11,7 @@
 "comment":"尿路出血や腎障害の評価"},
 {
 "id":"SED002",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"WBC",
 "name":"白血球",
 "reference":"0～4",
@@ -21,7 +21,7 @@
 "comment":"膀胱炎・腎盂腎炎の評価"},
 {
 "id":"SED003",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"Bacteria",
 "name":"細菌",
 "reference":"陰性",
@@ -31,7 +31,7 @@
 "comment":"細菌尿の確認"},
 {
 "id":"SED004",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"Hyaline",
 "name":"硝子円柱",
 "reference":"0～1",
@@ -41,7 +41,7 @@
 "comment":"尿細管由来の円柱"},
 {
 "id":"SED005",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"Granular",
 "name":"顆粒円柱",
 "reference":"0～1",
@@ -51,7 +51,7 @@
 "comment":"腎実質障害を示唆"},
 {
 "id":"SED006",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"RBC Cast",
 "name":"赤血球円柱",
 "reference":"陰性",
@@ -61,7 +61,7 @@
 "comment":"腎炎の重要所見"},
 {
 "id":"SED007",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"WBC Cast",
 "name":"白血球円柱",
 "reference":"陰性",
@@ -71,7 +71,7 @@
 "comment":"炎症性腎疾患で出現"},
 {
 "id":"SED008",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"Epithelial",
 "name":"上皮細胞",
 "reference":"少数",
@@ -81,7 +81,7 @@
 "comment":"尿路由来細胞の確認"},
 {
 "id":"SED009",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"Crystal",
 "name":"結晶",
 "reference":"少数",
@@ -91,7 +91,7 @@
 "comment":"結石形成との関連"},
 {
 "id":"SED010",
-"category":"尿沈渣",
+"category":"尿検査",
 "shortName":"Yeast",
 "name":"酵母様真菌",
 "reference":"陰性",
