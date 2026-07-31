@@ -2,6 +2,7 @@
 {
 "id":"SED001",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"RBC",
 "name":"赤血球",
 "reference":"0～4",
@@ -12,6 +13,7 @@
 {
 "id":"SED002",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"WBC",
 "name":"白血球",
 "reference":"0～4",
@@ -22,6 +24,7 @@
 {
 "id":"SED003",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"Bacteria",
 "name":"細菌",
 "reference":"陰性",
@@ -32,6 +35,7 @@
 {
 "id":"SED004",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"Hyaline",
 "name":"硝子円柱",
 "reference":"0～1",
@@ -42,6 +46,7 @@
 {
 "id":"SED005",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"Granular",
 "name":"顆粒円柱",
 "reference":"0～1",
@@ -52,6 +57,7 @@
 {
 "id":"SED006",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"RBC Cast",
 "name":"赤血球円柱",
 "reference":"陰性",
@@ -62,6 +68,7 @@
 {
 "id":"SED007",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"WBC Cast",
 "name":"白血球円柱",
 "reference":"陰性",
@@ -72,6 +79,7 @@
 {
 "id":"SED008",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"Epithelial",
 "name":"上皮細胞",
 "reference":"少数",
@@ -82,6 +90,7 @@
 {
 "id":"SED009",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"Crystal",
 "name":"結晶",
 "reference":"少数",
@@ -92,6 +101,7 @@
 {
 "id":"SED010",
 "category":"尿検査",
+"group":"尿沈渣",
 "shortName":"Yeast",
 "name":"酵母様真菌",
 "reference":"陰性",
