@@ -74,7 +74,7 @@ let deferredPrompt = null;
 
 
 window.addEventListener("beforeinstallprompt", (e) => {
-    console.log("beforeinstallprompt 発生");
+   alert("beforeinstallprompt 発生");
     e.preventDefault();
 
     deferredPrompt = e;
