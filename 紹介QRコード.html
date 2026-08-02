@@ -65,31 +65,37 @@ NsTools
 
 <script>
 
-
 let deferredPrompt = null;
 
 
-
+// =====================
 // インストール要求を受け取る
-
+// =====================
 
 window.addEventListener("beforeinstallprompt", (e) => {
+
     e.preventDefault();
 
     deferredPrompt = e;
 
-    // 画面を開いた時に自動実行
-    deferredPrompt.prompt();
+    // 画面を開いたら自動でインストール画面を表示
+    setTimeout(() => {
+
+        deferredPrompt.prompt();
+
+    }, 300);
 
 });
 
 
+// =====================
 // インストールボタン
+// =====================
+
 function installApp(){
 
     if(deferredPrompt){
 
-        // ボタンを押した時にも実行
         deferredPrompt.prompt();
 
     }else{
@@ -101,13 +107,16 @@ function installApp(){
 }
 
 
-
+// =====================
+// QRコードURL
+// =====================
 
 const url = "https://kita-tools.github.io/nurse-tools/";
 
 
-
+// =====================
 // QRコード作成
+// =====================
 
 new QRCode(
 
@@ -115,36 +124,30 @@ new QRCode(
 
     {
 
-        text:url,
+        text: url,
 
-        width:200,
+        width: 200,
 
-        height:200
+        height: 200
 
     }
 
 );
 
 
-
-
+// =====================
 // URLコピー
+// =====================
 
 function copyURL(){
 
-
     navigator.clipboard.writeText(url);
-
 
     alert("URLをコピーしました");
 
-
 }
 
-
-
 </script>
-
 
 </body>
 
