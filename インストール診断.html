@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>インストール診断｜NsTools</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+    font-family: sans-serif;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.result {
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.ok {
+    background: #e8f5e9;
+}
+
+.ng {
+    background: #ffebee;
+}
+
+.wait {
+    background: #fff8e1;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    font-size: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>NsTools<br>インストール診断</h2>
+
+<div id="result"></div>
+
+<button onclick="location.href='紹介QRコード.html'">
+インストール画面へ戻る
+</button>
+
+<script>
+
+const result = document.getElementById("result");
+
+function addResult(name, status, detail) {
+
+    const div = document.createElement("div");
+
+    div.className = "result " + status;
+
+    div.innerHTML =
+        "<strong>" + name + "</strong><br>" +
+        detail;
+
+    result.appendChild(div);
+}
+
+
+// HTTPS確認
+
+addResult(
+    "HTTPS",
+    location.protocol === "https:" ? "ok" : "ng",
+    location.protocol === "https:"
+        ? "✓ HTTPSで接続されています"
+        : "✕ HTTPSではありません"
+);
+
+
+// Service Worker対応確認
+
+if ("serviceWorker" in navigator) {
+
+    navigator.serviceWorker.getRegistration()
+        .then((registration) => {
+
+            if (registration) {
+
+                addResult(
+                    "Service Worker",
+                    "ok",
+                    "✓ 登録されています"
+                );
+
+            } else {
+
+                addResult(
+                    "Service Worker",
+                    "ng",
+                    "✕ 登録されていません"
+                );
+
+            }
+
+        });
+
+} else {
+
+    addResult(
+        "Service Worker",
+        "ng",
+        "✕ このブラウザはService Workerに対応していません"
+    );
+
+}
+
+
+// Manifest確認
+
+fetch("manifest.json")
+    .then((response) => {
+
+        if (response.ok) {
+
+            addResult(
+                "Manifest",
+                "ok",
+                "✓ manifest.jsonを読み込めます"
+            );
+
+        } else {
+
+            addResult(
+                "Manifest",
+                "ng",
+                "✕ manifest.jsonを読み込めません"
+            );
+
+        }
+
+    })
+    .catch(() => {
+
+        addResult(
+            "Manifest",
+            "ng",
+            "✕ manifest.jsonの読み込みに失敗しました"
+        );
+
+    });
+
+
+// ブラウザ確認
+
+const userAgent = navigator.userAgent;
+
+let browser = "不明";
+
+if (userAgent.includes("Edg/")) {
+
+    browser = "Microsoft Edge";
+
+} else if (userAgent.includes("Chrome/")) {
+
+    browser = "Google Chrome";
+
+} else if (userAgent.includes("Safari/")) {
+
+    browser = "Safari";
+
+}
+
+addResult(
+    "ブラウザ",
+    "ok",
+    "使用ブラウザ： " + browser
+);
+
+
+// PWAとして起動しているか
+
+const standalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
+addResult(
+    "PWA起動状態",
+    standalone ? "ng" : "ok",
+    standalone
+        ? "⚠ 現在PWAとして起動しています"
+        : "✓ 通常のブラウザで開いています"
+);
+
+
+// beforeinstallprompt確認
+
+let promptDetected = false;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+
+    e.preventDefault();
+
+    promptDetected = true;
+
+    addResult(
+        "beforeinstallprompt",
+        "ok",
+        "✓ 発生しました"
+    );
+
+});
+
+setTimeout(() => {
+
+    if (!promptDetected) {
+
+        addResult(
+            "beforeinstallprompt",
+            "ng",
+            "✕ 発生していません"
+        );
+
+    }
+
+}, 3000);
+
+</script>
+
+</body>
+</html>
