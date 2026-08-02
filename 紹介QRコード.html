@@ -72,47 +72,32 @@ let deferredPrompt = null;
 
 // インストール要求を受け取る
 
-window.addEventListener("beforeinstallprompt", (e)=>{
 
+window.addEventListener("beforeinstallprompt", (e) => {
 
     e.preventDefault();
 
-
     deferredPrompt = e;
 
+    // 画面を開いた時に自動実行
+    deferredPrompt.prompt();
 
 });
 
 
-
 // インストールボタン
-
 function installApp(){
-
 
     if(deferredPrompt){
 
-
+        // ボタンを押した時にも実行
         deferredPrompt.prompt();
-
-
-        deferredPrompt.userChoice.then(()=>{
-
-
-            deferredPrompt = null;
-
-
-        });
-
 
     }else{
 
-
         alert("現在インストールできません");
 
-
     }
-
 
 }
 
