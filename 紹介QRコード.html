@@ -78,13 +78,6 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
     deferredPrompt = e;
 
-    // 画面を開いたら自動でインストール画面を表示
-    setTimeout(() => {
-
-        deferredPrompt.prompt();
-
-    }, 500);
-
 });
 
 
