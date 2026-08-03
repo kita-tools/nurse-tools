@@ -4,24 +4,31 @@
 
 <head>
 <meta charset="UTF-8">
-  
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPCWDVP7F5"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+window.dataLayer = window.dataLayer || [];
 
-  gtag('config', 'G-SPCWDVP7F5');
+function gtag(){
+    dataLayer.push(arguments);
+}
+
+gtag('js', new Date());
+
+gtag('config', 'G-SPCWDVP7F5');
 </script>
 
 <title>NsTools｜Kita-Tools</title>
+
 <link rel="stylesheet" href="css/common.css">
 <link rel="stylesheet" href="css/index.css">
 
 </head>
 
+
 <body>
+
 
 <!-- 日付 -->
 
@@ -128,6 +135,7 @@ NsTools Ver2.0<br>
 </div>
 
 
+
 <script>
 
 
@@ -151,7 +159,7 @@ function updateDateTime(){
 
     const date =
         now.getFullYear() + "年" +
-        (now.getMonth()+1) + "月" +
+        (now.getMonth() + 1) + "月" +
         now.getDate() + "日（" +
         week[now.getDay()] + "）";
 
@@ -170,6 +178,7 @@ updateDateTime();
 setInterval(updateDateTime,1000);
 
 
+
 // =====================
 // PWAインストール要求
 // =====================
@@ -179,11 +188,16 @@ let deferredPrompt = null;
 
 window.addEventListener("beforeinstallprompt", (e) => {
 
+    console.log("beforeinstallprompt 発生");
+
     e.preventDefault();
 
     deferredPrompt = e;
 
+    console.log("deferredPrompt 保存完了");
+
 });
+
 
 
 // =====================
@@ -194,17 +208,22 @@ async function installAndOpen(){
 
     if(deferredPrompt){
 
+        console.log("deferredPrompt あり");
+
         await deferredPrompt.prompt();
 
         await deferredPrompt.userChoice;
 
     }else{
 
+        console.log("deferredPrompt なし");
+
         alert("deferredPrompt がありません");
 
     }
 
 }
+
 
 
 // =====================
@@ -216,6 +235,7 @@ function openTool(file){
     location.href = "./" + file;
 
 }
+
 
 
 // =====================
