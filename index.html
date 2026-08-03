@@ -20,12 +20,13 @@ gtag('config', 'G-SPCWDVP7F5');
 </script>
 
 <title>NsTools｜Kita-Tools</title>
+
 <link rel="manifest" href="manifest.json">
+
 <link rel="stylesheet" href="css/common.css">
 <link rel="stylesheet" href="css/index.css">
 
 </head>
-
 
 <body>
 
@@ -92,7 +93,7 @@ gtag('config', 'G-SPCWDVP7F5');
 
 <!-- インストール・紹介 -->
 
-<button class="tool-button" onclick="installAndOpen()">
+<button class="tool-button" onclick="openTool('紹介QRコード.html')">
 
 📱 インストール・紹介
 
@@ -133,7 +134,6 @@ NsTools Ver2.0<br>
 © 2026 Kita-Tools
 
 </div>
-
 
 
 <script>
@@ -178,54 +178,6 @@ updateDateTime();
 setInterval(updateDateTime,1000);
 
 
-
-// =====================
-// PWAインストール要求
-// =====================
-
-let deferredPrompt = null;
-
-
-window.addEventListener("beforeinstallprompt", (e) => {
-
-    console.log("beforeinstallprompt 発生");
-
-    e.preventDefault();
-
-    deferredPrompt = e;
-
-    console.log("deferredPrompt 保存完了");
-
-});
-
-
-
-// =====================
-// インストール・紹介
-// =====================
-
-async function installAndOpen(){
-
-    if(deferredPrompt){
-
-        console.log("deferredPrompt あり");
-
-        await deferredPrompt.prompt();
-
-        await deferredPrompt.userChoice;
-
-    }else{
-
-        console.log("deferredPrompt なし");
-
-        alert("deferredPrompt がありません");
-
-    }
-
-}
-
-
-
 // =====================
 // アプリ起動
 // =====================
@@ -235,7 +187,6 @@ function openTool(file){
     location.href = "./" + file;
 
 }
-
 
 
 // =====================
