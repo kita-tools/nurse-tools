@@ -1,66 +1,8 @@
-/* =========================
-   点滴 雫マーク テスト
-========================= */
+.drip-drop {
 
-#drop {
-    font-size: 80px;
-    height: 120px;
+    width:16px;
+    height:auto;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-/* =========================
-   雫本体
-========================= */
-
-#drop .drip-drop {
-
-    display: block;
-
-    width: 16px !important;
-    height: 25.888px !important;
-
-    min-width: 16px !important;
-    max-width: 16px !important;
-
-    min-height: 25.888px !important;
-    max-height: 25.888px !important;
-
-    flex: 0 0 16px;
-
-    vertical-align: middle;
-
-    filter:
-        drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18));
-
-    transform-origin: center center;
-
-    animation: dripBlink 1.2s ease-in-out infinite;
-}
-
-
-/* =========================
-   雫の点滅
-========================= */
-
-@keyframes dripBlink {
-
-    0% {
-        opacity: 0.35;
-        transform: scale(0.96);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    100% {
-        opacity: 0.35;
-        transform: scale(0.96);
-    }
+    display:block;
 
 }
