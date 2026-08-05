@@ -1,12 +1,35 @@
 /* =========================
-   点滴 雫マーク
+   点滴 雫マーク テスト
 ========================= */
 
-.drip-drop {
-    width: 8px;
-    height: auto;
+#drop {
+    font-size: 80px;
+    height: 120px;
 
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================
+   雫本体
+========================= */
+
+#drop .drip-drop {
+
+    display: block;
+
+    width: 16px !important;
+    height: 25.888px !important;
+
+    min-width: 16px !important;
+    max-width: 16px !important;
+
+    min-height: 25.888px !important;
+    max-height: 25.888px !important;
+
+    flex: 0 0 16px;
 
     vertical-align: middle;
 
@@ -39,4 +62,5 @@
         opacity: 0.35;
         transform: scale(0.96);
     }
+
 }
