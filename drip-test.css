@@ -1,0 +1,42 @@
+/* =========================
+   点滴 雫マーク
+========================= */
+
+.drip-drop {
+    width: 32px;
+    height: auto;
+
+    display: inline-block;
+
+    vertical-align: middle;
+
+    filter:
+        drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18));
+
+    transform-origin: center center;
+
+    animation: dripBlink 1.2s ease-in-out infinite;
+}
+
+
+/* =========================
+   雫の点滅
+========================= */
+
+@keyframes dripBlink {
+
+    0% {
+        opacity: 0.35;
+        transform: scale(0.96);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0.35;
+        transform: scale(0.96);
+    }
+}

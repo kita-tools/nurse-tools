@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>点滴計算</title>
+
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/calc.css">
+<link rel="stylesheet" href="css/drip-test.css">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SPCWDVP7F5"></script>
+
+<script>
+
+window.dataLayer = window.dataLayer || [];
+
+function gtag(){
+
+dataLayer.push(arguments);
+
+}
+
+gtag('js', new Date());
+
+gtag('config', 'G-SPCWDVP7F5');
+
+</script>
+
+</head>
+
+
+<body>
+<div id="viewport-test"></div>
+
+<script>
+document.getElementById("viewport-test").textContent =
+    "viewport幅：" + window.innerWidth + "px";
+</script>
+
+<header>
+
+💧 点滴計算
+
+</header>
+
+
+
+<div class="box">
+
+
+<div class="input-row">
+
+<label>滴下量</label>
+
+<input id="ml" type="number">
+
+<span class="unit">mL</span>
+
+</div>
+
+
+
+<div class="input-row">
+
+<label>滴下時間</label>
+
+<input id="hour" type="number" min="0.1" step="0.1">
+
+<span class="unit">時間</span>
+
+</div>
+
+
+
+<div class="input-row">
+
+<label>滴下係数</label>
+
+<select id="type">
+
+<option value="20">20滴</option>
+
+<option value="60">60滴</option>
+
+</select>
+
+<span class="unit">/mL</span>
+
+</select>
+
+</div>
+
+
+
+<button onclick="start()">
+
+開始
+
+</button>
+
+
+
+<div class="result" id="result">
+
+輸液速度　－<br>
+滴下速度　－<br>
+滴下間隔　－
+
+</div>
+
+
+
+<div id="drop">
+
+💧
+
+</div>
+
+
+
+<button id="mute" onclick="toggleMute()">
+
+🔇
+
+</button>
+
+
+</div>
+
+
+
+<a href="index.html" class="back-button">
+
+🏠戻る
+
+</a>
+
+
+
+
+<script>
+
+let timer;
+
+let mute = true;
+
+let audioCtx;
+
+
+
+function start(){
+
+
+    let ml =
+    Number(document.getElementById("ml").value);
+
+
+    let hour =
+    Number(document.getElementById("hour").value);
+
+
+    let drip =
+    Number(document.getElementById("type").value);
+
+
+
+    if(ml <= 0){
+
+        alert("滴下量を入力してください");
+
+        return;
+
+    }
+
+
+
+    if(isNaN(hour) || hour < 0.1){
+
+        alert("滴下時間は0.1時間以上で入力してください");
+
+        return;
+
+    }
+
+
+
+    let perMin =
+    (ml * drip) / (hour * 60);
+
+
+
+    let per10 =
+    perMin / 6;
+
+
+
+    let dropInterval =
+    10000 / per10;
+
+
+
+    document.getElementById("result").innerHTML =
+
+
+    "輸液速度　"
+    + (ml / hour).toFixed(1)
+    + " mL/h<br>"
+
+
+    +
+
+    "滴下速度　"
+    + per10.toFixed(2)
+    + "滴/10秒<br>"
+
+
+    +
+
+    "滴下間隔　"
+    + (dropInterval / 1000).toFixed(2)
+    + "秒/滴";
+
+
+
+    clearInterval(timer);
+
+
+
+    drop();
+
+
+
+    timer = setInterval(drop, dropInterval);
+
+
+}
+
+
+
+
+
+function drop(){
+
+    let d =
+    document.getElementById("drop");
+
+
+    d.innerHTML = `
+        <svg
+            class="drip-drop"
+            viewBox="0 0 100 161.8"
+            aria-hidden="true"
+        >
+            <defs>
+
+                <linearGradient
+                    id="dripGradient"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1"
+                >
+                    <stop offset="0%"   stop-color="#ffffff"/>
+                    <stop offset="22%"  stop-color="#8fd8ff"/>
+                    <stop offset="55%"  stop-color="#2196d3"/>
+                    <stop offset="100%" stop-color="#0869a8"/>
+                </linearGradient>
+
+                <radialGradient
+                    id="dripHighlight"
+                    cx="35%"
+                    cy="28%"
+                    r="55%"
+                >
+                    <stop
+                        offset="0%"
+                        stop-color="#ffffff"
+                        stop-opacity="0.9"
+                    />
+
+                    <stop
+                        offset="45%"
+                        stop-color="#ffffff"
+                        stop-opacity="0.25"
+                    />
+
+                    <stop
+                        offset="100%"
+                        stop-color="#ffffff"
+                        stop-opacity="0"
+                    />
+                </radialGradient>
+
+            </defs>
+
+
+            <path
+                class="drip-body"
+                d="
+                    M 50 3
+
+                    C 45 13, 31 31, 20 49
+
+                    C 10 65, 5 79, 5 94
+
+                    C 5 130, 25 156.8, 50 156.8
+
+                    C 75 156.8, 95 130, 95 94
+
+                    C 95 79, 90 65, 80 49
+
+                    C 69 31, 55 13, 50 3
+
+                    Z
+                "
+                fill="url(#dripGradient)"
+            />
+
+
+            <ellipse
+                class="drip-highlight"
+                cx="35"
+                cy="62"
+                rx="13"
+                ry="25"
+                fill="url(#dripHighlight)"
+            />
+
+        </svg>
+    `;
+
+
+    if(!mute){
+
+        beep();
+
+    }
+
+
+    setTimeout(function(){
+
+        d.innerHTML="";
+
+    },150);
+
+}
+
+
+
+
+
+function beep(){
+
+
+    if(!audioCtx){
+
+        audioCtx = new AudioContext();
+
+    }
+
+
+
+    let osc = audioCtx.createOscillator();
+
+
+    osc.connect(audioCtx.destination);
+
+
+    osc.frequency.value=800;
+
+
+    osc.start();
+
+
+    osc.stop(audioCtx.currentTime + 0.05);
+
+
+}
+
+
+
+
+
+function toggleMute(){
+
+
+    mute=!mute;
+
+
+
+    document.getElementById("mute").innerHTML =
+
+    mute ? "🔇" : "🔈";
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
