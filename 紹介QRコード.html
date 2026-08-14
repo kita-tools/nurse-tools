@@ -32,13 +32,58 @@ NsTools
 
 
 
+<!-- Android・PCなど -->
+
+<div id="installArea">
+
 <button class="install" onclick="installApp()">
 
 📲 インストール
 
 </button>
 
+</div>
+
+
+
+<!-- iPhone・iPad -->
+
+<div id="iphoneArea" style="display:none;">
+
+<div class="iphone-guide">
+
+<h3>📱 ホーム画面に追加</h3>
+
+<p>
+iPhone・iPadでは、Safariから<br>
+ホーム画面に追加してください。
+</p>
+
+<p>
+① Safariでこのページを開く
+</p>
+
+<p>
+② 画面下の「共有」ボタンをタップ
+</p>
+
+<p>
+③ 「ホーム画面に追加」をタップ
+</p>
+
+<p>
+④ 「追加」をタップ
+</p>
+
+</div>
+
+</div>
+
+
+
 <br>
+
+
 
 <button class="copy" onclick="copyURL()">
 
@@ -66,6 +111,30 @@ NsTools
 <script>
 
 let deferredPrompt = null;
+
+
+// =====================
+// iPhone・iPad判定
+// =====================
+
+function isIPhoneOrIPad(){
+
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+}
+
+
+// =====================
+// 端末による表示切り替え
+// =====================
+
+if(isIPhoneOrIPad()){
+
+    document.getElementById("installArea").style.display = "none";
+
+    document.getElementById("iphoneArea").style.display = "block";
+
+}
 
 
 // =====================
