@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>紹介QRコード</title>
+
+<style>
+
+body{
+
+    font-family:sans-serif;
+    text-align:center;
+    background:#f2f7fa;
+    margin:0;
+
+}
+
+
+.box{
+
+    background:white;
+    margin:40px auto;
+    padding:25px;
+    border-radius:15px;
+    width:85%;
+    max-width:360px;
+
+}
+
+
+h2{
+
+    margin-top:5px;
+
+}
+
+
+#qrcode{
+
+    margin:25px auto;
+    display:flex;
+    justify-content:center;
+
+}
+
+
+button{
+
+    font-size:18px;
+    padding:10px 25px;
+    margin:10px;
+    border:none;
+    border-radius:10px;
+
+}
+
+
+.copy{
+
+    background:#2196F3;
+    color:white;
+
+}
+
+
+.back{
+
+    background:#777;
+    color:white;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="box">
+
+
+<h2>
+看護ツール
+</h2>
+
+
+<h3>
+紹介コード
+</h3>
+
+
+
+<div id="qrcode"></div>
+
+
+
+<button class="copy" onclick="copyURL()">
+
+🔗 URLコピー
+
+</button>
+
+
+<br>
+
+
+<button class="back" onclick="history.back()">
+
+← 戻る
+
+</button>
+
+
+
+</div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
+<script>
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+
+    e.preventDefault();
+
+    deferredPrompt = e;
+
+    if (deferredPrompt) {
+
+        deferredPrompt.prompt();
+
+    }
+
+});
+
+const url = 
+"https://kita-tools.github.io/nurse-tools/";
+
+
+
+// QRコード作成
+
+new QRCode(
+
+document.getElementById("qrcode"),
+
+{
+
+text:url,
+
+width:200,
+
+height:200
+
+}
+
+);
+
+
+
+// URLコピー
+
+function copyURL(){
+
+
+navigator.clipboard.writeText(url);
+
+
+alert("URLをコピーしました");
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
