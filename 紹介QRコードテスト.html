@@ -128,21 +128,7 @@ button{
 
 
 <script>
-let deferredPrompt = null;
 
-window.addEventListener("beforeinstallprompt", (e) => {
-
-    e.preventDefault();
-
-    deferredPrompt = e;
-
-    if (deferredPrompt) {
-
-        deferredPrompt.prompt();
-
-    }
-
-});
 
 const url = 
 "https://kita-tools.github.io/nurse-tools/";
