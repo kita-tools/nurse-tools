@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NsTools ご利用について</title>
+
+<link rel="manifest" href="manifest.json">
+
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/利用について.css">
+
+</head>
+
+
+<body>
+
+
+<div class="box">
+<h2>
+NsTools ご利用について
+</h2>
+
+
+<div class="notice">
+
+<strong>⚠️ご利用前にご確認ください</strong><br><br>
+
+NsToolsは、看護業務に関連する計算や確認を補助するための
+Webツールです。<br><br>
+
+表示された計算結果や情報は参考としてご利用ください。
+実際の医療行為や判断については、勤務先の手順・医師の指示・
+各種資料等を確認してください。
+
+</div>
+
+
+<div class="section">
+
+<h3>ご利用について</h3>
+
+<p>
+NsToolsをご利用になる場合は、上記の内容をご確認のうえ、
+「同意してインストール」を選択してください。
+</p>
+
+<p>
+インストールを行わず、Webサイトとして利用することもできます。
+</p>
+
+</div>
+
+
+<!-- =====================
+     Android・PC等
+===================== -->
+
+<div id="installArea">
+
+
+<button class="install" onclick="installApp()">
+
+📲 同意してインストール
+
+</button>
+
+
+<div id="installMessage"></div>
+
+
+</div>
+
+
+<!-- =====================
+     iPhone・iPad
+===================== -->
+
+<div id="iphoneArea">
+
+
+<div class="iphone-guide">
+
+<h3>📱 iPhone・iPadをご利用の場合</h3>
+
+<p>
+iPhone・iPadでは、Safariからホーム画面に追加してご利用ください。
+</p>
+
+<p>
+① Safariでこのページを開く
+</p>
+
+<p>
+② 「共有」をタップ
+</p>
+
+<p>
+③ 「ホーム画面に追加」をタップ
+</p>
+
+<p>
+④ 「追加」をタップ
+</p>
+
+<p>
+ホーム画面に追加したアイコンからNsToolsをご利用いただけます。
+</p>
+
+<p>
+詳しい手順はApple公式の案内をご確認ください。
+</p>
+
+<a
+    class="apple-link"
+    href="https://support.apple.com/ja-jp/guide/iphone/iphea86e5236/ios"
+    target="_blank"
+    rel="noopener"
+>
+Apple公式の手順を見る
+</a>
+
+</div>
+
+
+<button class="top" onclick="goTop()">
+
+🏠 ホーム画面に追加したらTOPへ
+
+</button>
+
+
+</div>
+
+
+<!-- =====================
+     インストールせず利用
+===================== -->
+
+<button class="use" onclick="goTop()">
+
+🌐 インストールせずに利用する
+
+</button>
+
+
+</div>
+
+
+<script>
+
+
+let deferredPrompt = null;
+
+
+// =====================
+// iPhone・iPad判定
+// =====================
+
+function isIPhoneOrIPad(){
+
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+}
+
+
+// =====================
+// 端末による表示切り替え
+// =====================
+
+if(isIPhoneOrIPad()){
+
+    document.getElementById("installArea").style.display = "none";
+
+    document.getElementById("iphoneArea").style.display = "block";
+
+}
+
+
+// =====================
+// インストール要求を受け取る
+// =====================
+
+window.addEventListener("beforeinstallprompt", (e) => {
+
+    e.preventDefault();
+
+    deferredPrompt = e;
+
+});
+
+
+// =====================
+// インストール
+// =====================
+
+async function installApp(){
+
+    if(!deferredPrompt){
+
+        alert("現在、この端末ではインストールできません。");
+
+        return;
+
+    }
+
+
+    deferredPrompt.prompt();
+
+
+    const result = await deferredPrompt.userChoice;
+
+
+    deferredPrompt = null;
+
+
+    if(result.outcome === "accepted"){
+
+        goTop();
+
+    }
+
+}
+
+
+// =====================
+// TOPへ
+// =====================
+
+function goTop(){
+
+    location.href = "index.html";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

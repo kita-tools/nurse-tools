@@ -1,0 +1,197 @@
+/* =====================================
+   NsTools 利用について.css Ver1.0
+   利用案内ページ専用
+===================================== */
+
+
+/* =====================
+   メイン枠
+===================== */
+
+.box{
+
+    background:#fff;
+
+    margin:25px auto;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    width:85%;
+
+    max-width:500px;
+
+    box-sizing:border-box;
+
+}
+
+
+/* =====================
+   タイトル
+===================== */
+
+.box h2{
+
+    text-align:center;
+
+    margin-top:5px;
+
+}
+
+
+/* =====================
+   注意事項
+===================== */
+
+.notice{
+
+    background:#fff3cd;
+
+    border:1px solid #ffe69c;
+
+    border-radius:10px;
+
+    padding:15px;
+
+    margin:20px 0;
+
+}
+
+
+/* =====================
+   セクション
+===================== */
+
+.section{
+
+    margin-top:20px;
+
+}
+
+
+.section h3{
+
+    margin-top:25px;
+
+}
+
+
+/* =====================
+   共通ボタン
+===================== */
+
+.box button{
+
+    width:100%;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    padding:14px 10px;
+
+    margin-top:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+
+/* =====================
+   インストール
+===================== */
+
+.install{
+
+    background:#4CAF50;
+
+    color:#fff;
+
+}
+
+
+/* =====================
+   インストールせず利用
+===================== */
+
+.use{
+
+    background:#2196F3;
+
+    color:#fff;
+
+}
+
+
+/* =====================
+   TOPへ
+===================== */
+
+.top{
+
+    background:#777;
+
+    color:#fff;
+
+}
+
+
+/* =====================
+   iPhone・iPad案内
+===================== */
+
+.iphone-guide{
+
+    background:#f1f8ff;
+
+    border-radius:10px;
+
+    padding:15px;
+
+    margin-top:15px;
+
+}
+
+
+/* =====================
+   Apple公式リンク
+===================== */
+
+.apple-link{
+
+    display:block;
+
+    margin-top:15px;
+
+    text-align:center;
+
+}
+
+
+/* =====================
+   インストールメッセージ
+===================== */
+
+#installMessage{
+
+    margin-top:15px;
+
+    text-align:center;
+
+}
+
+
+/* =====================
+   iPhoneエリア
+===================== */
+
+#iphoneArea{
+
+    display:none;
+
+}
