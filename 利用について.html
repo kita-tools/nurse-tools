@@ -154,12 +154,12 @@ Apple公式の手順を見る
 
 
 <!-- =====================
-     QRコード表示
+     紹介コード表示
 ===================== -->
 
 <button class="qr-button" onclick="showQR()">
 
-📱 QRコードを表示
+📱 紹介コードを表示
 
 </button>
 
@@ -172,6 +172,17 @@ Apple公式の手順を見る
 
 
 </div>
+
+
+<!-- =====================
+     右下固定 戻るボタン
+===================== -->
+
+<button class="back-button" onclick="goTop()">
+
+    ← 戻る
+
+</button>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -265,7 +276,7 @@ function goTop(){
 
 
 // =====================
-// QRコード表示
+// 紹介コード表示
 // =====================
 
 function showQR(){
@@ -286,9 +297,9 @@ function showQR(){
 
             text:"https://kita-tools.github.io/nurse-tools/%E5%88%A9%E7%94%A8%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6.html",
 
-            width:200,
+            width:180,
 
-            height:200
+            height:180
 
         }
 
