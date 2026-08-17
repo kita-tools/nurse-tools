@@ -1,5 +1,5 @@
- /* =====================================
-   NsTools 利用について.css Ver1.1
+/* =====================================
+   NsTools 利用について.css Ver1.2
    利用案内ページ専用
 ===================================== */
 
@@ -78,7 +78,7 @@
 
 
 /* =====================
-   共通ボタン
+   ボタン共通
 ===================== */
 
 .box button{
@@ -91,7 +91,7 @@
 
     padding:14px 10px;
 
-    margin-top:12px;
+    margin:12px 0;
 
     border:none;
 
@@ -129,12 +129,12 @@
 
 
 /* =====================
-   紹介コード
+   TOPへ
 ===================== */
 
-.qr-button{
+.top{
 
-    background:#2196F3;
+    background:#777;
 
     color:#fff;
 
@@ -142,12 +142,12 @@
 
 
 /* =====================
-   TOPへ
+   紹介コード表示
 ===================== */
 
-.top{
+.qr-button{
 
-    background:#777;
+    background:#2196F3;
 
     color:#fff;
 
@@ -211,14 +211,14 @@
 
 
 /* =====================
-   紹介コード表示エリア
+   QRコード
 ===================== */
 
 #qrArea{
 
-    text-align:center;
-
     margin-top:12px;
+
+    text-align:center;
 
 }
 
@@ -230,14 +230,5 @@
     justify-content:center;
 
     align-items:center;
-
-}
-
-
-#qrcode img{
-
-    width:180px;
-
-    height:180px;
 
 }
