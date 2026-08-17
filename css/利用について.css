@@ -241,19 +241,3 @@
     height:180px;
 
 }
-
-
-/* =====================
-   右下固定 戻るボタン
-   common.cssの設定を使用
-===================== */
-
-.back-button{
-
-    position:fixed;
-
-    right:20px;
-
-    bottom:20px;
-
-}
