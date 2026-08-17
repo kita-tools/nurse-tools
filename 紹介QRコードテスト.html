@@ -6,77 +6,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>紹介QRコード</title>
+<title>紹介QRコード｜NsTools</title>
 
-<style>
+<link rel="manifest" href="manifest.json">
 
-body{
-
-    font-family:sans-serif;
-    text-align:center;
-    background:#f2f7fa;
-    margin:0;
-
-}
-
-
-.box{
-
-    background:white;
-    margin:40px auto;
-    padding:25px;
-    border-radius:15px;
-    width:85%;
-    max-width:360px;
-
-}
-
-
-h2{
-
-    margin-top:5px;
-
-}
-
-
-#qrcode{
-
-    margin:25px auto;
-    display:flex;
-    justify-content:center;
-
-}
-
-
-button{
-
-    font-size:18px;
-    padding:10px 25px;
-    margin:10px;
-    border:none;
-    border-radius:10px;
-
-}
-
-
-.copy{
-
-    background:#2196F3;
-    color:white;
-
-}
-
-
-.back{
-
-    background:#777;
-    color:white;
-
-}
-
-
-</style>
-
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/qr.css">
 </head>
 
 
@@ -87,13 +23,8 @@ button{
 
 
 <h2>
-看護ツール
+NsTools
 </h2>
-
-
-<h3>
-紹介コード
-</h3>
 
 
 
@@ -101,26 +32,31 @@ button{
 
 
 
+<button class="install" onclick="installApp()">
+
+📲 インストール
+
+</button>
+
+<br>
+
 <button class="copy" onclick="copyURL()">
 
 🔗 URLコピー
 
 </button>
 
-
 <br>
 
+<a href="index.html" class="back-button">
 
-<button class="back" onclick="history.back()">
+🏠戻る
 
-← 戻る
-
-</button>
+</a>
 
 
 
 </div>
-
 
 
 
@@ -130,8 +66,60 @@ button{
 <script>
 
 
-const url = 
-"https://kita-tools.github.io/nurse-tools/";
+let deferredPrompt = null;
+
+
+
+// インストール要求を受け取る
+
+window.addEventListener("beforeinstallprompt", (e)=>{
+
+
+    e.preventDefault();
+
+
+    deferredPrompt = e;
+
+
+});
+
+
+
+// インストールボタン
+
+function installApp(){
+
+
+    if(deferredPrompt){
+
+
+        deferredPrompt.prompt();
+
+
+        deferredPrompt.userChoice.then(()=>{
+
+
+            deferredPrompt = null;
+
+
+        });
+
+
+    }else{
+
+
+        alert("現在インストールできません");
+
+
+    }
+
+
+}
+
+
+
+
+const url = "https://kita-tools.github.io/nurse-tools/";
 
 
 
@@ -139,19 +127,20 @@ const url =
 
 new QRCode(
 
-document.getElementById("qrcode"),
+    document.getElementById("qrcode"),
 
-{
+    {
 
-text:url,
+        text:url,
 
-width:200,
+        width:200,
 
-height:200
+        height:200
 
-}
+    }
 
 );
+
 
 
 
@@ -160,13 +149,14 @@ height:200
 function copyURL(){
 
 
-navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(url);
 
 
-alert("URLをコピーしました");
+    alert("URLをコピーしました");
 
 
 }
+
 
 
 </script>
