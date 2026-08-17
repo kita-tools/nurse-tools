@@ -175,14 +175,14 @@ Apple公式の手順を見る
 
 
 <!-- =====================
-     右下固定 戻るボタン
+     戻るボタン
 ===================== -->
 
-<button class="back-button" onclick="goTop()">
+<a href="index.html" class="back-button">
 
-    ← 戻る
+🏠戻る
 
-</button>
+</a>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -257,7 +257,7 @@ async function installApp(){
 
     if(result.outcome === "accepted"){
 
-        goTop();
+        location.href = "index.html";
 
     }
 
