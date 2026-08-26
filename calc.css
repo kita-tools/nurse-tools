@@ -1,0 +1,335 @@
+/* =====================================
+   Nurse-Tools calc.css Ver1.3
+   計算アプリ共通
+===================================== */
+
+/* =====================
+   計算アプリ枠
+===================== */
+
+.box{
+
+    background:white;
+
+    margin:45px auto 20px;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    width:90%;
+
+    max-width:400px;
+
+    text-align:center;
+
+}
+
+
+/* =====================
+   BMIコンテナ
+===================== */
+
+.container{
+
+    text-align:center;
+
+}
+
+
+/* =====================
+   入力エリア
+===================== */
+
+.input-row{
+
+    margin:15px auto;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+label{
+
+    width:90px;
+
+    text-align:right;
+
+    margin-right:10px;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+
+input,
+select{
+
+    width:150px;
+
+    box-sizing:border-box;
+
+    padding:10px;
+
+    border:1px solid #ccc;
+
+    border-radius:10px;
+
+    font-size:20px;
+
+    text-align:center;
+
+}
+
+
+.unit{
+
+    width:50px;
+
+    text-align:left;
+
+    margin-left:8px;
+
+}
+
+
+/* =====================
+   ボタン
+===================== */
+
+button{
+
+    display:inline-block;
+
+    font-size:22px;
+
+    padding:12px 30px;
+
+    margin:8px;
+
+    border:1px solid #ccc;
+
+    border-radius:10px;
+
+    background:#f2f2f2;
+
+    color:#333;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+button:hover{
+
+    background:#e5e5e5;
+
+}
+
+
+button:active{
+
+    background:#ddd;
+
+}
+
+
+/* =====================
+   結果表示
+===================== */
+
+.result{
+
+    margin-top:20px;
+
+    font-size:20px;
+
+    line-height:2;
+
+    text-align:center;
+
+    font-weight:bold;
+
+}
+
+
+/* =====================
+   表
+===================== */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:25px;
+
+}
+
+
+th{
+
+    background:#4CAF50;
+
+    color:white;
+
+    padding:8px;
+
+}
+
+
+td{
+
+    border:1px solid #ccc;
+
+    padding:8px;
+
+}
+
+
+/* =====================
+   説明
+===================== */
+
+.note{
+
+    margin-top:10px;
+
+    font-size:13px;
+
+    color:#666;
+
+    line-height:1.8;
+
+}
+
+
+/* =====================
+   戻るボタン
+===================== */
+
+.back-button{
+
+    position:fixed;
+
+    right:15px;
+
+    bottom:15px;
+
+    padding:8px 14px;
+
+    background:#4CAF50;
+
+    color:white;
+
+    border-radius:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-decoration:none;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
+
+    z-index:9999;
+
+}
+
+
+/* =====================
+   点滴専用
+===================== */
+
+#drop{
+
+    font-size:80px;
+
+    height:120px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+#mute{
+
+    font-size:30px;
+
+    padding:5px 15px;
+
+    margin:5px;
+
+}
+
+
+/* =====================
+   スマホ調整
+===================== */
+
+@media(max-width:600px){
+
+    header{
+
+        font-size:30px;
+
+    }
+
+
+    .box{
+
+        margin-top:30px;
+
+    }
+
+
+    button{
+
+        font-size:20px;
+
+        padding:10px 25px;
+
+    }
+
+
+    input,
+    select{
+
+        font-size:18px;
+
+    }
+
+}
+
+
+.drop-svg{
+
+    width:32px;
+
+    height:42px;
+
+    vertical-align:middle;
+
+    margin-right:8px;
+
+}
