@@ -1144,3 +1144,31 @@
     }
 
 }
+/* =====================
+   スマホ 横幅調整
+===================== */
+
+@media(max-width:600px){
+
+    .container{
+
+        width:100%;
+
+        box-sizing:border-box;
+
+        padding:10px;
+
+    }
+
+
+    .date-card{
+
+        width:100%;
+
+        box-sizing:border-box;
+
+        padding:14px;
+
+    }
+
+}
