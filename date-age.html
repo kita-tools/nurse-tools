@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>日付・年齢早見</title>
+
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="date-age.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+    日付・年齢早見
+</header>
+
+
+
+<div class="container">
+
+
+    <!-- =====================
+         ① 何を調べますか？
+    ====================== -->
+
+    <div class="date-card">
+
+        <div class="date-card-title">
+            ① 何を調べますか？
+        </div>
+
+
+        <div class="mode-buttons">
+
+            <button
+                id="birthMode"
+                class="active"
+                onclick="changeMainMode('birth')">
+                生年月日
+            </button>
+
+
+            <button
+                id="dateMode"
+                onclick="changeMainMode('date')">
+                日付
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================
+         生年月日
+    ====================== -->
+
+    <div id="birthSection">
+
+
+        <!-- =====================
+             ② 生年月日
+        ====================== -->
+
+        <div class="date-card">
+
+            <div class="date-card-title">
+                ② 生年月日
+            </div>
+
+
+            <!-- 現在の年齢・西暦・和暦 -->
+
+            <div class="calendar-input-mode">
+
+                <button
+                    id="currentAgeMode"
+                    class="active"
+                    onclick="changeBirthInputMode('currentAge')">
+                    現在の年齢
+                </button>
+
+
+                <button
+                    id="westernMode"
+                    onclick="changeBirthInputMode('western')">
+                    西暦
+                </button>
+
+
+                <button
+                    id="japaneseMode"
+                    onclick="changeBirthInputMode('japanese')">
+                    和暦
+                </button>
+
+            </div>
+
+
+
+            <!-- =====================
+                 現在の年齢入力
+            ====================== -->
+
+            <div
+                id="currentAgeInput"
+                class="current-age-input">
+
+                <div class="date-field-label">
+                    現在の年齢
+                </div>
+
+
+                <div class="date-input-row">
+
+                    <input
+                        type="number"
+                        id="currentAge"
+                        class="year"
+                        placeholder="年齢"
+                        min="0"
+                        max="150">
+
+                    <span>歳</span>
+
+                </div>
+
+
+                <div class="date-field-label">
+                    誕生日
+                    <span class="optional-label">（任意）</span>
+                </div>
+
+
+                <div class="date-input-row">
+
+                    <input
+                        type="number"
+                        id="currentAgeMonth"
+                        class="month"
+                        placeholder="月"
+                        min="1"
+                        max="12">
+
+                    <span>月</span>
+
+
+                    <input
+                        type="number"
+                        id="currentAgeDay"
+                        class="day"
+                        placeholder="日"
+                        min="1"
+                        max="31">
+
+                    <span>日</span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =====================
+                 西暦入力
+            ====================== -->
+
+            <div
+                id="westernInput"
+                class="date-input-row hidden">
+
+                <input
+                    type="number"
+                    id="westernYear"
+                    class="year"
+                    placeholder="年"
+                    min="1">
+
+                <span>年</span>
+
+
+                <input
+                    type="number"
+                    id="westernMonth"
+                    class="month"
+                    placeholder="月"
+                    min="1"
+                    max="12">
+
+                <span>月</span>
+
+
+                <input
+                    type="number"
+                    id="westernDay"
+                    class="day"
+                    placeholder="日"
+                    min="1"
+                    max="31">
+
+                <span>日</span>
+
+            </div>
+
+
+
+            <!-- =====================
+                 和暦入力
+            ====================== -->
+
+            <div
+                id="japaneseInput"
+                class="date-input-row hidden">
+
+                <select id="japaneseEra">
+
+                    <option value="reiwa">
+                        令和
+                    </option>
+
+                    <option value="heisei">
+                        平成
+                    </option>
+
+                    <option value="showa">
+                        昭和
+                    </option>
+
+                    <option value="taisho">
+                        大正
+                    </option>
+
+                    <option value="meiji">
+                        明治
+                    </option>
+
+                </select>
+
+
+                <input
+                    type="number"
+                    id="japaneseYear"
+                    class="year"
+                    placeholder="年"
+                    min="1">
+
+                <span>年</span>
+
+
+                <input
+                    type="number"
+                    id="japaneseMonth"
+                    class="month"
+                    placeholder="月"
+                    min="1"
+                    max="12">
+
+                <span>月</span>
+
+
+                <input
+                    type="number"
+                    id="japaneseDay"
+                    class="day"
+                    placeholder="日"
+                    min="1"
+                    max="31">
+
+                <span>日</span>
+
+            </div>
+
+
+            <button
+                class="date-calc-button"
+                onclick="calculateAge()">
+                計算
+            </button>
+
+        </div>
+
+
+
+        <!-- =====================
+             年齢結果
+        ====================== -->
+
+        <div
+            class="date-card"
+            id="ageResultCard"
+            style="display:none;">
+
+            <div class="date-card-title">
+                結果
+            </div>
+
+
+            <div
+                class="date-result"
+                id="ageResult">
+
+                <!-- JSで結果を表示 -->
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================
+             年齢早見表
+        ====================== -->
+
+        <div
+            class="date-card"
+            id="ageTableCard"
+            style="display:none;">
+
+            <div class="date-card-title">
+                年齢早見表
+            </div>
+
+
+            <div class="age-table-wrapper">
+
+
+                <!-- =====================
+                     表① 現在の年齢
+                ====================== -->
+
+                <div class="age-table-column current-age">
+
+                    <table class="age-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th
+                                    colspan="3"
+                                    class="age-table-title">
+                                    現在の年齢
+                                </th>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <th>西暦</th>
+
+                                <th>和暦</th>
+
+                                <th>年齢</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="ageTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+                <!-- =====================
+                     表② 人生の節目
+                ====================== -->
+
+                <div class="age-table-column milestones">
+
+                    <table class="age-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th
+                                    colspan="4"
+                                    class="age-table-title">
+                                    人生の節目
+                                </th>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <th>西暦</th>
+
+                                <th>和暦</th>
+
+                                <th>年齢</th>
+
+                                <th>節目</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="milestoneTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================
+         日付
+    ====================== -->
+
+    <div
+        id="dateSection"
+        class="hidden">
+
+
+        <!-- =====================
+             ② 何を計算しますか？
+        ====================== -->
+
+        <div class="date-card">
+
+            <div class="date-card-title">
+                ② 何を計算しますか？
+            </div>
+
+
+            <div class="submode-buttons">
+
+                <button
+                    id="differenceMode"
+                    class="active"
+                    onclick="changeDateMode('difference')">
+                    日数を求める
+                </button>
+
+
+                <button
+                    id="targetMode"
+                    onclick="changeDateMode('target')">
+                    指定日を求める
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================
+             日数を求める
+        ====================== -->
+
+        <div
+            id="differenceSection">
+
+
+            <div class="date-card">
+
+                <div class="date-card-title">
+                    ③ 日付を入力
+                </div>
+
+
+                <div class="date-field-label result-start">
+                    ● 基準日（青）
+                </div>
+
+                <input
+                    type="date"
+                    id="startDate"
+                    class="date-input">
+
+
+                <div class="date-field-label result-end">
+                    ● 指定日（赤）
+                </div>
+
+                <input
+                    type="date"
+                    id="endDate"
+                    class="date-input">
+
+
+                <button
+                    class="date-calc-button"
+                    onclick="calculateDifference()">
+                    計算
+                </button>
+
+            </div>
+
+
+
+            <div
+                class="date-card"
+                id="differenceResultCard"
+                style="display:none;">
+
+                <div class="date-card-title">
+                    結果
+                </div>
+
+
+                <div
+                    class="date-result"
+                    id="differenceResult">
+                </div>
+
+            </div>
+
+
+
+            <div
+                class="date-card"
+                id="differenceCalendarCard"
+                style="display:none;">
+
+                <div class="calendar-header">
+
+                    <button onclick="changeCalendarMonth(-1)">
+                        ‹
+                    </button>
+
+
+                    <div
+                        class="calendar-title"
+                        id="calendarTitle">
+                    </div>
+
+
+                    <button onclick="changeCalendarMonth(1)">
+                        ›
+                    </button>
+
+                </div>
+
+
+                <table class="calendar">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>日</th>
+                            <th>月</th>
+                            <th>火</th>
+                            <th>水</th>
+                            <th>木</th>
+                            <th>金</th>
+                            <th>土</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="calendarBody">
+                    </tbody>
+
+                </table>
+
+
+                <div class="calendar-legend">
+
+                    <div class="legend-item">
+
+                        <span class="legend-start"></span>
+
+                        <span>基準日（青）</span>
+
+                    </div>
+
+
+                    <div class="legend-item">
+
+                        <span class="legend-end"></span>
+
+                        <span>指定日（赤）</span>
+
+                    </div>
+
+
+                    <div class="legend-item">
+
+                        <span class="legend-today"></span>
+
+                        <span>今日の日付（黄色）</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================
+             指定日を求める
+        ====================== -->
+
+        <div
+            id="targetSection"
+            class="hidden">
+
+
+            <div class="date-card">
+
+                <div class="date-card-title">
+                    ③ 日付を入力
+                </div>
+
+
+                <div class="date-field-label result-start">
+                    ● 基準日（青）
+                </div>
+
+                <input
+                    type="date"
+                    id="baseDate"
+                    class="date-input">
+
+
+                <div class="date-field-label">
+                    日数
+                </div>
+
+
+                <div class="days-input">
+
+                    <input
+                        type="number"
+                        id="targetDays"
+                        min="0"
+                        placeholder="日数">
+
+
+                    <select id="targetDirection">
+
+                        <option value="after">
+                            日後
+                        </option>
+
+                        <option value="before">
+                            日前
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="date-calc-button"
+                    onclick="calculateTargetDate()">
+                    計算
+                </button>
+
+            </div>
+
+
+
+            <div
+                class="date-card"
+                id="targetResultCard"
+                style="display:none;">
+
+                <div class="date-card-title">
+                    結果
+                </div>
+
+
+                <div
+                    class="date-result"
+                    id="targetResult">
+                </div>
+
+            </div>
+
+
+
+            <div
+                class="date-card"
+                id="targetCalendarCard"
+                style="display:none;">
+
+                <div class="calendar-header">
+
+                    <button onclick="changeTargetCalendarMonth(-1)">
+                        ‹
+                    </button>
+
+
+                    <div
+                        class="calendar-title"
+                        id="targetCalendarTitle">
+                    </div>
+
+
+                    <button onclick="changeTargetCalendarMonth(1)">
+                        ›
+                    </button>
+
+                </div>
+
+
+                <table class="calendar">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>日</th>
+                            <th>月</th>
+                            <th>火</th>
+                            <th>水</th>
+                            <th>木</th>
+                            <th>金</th>
+                            <th>土</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="targetCalendarBody">
+                    </tbody>
+
+                </table>
+
+
+                <div class="calendar-legend">
+
+                    <div class="legend-item">
+
+                        <span class="legend-start"></span>
+
+                        <span>基準日（青）</span>
+
+                    </div>
+
+
+                    <div class="legend-item">
+
+                        <span class="legend-end"></span>
+
+                        <span>指定日（赤）</span>
+
+                    </div>
+
+
+                    <div class="legend-item">
+
+                        <span class="legend-today"></span>
+
+                        <span>今日の日付（黄色）</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================
+     戻るボタン
+====================== -->
+
+<a
+    href="index.html"
+    class="back-button">
+    戻る
+</a>
+
+
+
+<script src="date-age-adult.js"></script>
+
+
+</body>
+
+</html>
