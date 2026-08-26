@@ -1,5 +1,5 @@
 /* =====================================
-   Nurse-Tools common.css Ver2.0
+   Nurse-Tools common.css Ver2.1
    全ページ共通
 ===================================== */
 
@@ -14,7 +14,6 @@ body{
 
     font-family:sans-serif;
     background:#f2f7fb;
-    /*background:red;*/
     color:#333;
 
 }
@@ -36,7 +35,7 @@ header{
 
     font-weight:bold;
 
-    padding:24px;
+    padding:16px;
 
     box-shadow:0 2px 8px rgba(0,0,0,.15);
 
@@ -107,6 +106,7 @@ textarea{
 
 }
 
+
 .btn:hover{
 
     background:#1976d2;
@@ -154,6 +154,7 @@ textarea{
 
 }
 
+
 .back-button:hover{
 
     background:#43A047;
@@ -186,9 +187,9 @@ textarea{
 
     header{
 
-        font-size:30px;
+        font-size:28px;
 
-        padding:20px;
+        padding:14px;
 
     }
 
