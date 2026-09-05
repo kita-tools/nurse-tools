@@ -1118,7 +1118,10 @@
 
     .age-table-title{
 
-        font-size:14px;
+        /* 画面幅に合わせて縮小 */
+        font-size:clamp(10px, 3vw, 14px);
+
+        padding:6px 2px;
 
     }
 
@@ -1126,9 +1129,10 @@
     .age-table th,
     .age-table td{
 
-        font-size:12px;
+        /* スマホの幅に応じて表全体を縮小する感覚 */
+        font-size:clamp(8px, 2.5vw, 12px);
 
-        padding:6px 2px;
+        padding:clamp(2px, 1vw, 6px) 1px;
 
     }
 
