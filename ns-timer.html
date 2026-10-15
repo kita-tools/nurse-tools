@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>患者タイマー - NsTools</title>
+    <style>
+        :root {
+            --bg-color: #f2f7fb;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-sub: #666666;
+            --border-color: #cccccc;
+            --primary: #2196f3;
+            --primary-hover: #1976d2;
+            --status-warning: #d97706;
+            --status-danger: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 12px;
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Header */
+        header {
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.15);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-icon {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .sound-toggle-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #fff;
+        }
+        .sound-toggle-btn:hover { background: rgba(255,255,255,0.3); }
+
+        .header-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 6px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Top Action Bar */
+        .top-action-bar {
+            background: var(--card-bg);
+            padding: 10px 12px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            flex: 1;
+        }
+        .btn-add:hover { background: var(--primary-hover); }
+
+        .btn-bulk-reset {
+            background: #666666;
+            color: white;
+            border: none;
+            padding: 10px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            flex: 1;
+        }
+        .btn-bulk-reset:hover { background: #555555; }
+
+        .btn-bulk-edit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            flex: 1;
+        }
+        .btn-bulk-edit:hover { background: var(--primary-hover); }
+
+        /* ホームグリッド（2カラム） */
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .home-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .home-card.state-running { 
+            border-left: 5px solid var(--primary); 
+            border-color: var(--primary);
+            background: #f2f7fb; 
+            box-shadow: 0 2px 5px rgba(33, 150, 243, 0.15);
+        }
+        .home-card.state-warning { 
+            border-left: 5px solid #d97706; 
+            border-color: #fcd34d;
+            background: #fffbeb; 
+            box-shadow: 0 2px 5px rgba(217, 119, 6, 0.1);
+        }
+        .home-card.state-finished { 
+            border-left: 5px solid #dc2626; 
+            border-color: #fca5a5;
+            background: #fff1f2; 
+            box-shadow: 0 2px 5px rgba(220, 38, 38, 0.1);
+        }
+        .home-card.state-stopped { 
+            border-left: 4px solid var(--border-color); 
+            background: #ffffff; 
+        }
+
+        .home-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .home-badge {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-size: 9px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .home-name {
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 1px 4px;
+            border-radius: 4px;
+        }
+        .home-name:hover { background: #e2e8f0; color: var(--primary); }
+
+        .home-purpose {
+            font-size: 10px;
+            color: var(--text-sub);
+            background: var(--bg-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 1px solid var(--border-color);
+        }
+        .home-purpose:hover { background: #e2e8f0; }
+
+        .home-middle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mini-circle-area {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .mini-circle-area:hover { background: rgba(0,0,0,0.05); }
+
+        .mini-svg {
+            transform: rotate(-90deg);
+            width: 50px;
+            height: 50px;
+        }
+        .mini-circle-bg {
+            fill: none;
+            stroke: #e2e8f0;
+            stroke-width: 4.5;
+        }
+        .mini-circle-progress {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 4.5;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s linear, stroke 0.3s;
+        }
+        .mini-time-text {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .mini-digits {
+            font-size: 11px;
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .home-info-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 3px;
+        }
+
+        .home-status-badge {
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+        .st-running { color: #0d47a1; background: #e3f2fd; }
+        .st-warning { color: #b45309; background: #fef3c7; }
+        .st-finished { color: #b91c1c; background: #fee2e2; }
+        .st-stopped { color: var(--text-sub); background: var(--bg-color); }
+
+        /* 操作ボタン群 */
+        .home-controls {
+            display: flex;
+            gap: 3px;
+        }
+        .home-ctrl-btn {
+            flex: 1;
+            padding: 5px 0;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .h-btn-start { background: var(--primary); color: white; }
+        .h-btn-start:hover { background: var(--primary-hover); }
+        .h-btn-pause { background: #d97706; color: white; }
+        .h-btn-reset { background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border-color); }
+        .h-btn-reset:hover { background: #e2e8f0; }
+        .h-btn-delete { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+        .h-btn-delete:hover { background: #fecaca; }
+
+        /* サマリーカード */
+        .stats-card {
+            background: var(--card-bg);
+            padding: 12px 14px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            font-size: 12px;
+        }
+        .stats-title {
+            font-weight: bold;
+            margin-bottom: 6px;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 4px;
+            color: var(--text-main);
+        }
+        .stats-grid-row {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-sub);
+            margin-bottom: 3px;
+        }
+        .stats-grid-row span:last-child {
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .app-footer {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-sub);
+            padding: 20px 0;
+        }
+
+        /* モーダルオーバーレイ */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 12px;
+        }
+        .modal-overlay.active { display: flex; }
+        
+        .modal-content {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 440px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .modal-title { font-size: 15px; font-weight: bold; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        
+        /* 一括補助操作エリアのデザイン整理 */
+        .bulk-section {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .bulk-section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-sub);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+        }
+
+        .quick-btn-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+        .q-chip {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+        .q-chip:hover { background: #e3f2fd; border-color: var(--primary); color: var(--primary); }
+
+        .bulk-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .bulk-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-sub);
+            width: 32px;
+            flex-shrink: 0;
+        }
+        .bulk-row input[type="number"],
+        .bulk-row select {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 12px;
+            background: white;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .btn-bulk-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            width: 115px;
+            text-align: center;
+        }
+        .btn-bulk-action:hover { background: var(--primary-hover); }
+
+        .list-scroll-area {
+            overflow-y: auto;
+            max-height: 220px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+        .bulk-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .bulk-table th {
+            background: var(--bg-color);
+            padding: 8px;
+            text-align: left;
+            font-size: 11px;
+            color: var(--text-sub);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .bulk-table td {
+            padding: 6px 8px;
+            border-top: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+        .bulk-table input[type="text"] {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 12px;
+        }
+        .bulk-table select {
+            width: 100%;
+            padding: 6px 4px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 11px;
+        }
+        .bulk-table input[type="number"] {
+            width: 50px;
+            padding: 6px 4px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 12px;
+            text-align: center;
+        }
+        .btn-row-del {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            padding: 4px 6px;
+            border-radius: 6px;
+            font-size: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-buttons { display: flex; gap: 8px; }
+        .modal-btn { flex: 1; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; border: none; }
+        .btn-cancel { background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border-color); }
+        .btn-cancel:hover { background: #e2e8f0; }
+        .btn-save { background: var(--primary); color: white; }
+        .btn-save:hover { background: var(--primary-hover); }
+
+        .btn-reset-danger {
+            background: #fff1f2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-reset-danger:hover { background: #fee2e2; }
+
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 4px; color: var(--text-sub); }
+        .form-group input {
+            width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; color: var(--text-main);
+        }
+        
+        .purpose-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .purpose-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 4px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            color: var(--text-main);
+        }
+        .purpose-btn.selected {
+            background: #e3f2fd;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .duration-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .duration-input-box {
+            flex: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .custom-time-box {
+            flex: 1.3;
+            display: flex;
+            align-items: center;
+            background: #e3f2fd;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 4px 6px;
+            justify-content: center;
+            gap: 2px;
+        }
+        .custom-time-box select {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 6px 4px;
+            font-size: 13px;
+            font-weight: bold;
+            background: white;
+            color: var(--text-main);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-top">
+            <div class="header-title-area">
+                <div class="header-icon">⏱️</div>
+                <h1>患者タイマー</h1>
+            </div>
+            <button class="sound-toggle-btn" onclick="toggleSoundMaster()">
+                <span id="sound-status-icon">🔔</span> <span id="sound-status-text">ON</span>
+            </button>
+        </div>
+        <div class="header-bottom">
+            <span id="current-clock">--/--/--（-） --:--</span>
+            <span>NsTools 業務支援タイマー</span>
+        </div>
+    </header>
+
+    <!-- Top Action Bar -->
+    <div class="top-action-bar">
+        <button class="btn-add" onclick="addNewTimer()">
+            <span>＋</span> 追加
+        </button>
+        <button class="btn-bulk-reset" onclick="resetAllTimersQuick()">
+            <span>🔄</span> 一括リセット
+        </button>
+        <button class="btn-bulk-edit" onclick="openBulkModal()">
+            <span>⚙️</span> 一括編集
+        </button>
+    </div>
+
+    <!-- Home Grid -->
+    <div class="home-grid" id="home-grid-container"></div>
+
+    <!-- Status Summary -->
+    <div class="stats-card">
+        <div class="stats-title">現在の状況サマリー</div>
+        <div class="stats-grid-row"><span>🔵 進行中</span><span id="stat-running">0人</span></div>
+        <div class="stats-grid-row"><span>🟡 残りわずか</span><span id="stat-warning">0人</span></div>
+        <div class="stats-grid-row"><span>🔴 終了</span><span id="stat-finished">0人</span></div>
+        <div class="stats-grid-row"><span>⚪ 未開始</span><span id="stat-unstarted">0人</span></div>
+        <div class="stats-grid-row" style="border-top: 1px solid var(--border-color); margin-top: 4px; padding-top: 4px;"><span>合計タイマー数</span><span id="stat-total">0人</span></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="app-footer">
+        NsTools（外来・健診 業務支援ツール） / ブラウザ保存対応
+    </div>
+
+    <!-- 一括編集モーダル（全員リストフォーム形式） -->
+    <div class="modal-overlay" id="bulk-modal">
+        <div class="modal-content">
+            <div class="modal-title">
+                <span>⚙️ タイマー一括編集</span>
+            </div>
+
+            <!-- 一括補助操作エリア -->
+            <div class="bulk-section">
+                <div class="bulk-section-title">一括補助操作</div>
+                
+                <!-- 時間クイック選択 -->
+                <div class="quick-btn-row">
+                    <span style="font-size: 11px; color: var(--text-sub); font-weight:bold; min-width:32px;">クイック:</span>
+                    <button class="q-chip" onclick="setBulkMinuteInput(1)">1分</button>
+                    <button class="q-chip" onclick="setBulkMinuteInput(3)">3分</button>
+                    <button class="q-chip" onclick="setBulkMinuteInput(5)">5分</button>
+                    <button class="q-chip" onclick="setBulkMinuteInput(10)">10分</button>
+                    <button class="q-chip" onclick="setBulkMinuteInput(15)">15分</button>
+                    <button class="q-chip" onclick="setBulkMinuteInput(30)">30分</button>
+                </div>
+
+                <!-- 時間の一括反映 -->
+                <div class="bulk-row">
+                    <span class="bulk-label">時間:</span>
+                    <input type="number" id="bulk-time-input" min="1" max="180" value="10">
+                    <button class="btn-bulk-action" onclick="applyBulkTimeToTable()">時間を一括反映</button>
+                </div>
+
+                <!-- 用途の一括反映 -->
+                <div class="bulk-row">
+                    <span class="bulk-label">用途:</span>
+                    <select id="bulk-purpose-select">
+                        <option value="処置後">処置後</option>
+                        <option value="採血後">採血後</option>
+                        <option value="点滴終了">点滴終了</option>
+                        <option value="注射後">注射後</option>
+                        <option value="検査後">検査後</option>
+                        <option value="吸入後">吸入後</option>
+                        <option value="検査待ち">検査待ち</option>
+                        <option value="薬剤待ち">薬剤待ち</option>
+                        <option value="その他">その他</option>
+                    </select>
+                    <button class="btn-bulk-action" onclick="applyBulkPurposeToTable()">用途を一括反映</button>
+                </div>
+
+                <!-- 名前の連番振り直し -->
+                <div class="bulk-row">
+                    <span class="bulk-label">名前:</span>
+                    <button class="btn-bulk-action" style="width: 100%;" onclick="renameAllSequentialInTable()">名前をA〜連番にする</button>
+                </div>
+            </div>
+
+            <!-- 全員編集テーブル -->
+            <div class="list-scroll-area">
+                <table class="bulk-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25px; text-align: center;">#</th>
+                            <th style="width: 35%;">名前</th>
+                            <th style="width: 35%;">用途</th>
+                            <th style="width: 50px;">時間</th>
+                            <th style="width: 35px; text-align: center;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bulk-table-body">
+                        <!-- JSで動的生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 一括リセット -->
+            <button class="btn-reset-danger" onclick="resetAllTimersFromBulk()">稼働中以外のタイマーを一括リセット</button>
+
+            <div class="modal-buttons">
+                <button class="modal-btn btn-cancel" onclick="closeBulkModal()">キャンセル</button>
+                <button class="modal-btn btn-save" onclick="saveBulkEditForm()">変更を保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 個別編集モーダル -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-title">タイマー設定</div>
+            <input type="hidden" id="edit-timer-id">
+            <div class="form-group">
+                <label>患者名 / ラベル</label>
+                <input type="text" id="edit-name" placeholder="例: Aさん">
+            </div>
+            
+            <div class="form-group">
+                <label>用途を選択</label>
+                <div class="purpose-grid" id="purpose-grid-container"></div>
+            </div>
+
+            <div class="form-group" id="custom-purpose-wrap" style="display:none;">
+                <label>その他の用途を入力</label>
+                <input type="text" id="edit-custom-purpose" placeholder="例: 自由入力">
+            </div>
+
+            <div class="form-group">
+                <label>設定時間 / アラーム時刻</label>
+                <div class="duration-row">
+                    <div class="duration-input-box">
+                        <input type="number" id="edit-duration" min="1" max="180" value="10" oninput="onDurationInput()">
+                        <span style="font-size: 11px; color: var(--text-sub); white-space: nowrap; font-weight: bold;">分後</span>
+                    </div>
+                    <span style="font-size: 11px; color: var(--text-sub);">または</span>
+                    
+                    <div class="custom-time-box">
+                        <select id="edit-target-hour" onchange="onCustomTimeChange()"></select>
+                        <span style="font-size: 12px; font-weight: bold; color: var(--primary);">時</span>
+                        <select id="edit-target-minute" onchange="onCustomTimeChange()"></select>
+                        <span style="font-size: 12px; font-weight: bold; color: var(--primary);">分まで</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-cancel" onclick="closeModal()">キャンセル</button>
+                <button class="modal-btn btn-save" onclick="saveTimerConfig()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PURPOSES = [
+            "処置後", "採血後", "点滴終了", 
+            "注射後", "検査後", "吸入後", 
+            "検査待ち", "薬剤待ち", "その他"
+        ];
+
+        let selectedPurpose = "処置後";
+
+        const DEFAULT_TIMERS = [
+            { id: 1, name: "Aさん", purpose: "処置後", duration: 600, endTime: null, remaining: 600, state: "stopped" },
+            { id: 2, name: "Bさん", purpose: "採血後", duration: 300, endTime: null, remaining: 300, state: "stopped" },
+            { id: 3, name: "Cさん", purpose: "点滴終了", duration: 900, endTime: null, remaining: 900, state: "stopped" },
+            { id: 4, name: "Dさん", purpose: "処置後", duration: 600, endTime: null, remaining: 600, state: "stopped" },
+            { id: 5, name: "Eさん", purpose: "検査待ち", duration: 600, endTime: null, remaining: 600, state: "stopped" },
+            { id: 6, name: "Fさん", purpose: "観察中", duration: 1200, endTime: null, remaining: 1200, state: "stopped" },
+            { id: 7, name: "Gさん", purpose: "処置後", duration: 600, endTime: null, remaining: 600, state: "stopped" },
+            { id: 8, name: "Hさん", purpose: "採血後", duration: 300, endTime: null, remaining: 300, state: "stopped" },
+            { id: 9, name: "Iさん", purpose: "点滴終了", duration: 900, endTime: null, remaining: 900, state: "stopped" },
+            { id: 10, name: "Jさん", purpose: "検査待ち", duration: 1800, endTime: null, remaining: 1800, state: "stopped" }
+        ];
+
+        let timers = [];
+        let masterSoundOn = true;
+        let tempBulkTimers = [];
+
+        function initTimeSelectors() {
+            const hourSelect = document.getElementById('edit-target-hour');
+            const minSelect = document.getElementById('edit-target-minute');
+            
+            hourSelect.innerHTML = '';
+            for (let h = 0; h < 24; h++) {
+                const hhStr = String(h).padStart(2, '0');
+                const opt = document.createElement('option');
+                opt.value = h;
+                opt.textContent = hhStr;
+                hourSelect.appendChild(opt);
+            }
+
+            minSelect.innerHTML = '';
+            for (let m = 0; m < 60; m += 1) {
+                const mmStr = String(m).padStart(2, '0');
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = mmStr;
+                minSelect.appendChild(opt);
+            }
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('nstools_timestamp_timer_data_v3');
+            if (saved) {
+                try { 
+                    timers = JSON.parse(saved); 
+                    updateAllTimersFromTimestamp();
+                } catch(e) { 
+                    timers = JSON.parse(JSON.stringify(DEFAULT_TIMERS)); 
+                }
+            } else {
+                timers = JSON.parse(JSON.stringify(DEFAULT_TIMERS));
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('nstools_timestamp_timer_data_v3', JSON.stringify(timers));
+        }
+
+        function updateAllTimersFromTimestamp() {
+            const now = Date.now();
+            let changed = false;
+            let needAlarm = false;
+
+            timers.forEach(t => {
+                if (t.state === 'running' && t.endTime) {
+                    const diffSec = Math.ceil((t.endTime - now) / 1000);
+                    if (diffSec <= 0) {
+                        t.remaining = 0;
+                        t.state = 'finished';
+                        t.endTime = null;
+                        changed = true;
+                        needAlarm = true;
+                    } else {
+                        t.remaining = diffSec;
+                        changed = true;
+                    }
+                }
+            });
+
+            if (changed) {
+                saveData();
+                renderHome();
+                if (needAlarm) {
+                    playAlarmSound();
+                }
+            }
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+            const w = weekdays[now.getDay()];
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('current-clock').textContent = `${year}/${month}/${day}（${w}） ${hours}:${minutes}:${seconds}`;
+
+            updateAllTimersFromTimestamp();
+        }
+        setInterval(updateClock, 1000);
+
+        function renderHome() {
+            const container = document.getElementById('home-grid-container');
+            container.innerHTML = '';
+
+            let runningCount = 0, warningCount = 0, finishedCount = 0, stoppedCount = 0;
+
+            timers.forEach((t, index) => {
+                let stClass = "state-stopped";
+                let stText = "未開始";
+                let stBadgeClass = "st-stopped";
+
+                if (t.state === "running") {
+                    if (t.remaining <= 60 && t.remaining > 0) {
+                        stClass = "state-warning";
+                        stText = "残りわずか";
+                        stBadgeClass = "st-warning";
+                        warningCount++;
+                    } else {
+                        stClass = "state-running";
+                        stText = "進行中";
+                        stBadgeClass = "st-running";
+                        runningCount++;
+                    }
+                } else if (t.state === "paused") {
+                    stClass = "state-stopped";
+                    stText = "一時停止";
+                    stBadgeClass = "st-stopped";
+                    stoppedCount++;
+                } else if (t.state === "finished") {
+                    stClass = "state-finished";
+                    stText = "終了";
+                    stBadgeClass = "st-finished";
+                    finishedCount++;
+                } else {
+                    stoppedCount++;
+                }
+
+                const mins = Math.floor(t.remaining / 60);
+                const secs = t.remaining % 60;
+                const timeFormatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                const totalMins = Math.floor(t.duration / 60);
+
+                const radius = 20;
+                const circumference = 2 * Math.PI * radius;
+                const progress = t.duration > 0 ? (t.remaining / t.duration) : 0;
+                const strokeDashoffset = circumference - (progress * circumference);
+
+                let strokeColor = "#2196f3";
+                if (stText === "残りわずか") strokeColor = "#d97706";
+                if (stText === "終了") strokeColor = "#dc2626";
+
+                const card = document.createElement('div');
+                card.className = `home-card ${stClass}`;
+                card.innerHTML = `
+                    <div class="home-card-header">
+                        <div style="display:flex; align-items:center; gap:5px; overflow:hidden;">
+                            <div class="home-badge">${index + 1}</div>
+                            <span class="home-name" onclick="openEditModal(${t.id}, 'name')" title="名前を編集">${escapeHtml(t.name)}</span>
+                            ${t.purpose ? `<span class="home-purpose" onclick="openEditModal(${t.id}, 'purpose')" title="用途を変更">${escapeHtml(t.purpose)}</span>` : ''}
+                        </div>
+                        <span class="home-status-badge ${stBadgeClass}">${stText}</span>
+                    </div>
+
+                    <div class="home-middle-row">
+                        <div class="mini-circle-area" onclick="openEditModal(${t.id}, 'time')" title="設定時間を変更">
+                            <svg class="mini-svg" viewBox="0 0 50 50">
+                                <circle class="mini-circle-bg" cx="25" cy="25" r="${radius}"></circle>
+                                <circle class="mini-circle-progress" cx="25" cy="25" r="${radius}" 
+                                    style="stroke-dasharray: ${circumference}; stroke-dashoffset: ${strokeDashoffset}; stroke: ${strokeColor};"></circle>
+                            </svg>
+                            <div class="mini-time-text">
+                                <span class="mini-digits">${t.state === 'stopped' && t.remaining === t.duration ? '--:--' : timeFormatted}</span>
+                            </div>
+                        </div>
+
+                        <div class="home-info-right">
+                            <span style="font-size: 9px; color: var(--text-sub); font-weight: bold;">設定:${totalMins}分</span>
+                        </div>
+                    </div>
+
+                    <div class="home-controls">
+                        ${t.state === 'running' ? `
+                            <button class="home-ctrl-btn h-btn-pause" onclick="pauseTimer(${t.id})">一時停止</button>
+                        ` : t.state === 'finished' ? `
+                            <button class="home-ctrl-btn h-btn-start" style="background:#16a34a;" onclick="resetTimer(${t.id})">リセット</button>
+                        ` : `
+                            <button class="home-ctrl-btn h-btn-start" onclick="startTimer(${t.id})">${t.remaining < t.duration && t.remaining > 0 ? '再開' : '開始'}</button>
+                        `}
+                        <button class="home-ctrl-btn h-btn-reset" onclick="resetTimer(${t.id})">リセット</button>
+                        <button class="home-ctrl-btn h-btn-delete" onclick="deleteTimer(${t.id})" title="削除">削除</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('stat-running').textContent = `${runningCount}人`;
+            document.getElementById('stat-warning').textContent = `${warningCount}人`;
+            document.getElementById('stat-finished').textContent = `${finishedCount}人`;
+            document.getElementById('stat-unstarted').textContent = `${stoppedCount}人`;
+            document.getElementById('stat-total').textContent = `${timers.length}人`;
+        }
+
+        /* ----- メイン画面からのクイック一括リセット機能 ----- */
+        function resetAllTimersQuick() {
+            if (confirm("すべてのタイマーを初期状態（未開始・満タン）にリセットしますか？")) {
+                timers.forEach(t => {
+                    t.state = 'stopped';
+                    t.remaining = t.duration;
+                    t.endTime = null;
+                });
+                saveData();
+                renderHome();
+            }
+        }
+
+        /* ----- 一括編集フォーム (モーダル内) 機能 ----- */
+        function openBulkModal() {
+            tempBulkTimers = JSON.parse(JSON.stringify(timers));
+            renderBulkTable();
+            document.getElementById('bulk-modal').classList.add('active');
+        }
+
+        function closeBulkModal() {
+            document.getElementById('bulk-modal').classList.remove('active');
+        }
+
+        function renderBulkTable() {
+            const tbody = document.getElementById('bulk-table-body');
+            tbody.innerHTML = '';
+
+            tempBulkTimers.forEach((t, idx) => {
+                const tr = document.createElement('tr');
+
+                const currentMins = Math.floor(t.duration / 60);
+
+                let purposeOptions = PURPOSES.map(p => 
+                    `<option value="${p}" ${t.purpose === p ? 'selected' : ''}>${p}</option>`
+                ).join('');
+
+                if (!PURPOSES.includes(t.purpose) && t.purpose) {
+                    purposeOptions += `<option value="${escapeHtml(t.purpose)}" selected>${escapeHtml(t.purpose)}</option>`;
+                }
+
+                tr.innerHTML = `
+                    <td style="text-align: center; font-weight: bold; color: var(--text-sub);">${idx + 1}</td>
+                    <td><input type="text" value="${escapeHtml(t.name)}" onchange="updateTempBulkField(${idx}, 'name', this.value)"></td>
+                    <td>
+                        <select onchange="updateTempBulkField(${idx}, 'purpose', this.value)">
+                            ${purposeOptions}
+                        </select>
+                    </td>
+                    <td><input type="number" min="1" max="180" value="${currentMins}" onchange="updateTempBulkField(${idx}, 'duration', this.value)"></td>
+                    <td style="text-align: center;">
+                        <button class="btn-row-del" onclick="deleteTempBulkRow(${idx})">削除</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateTempBulkField(index, field, value) {
+            if (field === 'duration') {
+                const mins = parseInt(value) || 1;
+                tempBulkTimers[index].duration = mins * 60;
+                if (tempBulkTimers[index].state !== 'running') {
+                    tempBulkTimers[index].remaining = mins * 60;
+                }
+            } else {
+                tempBulkTimers[index][field] = value;
+            }
+        }
+
+        function deleteTempBulkRow(index) {
+            tempBulkTimers.splice(index, 1);
+            renderBulkTable();
+        }
+
+        function setBulkMinuteInput(mins) {
+            document.getElementById('bulk-time-input').value = mins;
+        }
+
+        function applyBulkTimeToTable() {
+            const mins = parseInt(document.getElementById('bulk-time-input').value) || 10;
+            tempBulkTimers.forEach(t => {
+                t.duration = mins * 60;
+                if (t.state !== 'running') {
+                    t.remaining = mins * 60;
+                }
+            });
+            renderBulkTable();
+        }
+
+        function applyBulkPurposeToTable() {
+            const selectedVal = document.getElementById('bulk-purpose-select').value;
+            tempBulkTimers.forEach(t => {
+                t.purpose = selectedVal;
+            });
+            renderBulkTable();
+        }
+
+        function renameAllSequentialInTable() {
+            tempBulkTimers.forEach((t, idx) => {
+                const charCode = 65 + (idx % 26);
+                t.name = `${String.fromCharCode(charCode)}さん`;
+            });
+            renderBulkTable();
+        }
+
+        function resetAllTimersFromBulk() {
+            if (confirm("稼働中以外のタイマーをすべて初期状態にリセットしますか？")) {
+                tempBulkTimers.forEach(t => {
+                    if (t.state !== 'running') {
+                        t.state = 'stopped';
+                        t.remaining = t.duration;
+                        t.endTime = null;
+                    }
+                });
+                renderBulkTable();
+            }
+        }
+
+        function saveBulkEditForm() {
+            timers = JSON.parse(JSON.stringify(tempBulkTimers));
+            saveData();
+            renderHome();
+            closeBulkModal();
+        }
+
+        /* ----- 個別編集モーダル & 基本操作 ----- */
+        function startTimer(id) {
+            const t = timers.find(item => item.id === id);
+            if (t) {
+                if (t.remaining <= 0) t.remaining = t.duration;
+                t.state = 'running';
+                t.endTime = Date.now() + (t.remaining * 1000);
+                saveData();
+                renderHome();
+            }
+        }
+
+        function pauseTimer(id) {
+            const t = timers.find(item => item.id === id);
+            if (t) {
+                t.state = 'paused';
+                t.endTime = null;
+                saveData();
+                renderHome();
+            }
+        }
+
+        function resetTimer(id) {
+            const t = timers.find(item => item.id === id);
+            if (t) {
+                t.state = 'stopped';
+                t.remaining = t.duration;
+                t.endTime = null;
+                saveData();
+                renderHome();
+            }
+        }
+
+        function deleteTimer(id) {
+            timers = timers.filter(item => item.id !== id);
+            saveData();
+            renderHome();
+        }
+
+        function playAlarmSound() {
+            if (!masterSoundOn) return;
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let beepCount = 0;
+                function playBeep() {
+                    if (beepCount >= 7) return;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                    beepCount++;
+                    setTimeout(playBeep, 120);
+                }
+                playBeep();
+            } catch(e) {}
+        }
+
+        function toggleSoundMaster() {
+            masterSoundOn = !masterSoundOn;
+            document.getElementById('sound-status-text').textContent = masterSoundOn ? "ON" : "OFF";
+            document.getElementById('sound-status-icon').textContent = masterSoundOn ? "🔔" : "🔕";
+        }
+
+        function addNewTimer() {
+            const newId = timers.length > 0 ? Math.max(...timers.map(t => t.id)) + 1 : 1;
+            const nextLetter = String.fromCharCode(65 + (timers.length % 26));
+            timers.push({
+                id: newId,
+                name: `${nextLetter}さん`,
+                purpose: "処置後",
+                duration: 600,
+                endTime: null,
+                remaining: 600,
+                state: "stopped"
+            });
+            saveData();
+            renderHome();
+        }
+
+        function openEditModal(id, focusTarget = 'name') {
+            const t = timers.find(item => item.id === id);
+            if (!t) return;
+            document.getElementById('edit-timer-id').value = t.id;
+            document.getElementById('edit-name').value = t.name;
+            
+            const mins = Math.floor(t.duration / 60);
+            document.getElementById('edit-duration').value = mins;
+            
+            updateTargetSelectorsFromDuration(mins);
+            selectedPurpose = t.purpose;
+            buildPurposeGrid(t.purpose);
+            
+            document.getElementById('edit-modal').classList.add('active');
+
+            setTimeout(() => {
+                if (focusTarget === 'name') {
+                    const nameInput = document.getElementById('edit-name');
+                    nameInput.focus();
+                    nameInput.select();
+                } else if (focusTarget === 'time') {
+                    const timeInput = document.getElementById('edit-duration');
+                    timeInput.focus();
+                    timeInput.select();
+                }
+            }, 50);
+        }
+
+        function closeModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+        }
+
+        function buildPurposeGrid(currentVal) {
+            const container = document.getElementById('purpose-grid-container');
+            container.innerHTML = '';
+            
+            let matched = false;
+
+            PURPOSES.forEach(pureName => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'purpose-btn';
+                btn.textContent = pureName;
+
+                if (currentVal === pureName) {
+                    btn.classList.add('selected');
+                    matched = true;
+                }
+
+                btn.onclick = () => {
+                    document.querySelectorAll('.purpose-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedPurpose = pureName;
+                    
+                    const wrap = document.getElementById('custom-purpose-wrap');
+                    if (pureName === 'その他') {
+                        wrap.style.display = 'block';
+                        document.getElementById('edit-custom-purpose').focus();
+                    } else {
+                        wrap.style.display = 'none';
+                    }
+                };
+                container.appendChild(btn);
+            });
+
+            const wrap = document.getElementById('custom-purpose-wrap');
+            if (!matched && currentVal) {
+                document.querySelectorAll('.purpose-btn').forEach(b => {
+                    if (b.textContent.includes('その他')) b.classList.add('selected');
+                });
+                wrap.style.display = 'block';
+                document.getElementById('edit-custom-purpose').value = currentVal;
+                selectedPurpose = currentVal;
+            } else if (selectedPurpose === 'その他') {
+                wrap.style.display = 'block';
+            } else {
+                wrap.style.display = 'none';
+            }
+        }
+
+        function onDurationInput() {
+            const mins = parseInt(document.getElementById('edit-duration').value) || 0;
+            updateTargetSelectorsFromDuration(mins);
+        }
+
+        function updateTargetSelectorsFromDuration(mins) {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() + mins);
+            document.getElementById('edit-target-hour').value = now.getHours();
+            document.getElementById('edit-target-minute').value = now.getMinutes();
+        }
+
+        function onCustomTimeChange() {
+            const targetHour = parseInt(document.getElementById('edit-target-hour').value);
+            const targetMinute = parseInt(document.getElementById('edit-target-minute').value);
+            
+            const now = new Date();
+            let targetDate = new Date();
+            targetDate.setHours(targetHour, targetMinute, 0, 0);
+
+            if (targetDate <= now) {
+                targetDate.setDate(targetDate.getDate() + 1);
+            }
+
+            const diffMs = targetDate - now;
+            const diffMins = Math.round(diffMs / (1000 * 60));
+
+            if (diffMins > 0) {
+                document.getElementById('edit-duration').value = diffMins;
+            }
+        }
+
+        function saveTimerConfig() {
+            const id = parseInt(document.getElementById('edit-timer-id').value);
+            const name = document.getElementById('edit-name').value.trim() || "患者さん";
+            
+            let finalPurpose = selectedPurpose;
+            if (finalPurpose === 'その他') {
+                const custom = document.getElementById('edit-custom-purpose').value.trim();
+                finalPurpose = custom || 'その他';
+            }
+
+            const durationMins = parseInt(document.getElementById('edit-duration').value) || 10;
+            
+            const t = timers.find(item => item.id === id);
+            if (t) {
+                t.name = name;
+                t.purpose = finalPurpose;
+                t.duration = durationMins * 60;
+                t.remaining = t.duration;
+                t.state = 'stopped';
+                t.endTime = null;
+                saveData();
+                renderHome();
+            }
+            closeModal();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        initTimeSelectors();
+        loadData();
+        renderHome();
+        updateClock();
+    </script>
+</body>
+</html>
