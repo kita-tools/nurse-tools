@@ -394,7 +394,7 @@
             font-weight: bold;
             color: var(--text-main);
             outline: none;
-            width: 90px; /* 幅を約1.5倍に拡大 */
+            width: 90px;
             text-align: center;
         }
 
@@ -484,7 +484,7 @@
         ];
 
         function loadData() {
-            const saved = localStorage.getItem('nstools_patient_memo_v13');
+            const saved = localStorage.getItem('nstools_patient_memo_v14');
             if (saved) {
                 try { 
                     patients = JSON.parse(saved); 
@@ -496,7 +496,7 @@
         }
 
         function saveData() {
-            localStorage.setItem('nstools_patient_memo_v13', JSON.stringify(patients));
+            localStorage.setItem('nstools_patient_memo_v14', JSON.stringify(patients));
         }
 
         function tickTimers() {
@@ -644,7 +644,7 @@
                     <div class="card-header">
                         <div class="patient-title-area">
                             <div class="patient-badge">${index + 1}</div>
-                            <input type="text" class="patient-name-input" value="${escapeHtml(p.name)}" oninput="updateField(${p.id}, 'name', this.value)" placeholder="患者名">
+                            <input type="text" class="patient-name-input" lang="ja" value="${escapeHtml(p.name)}" oninput="updateField(${p.id}, 'name', this.value)" placeholder="患者名">
                         </div>
                         <button class="t-btn btn-del-card" onclick="deletePatient(${p.id})">削除</button>
                     </div>
@@ -691,7 +691,7 @@
 
                     <!-- memo欄 -->
                     <div>
-                        <textarea class="memo-input" placeholder="memo" oninput="updateField(${p.id}, 'memo', this.value)">${escapeHtml(p.memo)}</textarea>
+                        <textarea class="memo-input" lang="ja" placeholder="memo（例：点滴残り時間、検査指示など）" oninput="updateField(${p.id}, 'memo', this.value)">${escapeHtml(p.memo)}</textarea>
                     </div>
 
                     <!-- タイマー機能 -->
