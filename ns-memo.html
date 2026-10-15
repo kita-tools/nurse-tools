@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>患者メモ ＆ タイマー - NsTools</title>
+    <style>
+        :root {
+            --bg-color: #f2f7fb;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-sub: #666666;
+            --border-color: #cccccc;
+            --primary: #2196f3;
+            --primary-hover: #1976d2;
+            --status-warning: #d97706;
+            --status-danger: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 12px;
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Header */
+        header {
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.15);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-icon {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .sound-toggle-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #fff;
+        }
+        .sound-toggle-btn:hover { background: rgba(255,255,255,0.3); }
+
+        .header-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 6px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Top Action Bar */
+        .top-action-bar {
+            background: var(--card-bg);
+            padding: 10px 12px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            flex: 1;
+        }
+        .btn-add:hover { background: var(--primary-hover); }
+
+        .btn-reset-all {
+            background: #666666;
+            color: white;
+            border: none;
+            padding: 10px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            flex: 1;
+        }
+        .btn-reset-all:hover { background: #555555; }
+
+        /* 患者管理カードグリッド */
+        .patient-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .patient-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        /* タイマー稼働時のカード枠色変更 */
+        .patient-card.timer-running { border-left: 6px solid var(--primary); background: #f2f7fb; }
+        .patient-card.timer-warning { border-left: 6px solid #d97706; background: #fffbeb; }
+        .patient-card.timer-finished { border-left: 6px solid #dc2626; background: #fff1f2; }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .patient-title-area {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .patient-badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .patient-name-input {
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--text-main);
+            border: 1px solid transparent;
+            background: transparent;
+            padding: 2px 4px;
+            border-radius: 6px;
+            width: 110px;
+        }
+        .patient-name-input:hover, .patient-name-input:focus {
+            background: #fff;
+            border-color: var(--border-color);
+            outline: none;
+        }
+
+        /* バイタル入力ブロック */
+        .vitals-section {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .vitals-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vital-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 8px;
+            white-space: nowrap;
+        }
+
+        .vital-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-sub);
+            flex-shrink: 0;
+        }
+
+        .vital-input {
+            width: 100%;
+            border: none;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: right;
+            outline: none;
+            background: transparent;
+            min-width: 20px;
+        }
+
+        .vital-unit {
+            font-size: 10px;
+            color: var(--text-sub);
+            flex-shrink: 0;
+        }
+
+        /* 血圧セクション（2回測定） */
+        .bp-block {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .bp-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4px;
+        }
+
+        .bp-line-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-sub);
+            width: 42px;
+            flex-shrink: 0;
+        }
+
+        .bp-inputs-wrap {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .bp-num-input {
+            width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 4px;
+            font-size: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .bp-num-input:focus { border-color: var(--primary); outline: none; }
+
+        .bp-avg-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #e3f2fd;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #0d47a1;
+        }
+
+        /* 備考欄 */
+        .memo-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 12px;
+            background: white;
+            color: var(--text-main);
+            resize: none;
+            height: 38px;
+        }
+        .memo-input:focus { outline: none; border-color: var(--primary); }
+
+        /* タイマー連携セクション */
+        .timer-section {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .timer-display-area {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 6px;
+        }
+        .timer-display-area:hover {
+            background: #e2e8f0;
+        }
+
+        .timer-time {
+            font-size: 17px;
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-main);
+        }
+
+        .timer-status-badge {
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+        .st-run { color: #0284c7; background: #e0f2fe; }
+        .st-warn { color: #b45309; background: #fef3c7; }
+        .st-fin { color: #b91c1c; background: #fee2e2; }
+        .st-stop { color: #666666; background: #e2e8f0; }
+
+        .timer-controls-right {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .timer-select-box {
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .t-btn {
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-t-start { background: var(--primary); color: white; }
+        .btn-t-start:hover { background: var(--primary-hover); }
+        .btn-t-pause { background: #d97706; color: white; }
+        .btn-t-reset { background: white; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-del-card { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+
+        /* サマリーカード */
+        .stats-card {
+            background: var(--card-bg);
+            padding: 12px 14px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            font-size: 12px;
+        }
+        .stats-title { font-weight: bold; margin-bottom: 6px; border-bottom: 2px solid var(--bg-color); padding-bottom: 4px; }
+        .stats-row { display: flex; justify-content: space-between; color: var(--text-sub); margin-bottom: 3px; }
+        .stats-row span:last-child { font-weight: bold; color: var(--text-main); }
+
+        .app-footer { text-align: center; font-size: 14px; color: var(--text-sub); padding: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-top">
+            <div class="header-title-area">
+                <div class="header-icon">📋</div>
+                <h1>患者メモ ＆ タイマー</h1>
+            </div>
+            <button class="sound-toggle-btn" onclick="toggleSound()">
+                <span id="sound-icon">🔔</span> <span id="sound-txt">ON</span>
+            </button>
+        </div>
+        <div class="header-bottom">
+            <span id="current-clock">--/--/--（-） --:--</span>
+            <span>NsTools 臨床支援</span>
+        </div>
+    </header>
+
+    <!-- Top Action Bar -->
+    <div class="top-action-bar">
+        <button class="btn-add" onclick="addPatientCard()">
+            <span>＋</span> 患者カードを追加する
+        </button>
+        <button class="btn-reset-all" onclick="resetAllPatientsData()">
+            <span>🔄</span> 一括リセット
+        </button>
+    </div>
+
+    <!-- Patient Cards Container -->
+    <div class="patient-grid" id="patient-container"></div>
+
+    <!-- Stats Summary -->
+    <div class="stats-card">
+        <div class="stats-title">状況サマリー</div>
+        <div class="stats-row"><span>登録患者数</span><span id="stat-total">0名</span></div>
+        <div class="stats-row"><span>タイマー稼働中</span><span id="stat-running">0名</span></div>
+        <div class="stats-row"><span>タイマー終了</span><span id="stat-finished">0名</span></div>
+    </div>
+
+    <div class="app-footer">
+        NsTools / バイタル・タイマー一体型外来管理システム
+    </div>
+
+    <script>
+        let patients = [];
+        let soundOn = true;
+
+        const DEFAULT_PATIENTS = [
+            { id: 1, name: "Aさん", temp: "", pulse: "", sys1: "", dia1: "", sys2: "", dia2: "", memo: "", duration: 600, remaining: 600, endTime: null, state: "stopped" },
+            { id: 2, name: "Bさん", temp: "", pulse: "", sys1: "", dia1: "", sys2: "", dia2: "", memo: "", duration: 600, remaining: 600, endTime: null, state: "stopped" },
+            { id: 3, name: "Cさん", temp: "", pulse: "", sys1: "", dia1: "", sys2: "", dia2: "", memo: "", duration: 600, remaining: 600, endTime: null, state: "stopped" },
+            { id: 4, name: "Dさん", temp: "", pulse: "", sys1: "", dia1: "", sys2: "", dia2: "", memo: "", duration: 600, remaining: 600, endTime: null, state: "stopped" }
+        ];
+
+        function loadData() {
+            const saved = localStorage.getItem('nstools_gairai_patients_v11');
+            if (saved) {
+                try { patients = JSON.parse(saved); } catch(e) { patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS)); }
+            } else {
+                patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('nstools_gairai_patients_v11', JSON.stringify(patients));
+        }
+
+        function updateTimers() {
+            const now = Date.now();
+            let changed = false;
+            let needAlarm = false;
+
+            patients.forEach(p => {
+                if (p.state === 'running' && p.endTime) {
+                    const diffSec = Math.ceil((p.endTime - now) / 1000);
+                    if (diffSec <= 0) {
+                        p.remaining = 0;
+                        p.state = 'finished';
+                        p.endTime = null;
+                        changed = true;
+                        needAlarm = true;
+                    } else {
+                        p.remaining = diffSec;
+                        changed = true;
+                    }
+                }
+            });
+
+            if (changed) {
+                saveData();
+                renderPatients();
+                if (needAlarm) playAlarm();
+            }
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const w = ['日', '月', '火', '水', '木', '金', '土'][now.getDay()];
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('current-clock').textContent = `${y}/${m}/${d}（${w}） ${hh}:${mm}:${ss}`;
+
+            updateTimers();
+        }
+        setInterval(updateClock, 1000);
+
+        function renderPatients() {
+            const container = document.getElementById('patient-container');
+            container.innerHTML = '';
+
+            let runningCount = 0;
+            let finishedCount = 0;
+
+            patients.forEach((p, index) => {
+                let avgSys = "--", avgDia = "--";
+                const s1 = parseFloat(p.sys1), d1 = parseFloat(p.dia1);
+                const s2 = parseFloat(p.sys2), d2 = parseFloat(p.dia2);
+                const has1 = !isNaN(s1) && !isNaN(d1);
+                const has2 = !isNaN(s2) && !isNaN(d2);
+
+                if (has1 && has2) {
+                    avgSys = Math.round((s1 + s2) / 2);
+                    avgDia = Math.round((d1 + d2) / 2);
+                } else if (has1) {
+                    avgSys = s1; avgDia = d1;
+                } else if (has2) {
+                    avgSys = s2; avgDia = d2;
+                }
+
+                let cardClass = "";
+                let statusBadge = `<span class="timer-status-badge st-stop">未開始</span>`;
+                let timeMins = Math.floor(p.remaining / 60);
+                let timeSecs = p.remaining % 60;
+                let timeStr = `${String(timeMins).padStart(2, '0')}:${String(timeSecs).padStart(2, '0')}`;
+
+                if (p.state === 'running') {
+                    if (p.remaining <= 60) {
+                        cardClass = "timer-warning";
+                        statusBadge = `<span class="timer-status-badge st-warn">残りわずか</span>`;
+                    } else {
+                        cardClass = "timer-running";
+                        statusBadge = `<span class="timer-status-badge st-run">タイマー中</span>`;
+                    }
+                    runningCount++;
+                } else if (p.state === 'finished') {
+                    cardClass = "timer-finished";
+                    statusBadge = `<span class="timer-status-badge st-fin">終了！</span>`;
+                    timeStr = "00:00";
+                    finishedCount++;
+                }
+
+                const currentMins = Math.round(p.duration / 60) || 10;
+                const presetMins = [1, 5, 10, 15, 30];
+                const selectVal = presetMins.includes(currentMins) ? currentMins : 'custom';
+
+                const card = document.createElement('div');
+                card.className = `patient-card ${cardClass}`;
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="patient-title-area">
+                            <div class="patient-badge">${index + 1}</div>
+                            <input type="text" class="patient-name-input" value="${escapeHtml(p.name)}" oninput="updateField(${p.id}, 'name', this.value)" placeholder="患者名">
+                        </div>
+                        <button class="t-btn btn-del-card" onclick="deletePatient(${p.id})">削除</button>
+                    </div>
+
+                    <!-- バイタル入力部 -->
+                    <div class="vitals-section">
+                        <div class="vitals-row">
+                            <div class="vital-item">
+                                <span class="vital-label">体温</span>
+                                <input type="number" step="0.1" class="vital-input" value="${p.temp}" oninput="updateField(${p.id}, 'temp', this.value)" placeholder="--.-">
+                                <span class="vital-unit">℃</span>
+                            </div>
+                            <div class="vital-item">
+                                <span class="vital-label">脈拍</span>
+                                <input type="number" class="vital-input" value="${p.pulse}" oninput="updateField(${p.id}, 'pulse', this.value)" placeholder="---">
+                                <span class="vital-unit">/分</span>
+                            </div>
+                        </div>
+
+                        <!-- 血圧（2回測定＋平均） -->
+                        <div class="bp-block">
+                            <div class="bp-line">
+                                <span class="bp-line-label">1回目</span>
+                                <div class="bp-inputs-wrap">
+                                    <input type="number" class="bp-num-input" id="sys1-${p.id}" value="${p.sys1}" oninput="updateBpField(${p.id})" placeholder="最高">
+                                    <span style="color:var(--text-sub); font-size:11px;">/</span>
+                                    <input type="number" class="bp-num-input" id="dia1-${p.id}" value="${p.dia1}" oninput="updateBpField(${p.id})" placeholder="最低">
+                                </div>
+                            </div>
+                            <div class="bp-line">
+                                <span class="bp-line-label">2回目</span>
+                                <div class="bp-inputs-wrap">
+                                    <input type="number" class="bp-num-input" id="sys2-${p.id}" value="${p.sys2}" oninput="updateBpField(${p.id})" placeholder="最高">
+                                    <span style="color:var(--text-sub); font-size:11px;">/</span>
+                                    <input type="number" class="bp-num-input" id="dia2-${p.id}" value="${p.dia2}" oninput="updateBpField(${p.id})" placeholder="最低">
+                                </div>
+                            </div>
+                            <div class="bp-avg-display" id="bp-avg-${p.id}">
+                                <span>2回平均</span>
+                                <span style="font-size:12px; font-weight:bold;">${avgSys} / ${avgDia} <span style="font-size:10px; font-weight:normal;">mmHg</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 備考欄 -->
+                    <div>
+                        <textarea class="memo-input" placeholder="備考（例：点滴残り時間、検査指示など）" oninput="updateField(${p.id}, 'memo', this.value)">${escapeHtml(p.memo)}</textarea>
+                    </div>
+
+                    <!-- タイマー機能 -->
+                    <div class="timer-section">
+                        <div class="timer-display-area" onclick="promptDirectMinute(${p.id})" title="タップして時間を直接変更">
+                            <div class="timer-time">${timeStr}</div>
+                            ${statusBadge}
+                        </div>
+
+                        <div class="timer-controls-right">
+                            <select class="timer-select-box" onchange="handleTimerSelection(${p.id}, this.value)">
+                                <option value="1" ${selectVal===1?'selected':''}>1分</option>
+                                <option value="5" ${selectVal===5?'selected':''}>5分</option>
+                                <option value="10" ${selectVal===10?'selected':''}>10分</option>
+                                <option value="15" ${selectVal===15?'selected':''}>15分</option>
+                                <option value="30" ${selectVal===30?'selected':''}>30分</option>
+                                <option value="custom" ${selectVal==='custom'?'selected':''}>手入力 (${currentMins}分)</option>
+                            </select>
+
+                            ${p.state === 'running' ? `
+                                <button class="t-btn btn-t-pause" onclick="pauseTimer(${p.id})">一時停止</button>
+                            ` : `
+                                <button class="t-btn btn-t-start" onclick="startTimer(${p.id})">${p.state === 'finished' ? '再開' : '開始'}</button>
+                            `}
+                            <button class="t-btn btn-t-reset" onclick="resetTimer(${p.id})">リセット</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('stat-total').textContent = `${patients.length}名`;
+            document.getElementById('stat-running').textContent = `${runningCount}名`;
+            document.getElementById('stat-finished').textContent = `${finishedCount}名`;
+        }
+
+        function updateField(id, field, val) {
+            const p = patients.find(item => item.id === id);
+            if (p) {
+                p[field] = val;
+                saveData();
+            }
+        }
+
+        function updateBpField(id) {
+            const p = patients.find(item => item.id === id);
+            if (!p) return;
+
+            p.sys1 = document.getElementById(`sys1-${id}`).value;
+            p.dia1 = document.getElementById(`dia1-${id}`).value;
+            p.sys2 = document.getElementById(`sys2-${id}`).value;
+            p.dia2 = document.getElementById(`dia2-${id}`).value;
+            saveData();
+
+            let avgSys = "--", avgDia = "--";
+            const s1 = parseFloat(p.sys1), d1 = parseFloat(p.dia1);
+            const s2 = parseFloat(p.sys2), d2 = parseFloat(p.dia2);
+            const has1 = !isNaN(s1) && !isNaN(d1);
+            const has2 = !isNaN(s2) && !isNaN(d2);
+
+            if (has1 && has2) {
+                avgSys = Math.round((s1 + s2) / 2);
+                avgDia = Math.round((d1 + d2) / 2);
+            } else if (has1) {
+                avgSys = s1; avgDia = d1;
+            } else if (has2) {
+                avgSys = s2; avgDia = d2;
+            }
+
+            const avgBox = document.getElementById(`bp-avg-${id}`);
+            if (avgBox) {
+                avgBox.innerHTML = `
+                    <span>2回平均</span>
+                    <span style="font-size:12px; font-weight:bold;">${avgSys} / ${avgDia} <span style="font-size:10px; font-weight:normal;">mmHg</span></span>
+                `;
+            }
+        }
+
+        function promptDirectMinute(id) {
+            const p = patients.find(item => item.id === id);
+            if (!p) return;
+            const currentMins = Math.round(p.duration / 60);
+            const inputVal = prompt("タイマーの時間を分単位で入力してください:", currentMins);
+            if (inputVal !== null) {
+                const mins = parseInt(inputVal);
+                if (!isNaN(mins) && mins > 0) {
+                    const secs = mins * 60;
+                    p.duration = secs;
+                    if (p.state !== 'running') {
+                        p.remaining = secs;
+                    }
+                    saveData();
+                    renderPatients();
+                }
+            }
+        }
+
+        function handleTimerSelection(id, val) {
+            const p = patients.find(item => item.id === id);
+            if (!p) return;
+
+            if (val === 'custom') {
+                promptDirectMinute(id);
+            } else {
+                const mins = parseInt(val);
+                const secs = mins * 60;
+                p.duration = secs;
+                if (p.state !== 'running') p.remaining = secs;
+                saveData();
+                renderPatients();
+            }
+        }
+
+        function startTimer(id) {
+            const p = patients.find(item => item.id === id);
+            if (p) {
+                if (p.remaining <= 0) p.remaining = p.duration;
+                p.state = 'running';
+                p.endTime = Date.now() + (p.remaining * 1000);
+                saveData();
+                renderPatients();
+            }
+        }
+
+        function pauseTimer(id) {
+            const p = patients.find(item => item.id === id);
+            if (p) {
+                p.state = 'paused';
+                p.endTime = null;
+                saveData();
+                renderPatients();
+            }
+        }
+
+        function resetTimer(id) {
+            const p = patients.find(item => item.id === id);
+            if (p) {
+                p.state = 'stopped';
+                p.remaining = p.duration;
+                p.endTime = null;
+                saveData();
+                renderPatients();
+            }
+        }
+
+        function addPatientCard() {
+            const newId = patients.length > 0 ? Math.max(...patients.map(p => p.id)) + 1 : 1;
+            const nextLetter = String.fromCharCode(65 + (patients.length % 26));
+            patients.push({
+                id: newId,
+                name: `${nextLetter}さん`,
+                temp: "",
+                pulse: "",
+                sys1: "", dia1: "",
+                sys2: "", dia2: "",
+                memo: "",
+                duration: 600,
+                remaining: 600,
+                endTime: null,
+                state: "stopped"
+            });
+            saveData();
+            renderPatients();
+        }
+
+        function resetAllPatientsData() {
+            if (confirm("すべての患者の入力データとタイマーをリセットし、A〜Dさんの初期状態に戻しますか？")) {
+                patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
+                saveData();
+                renderPatients();
+            }
+        }
+
+        function deletePatient(id) {
+            if (confirm("この患者カードを削除しますか？")) {
+                patients = patients.filter(item => item.id !== id);
+                saveData();
+                renderPatients();
+            }
+        }
+
+        function toggleSound() {
+            soundOn = !soundOn;
+            document.getElementById('sound-txt').textContent = soundOn ? "ON" : "OFF";
+            document.getElementById('sound-icon').textContent = soundOn ? "🔔" : "🔕";
+        }
+
+        function playAlarm() {
+            if (!soundOn) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                let count = 0;
+                function beepSequence() {
+                    if (count >= 10) return;
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(1200, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.15);
+                    count++;
+                    setTimeout(beepSequence, 220);
+                }
+                beepSequence();
+            } catch(e) {}
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        loadData();
+        renderPatients();
+        updateClock();
+    </script>
+</body>
+</html>
