@@ -156,10 +156,10 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 12px;
+            padding: 10px 12px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             position: relative;
         }
@@ -236,7 +236,7 @@
             background: white;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 6px 8px;
+            padding: 5px 8px;
             white-space: nowrap;
         }
 
@@ -269,10 +269,10 @@
             background: white;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 6px 8px;
+            padding: 5px 8px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
 
         .bp-line {
@@ -301,7 +301,7 @@
             width: 100%;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 4px;
+            padding: 3px;
             font-size: 12px;
             text-align: center;
             font-weight: bold;
@@ -314,23 +314,23 @@
             align-items: center;
             background: #e3f2fd;
             border-radius: 6px;
-            padding: 4px 8px;
+            padding: 3px 8px;
             font-size: 11px;
             font-weight: bold;
             color: #0d47a1;
         }
 
-        /* 備考欄 */
+        /* memo欄 */
         .memo-input {
             width: 100%;
-            padding: 8px;
+            padding: 6px 8px;
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 12px;
             background: white;
             color: var(--text-main);
             resize: none;
-            height: 38px;
+            height: 32px;
         }
         .memo-input:focus { outline: none; border-color: var(--primary); }
 
@@ -343,13 +343,14 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
+            gap: 6px;
         }
 
         .timer-display-area {
             display: flex;
-            align-items: center;
-            gap: 6px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
             cursor: pointer;
             padding: 2px 4px;
             border-radius: 6px;
@@ -359,17 +360,19 @@
         }
 
         .timer-time {
-            font-size: 17px;
+            font-size: 18px;
             font-weight: bold;
             font-variant-numeric: tabular-nums;
             color: var(--text-main);
+            line-height: 1.1;
         }
 
         .timer-status-badge {
             font-size: 9px;
             font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 6px;
+            padding: 1px 5px;
+            border-radius: 4px;
+            white-space: nowrap;
         }
         .st-run { color: #0284c7; background: #e0f2fe; }
         .st-warn { color: #b45309; background: #fef3c7; }
@@ -383,18 +386,20 @@
         }
 
         .timer-select-box {
-            padding: 6px;
+            padding: 5px 4px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             background: white;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             color: var(--text-main);
             outline: none;
+            width: 62px;
+            text-align: center;
         }
 
         .t-btn {
-            padding: 6px 10px;
+            padding: 6px 8px;
             border-radius: 8px;
             font-size: 11px;
             font-weight: bold;
@@ -445,7 +450,7 @@
     <!-- Top Action Bar -->
     <div class="top-action-bar">
         <button class="btn-add" onclick="addPatientCard()">
-            <span>＋</span> 患者カードを追加する
+            <span>＋</span> 患者を追加
         </button>
         <button class="btn-reset-all" onclick="resetAllPatientsData()">
             <span>🔄</span> 一括リセット
@@ -479,7 +484,7 @@
         ];
 
         function loadData() {
-            const saved = localStorage.getItem('nstools_patient_memo_v12');
+            const saved = localStorage.getItem('nstools_patient_memo_v13');
             if (saved) {
                 try { 
                     patients = JSON.parse(saved); 
@@ -491,10 +496,9 @@
         }
 
         function saveData() {
-            localStorage.setItem('nstools_patient_memo_v12', JSON.stringify(patients));
+            localStorage.setItem('nstools_patient_memo_v13', JSON.stringify(patients));
         }
 
-        // 毎秒呼ばれる軽量なタイマー更新処理（入力中のフォーカスを崩さないためDOM部分更新）
         function tickTimers() {
             const now = Date.now();
             let needFullRender = false;
@@ -512,7 +516,6 @@
                     } else {
                         const oldRem = p.remaining;
                         p.remaining = diffSec;
-                        // 60秒を跨ぐときはカードの枠色やバッジが変わるため全体再描画する
                         if ((oldRem > 60 && diffSec <= 60) || (oldRem <= 60 && diffSec > 60)) {
                             needFullRender = true;
                         }
@@ -626,6 +629,8 @@
                     statusBadge = `<span class="timer-status-badge st-fin">終了！</span>`;
                     timeStr = "00:00";
                     finishedCount++;
+                } else if (p.state === 'paused') {
+                    statusBadge = `<span class="timer-status-badge st-stop">停止中</span>`;
                 }
 
                 const currentMins = Math.round(p.duration / 60) || 10;
@@ -634,7 +639,7 @@
 
                 const card = document.createElement('div');
                 card.className = `patient-card ${cardClass}`;
-                card.id = `patient-card-${p.id}`; // 部分更新用のID付与
+                card.id = `patient-card-${p.id}`;
                 card.innerHTML = `
                     <div class="card-header">
                         <div class="patient-title-area">
@@ -684,9 +689,9 @@
                         </div>
                     </div>
 
-                    <!-- 備考欄 -->
+                    <!-- memo欄 -->
                     <div>
-                        <textarea class="memo-input" placeholder="memo（例：点滴残り時間、検査指示など）" oninput="updateField(${p.id}, 'memo', this.value)">${escapeHtml(p.memo)}</textarea>
+                        <textarea class="memo-input" placeholder="memo" oninput="updateField(${p.id}, 'memo', this.value)">${escapeHtml(p.memo)}</textarea>
                     </div>
 
                     <!-- タイマー機能 -->
@@ -703,15 +708,15 @@
                                 <option value="10" ${selectVal===10?'selected':''}>10分</option>
                                 <option value="15" ${selectVal===15?'selected':''}>15分</option>
                                 <option value="30" ${selectVal===30?'selected':''}>30分</option>
-                                <option value="custom" ${selectVal==='custom'?'selected':''}>手入力 (${currentMins}分)</option>
+                                <option value="custom" ${selectVal==='custom'?'selected':''}>手入(${currentMins}分)</option>
                             </select>
 
                             ${p.state === 'running' ? `
-                                <button class="t-btn btn-t-pause" onclick="pauseTimer(${p.id})">一時停止</button>
+                                <button class="t-btn btn-t-pause" onclick="pauseTimer(${p.id})">停止</button>
                             ` : `
                                 <button class="t-btn btn-t-start" onclick="startTimer(${p.id})">${p.state === 'finished' ? '再開' : '開始'}</button>
                             `}
-                            <button class="t-btn btn-t-reset" onclick="resetTimer(${p.id})">リセット</button>
+                            <button class="t-btn btn-t-reset" onclick="resetTimer(${p.id})">クリア</button>
                         </div>
                     </div>
                 `;
