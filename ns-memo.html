@@ -484,7 +484,7 @@
         ];
 
         function loadData() {
-            const saved = localStorage.getItem('nstools_patient_memo_v14');
+            const saved = localStorage.getItem('nstools_patient_memo_v15');
             if (saved) {
                 try { 
                     patients = JSON.parse(saved); 
@@ -496,7 +496,7 @@
         }
 
         function saveData() {
-            localStorage.setItem('nstools_patient_memo_v14', JSON.stringify(patients));
+            localStorage.setItem('nstools_patient_memo_v15', JSON.stringify(patients));
         }
 
         function tickTimers() {
@@ -634,7 +634,7 @@
                 }
 
                 const currentMins = Math.round(p.duration / 60) || 10;
-                const presetMins = [1, 5, 10, 15, 30];
+                const presetMins = [3, 5, 10, 15, 30, 60, 120];
                 const selectVal = presetMins.includes(currentMins) ? currentMins : 'custom';
 
                 const card = document.createElement('div');
@@ -703,11 +703,13 @@
 
                         <div class="timer-controls-right">
                             <select class="timer-select-box" onchange="handleTimerSelection(${p.id}, this.value)">
-                                <option value="1" ${selectVal===1?'selected':''}>1分</option>
+                                <option value="3" ${selectVal===3?'selected':''}>3分</option>
                                 <option value="5" ${selectVal===5?'selected':''}>5分</option>
                                 <option value="10" ${selectVal===10?'selected':''}>10分</option>
                                 <option value="15" ${selectVal===15?'selected':''}>15分</option>
                                 <option value="30" ${selectVal===30?'selected':''}>30分</option>
+                                <option value="60" ${selectVal===60?'selected':''}>60分</option>
+                                <option value="120" ${selectVal===120?'selected':''}>120分</option>
                                 <option value="custom" ${selectVal==='custom'?'selected':''}>手入(${currentMins}分)</option>
                             </select>
 
