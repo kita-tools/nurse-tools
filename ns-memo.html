@@ -314,6 +314,11 @@
             outline: none;
         }
 
+        .card-header-actions {
+            display: flex;
+            gap: 4px;
+        }
+
         /* バイタル入力ブロック */
         .vitals-section {
             display: flex;
@@ -514,6 +519,7 @@
         .btn-t-start { background: var(--primary); color: white; }
         .btn-t-pause { background: #d97706; color: white; }
         .btn-t-reset { background: #fff; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-reset-card { background: #f1f5f9; color: #475569; border: 1px solid var(--border-color); }
         .btn-del-card { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
 
         /* サマリーカード */
@@ -670,7 +676,6 @@
                 }
             });
 
-            // 文字入力中（フォーカス中）は全体再描画をスキップして入力を完全保護
             const activeEl = document.activeElement;
             const isUserTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT');
 
@@ -764,7 +769,6 @@
         }
 
         function renderPatients() {
-            // 文字入力中の要素がある場合は再描画をスキップ（入力中のフォーカス外れ防止）
             const activeEl = document.activeElement;
             if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT')) {
                 return;
@@ -855,7 +859,10 @@
                             <div class="patient-badge">${index + 1}</div>
                             <input type="text" class="patient-name-input" lang="ja" value="${escapeHtml(p.name)}" oninput="updateField(${p.id}, 'name', this.value)" onblur="renderPatients()" placeholder="患者名">
                         </div>
-                        <button class="t-btn btn-del-card" onclick="deletePatient(${p.id})">削除</button>
+                        <div class="card-header-actions">
+                            <button class="t-btn btn-reset-card" onclick="resetPatientData(${p.id})">リセット</button>
+                            <button class="t-btn btn-del-card" onclick="deletePatient(${p.id})">削除</button>
+                        </div>
                     </div>
 
                     <!-- バイタル入力部 -->
@@ -898,7 +905,7 @@
                         </div>
                     </div>
 
-                    <!-- memo欄（フォーカス外れたらナビを即時更新） -->
+                    <!-- memo欄 -->
                     <div>
                         <textarea class="memo-input" lang="ja" placeholder="memo（例：点滴残り時間、検査指示など）" oninput="updateField(${p.id}, 'memo', this.value)" onblur="renderPatients()">${escapeHtml(p.memo)}</textarea>
                     </div>
@@ -1042,6 +1049,23 @@
             const p = patients.find(item => item.id === id);
             if (p) {
                 p.state = 'stopped';
+                p.remaining = p.duration;
+                p.endTime = null;
+                saveData();
+                renderPatients();
+            }
+        }
+
+        // 個別患者の入力データ（体温・脈拍・血圧・メモ等）をリセット
+        function resetPatientData(id) {
+            const p = patients.find(item => item.id === id);
+            if (p && confirm(`${p.name}のバイタル・メモ等の入力データをリセットしますか？`)) {
+                p.temp = "";
+                p.pulse = "";
+                p.sys1 = ""; p.dia1 = "";
+                p.sys2 = ""; p.dia2 = "";
+                p.memo = "";
+                p.state = "stopped";
                 p.remaining = p.duration;
                 p.endTime = null;
                 saveData();
