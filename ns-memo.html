@@ -464,7 +464,7 @@
     </div>
 
     <div class="app-footer">
-        NsTools / バイタル・タイマー一体型外来管理システム
+        NsTools / バイタル・タイマー一体型管理システム
     </div>
 
     <script>
@@ -479,21 +479,25 @@
         ];
 
         function loadData() {
-            const saved = localStorage.getItem('nstools_gairai_patients_v11');
+            const saved = localStorage.getItem('nstools_patient_memo_v12');
             if (saved) {
-                try { patients = JSON.parse(saved); } catch(e) { patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS)); }
+                try { 
+                    patients = JSON.parse(saved); 
+                    updateAllTimersQuiet();
+                } catch(e) { patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS)); }
             } else {
                 patients = JSON.parse(JSON.stringify(DEFAULT_PATIENTS));
             }
         }
 
         function saveData() {
-            localStorage.setItem('nstools_gairai_patients_v11', JSON.stringify(patients));
+            localStorage.setItem('nstools_patient_memo_v12', JSON.stringify(patients));
         }
 
-        function updateTimers() {
+        // 毎秒呼ばれる軽量なタイマー更新処理（入力中のフォーカスを崩さないためDOM部分更新）
+        function tickTimers() {
             const now = Date.now();
-            let changed = false;
+            let needFullRender = false;
             let needAlarm = false;
 
             patients.forEach(p => {
@@ -503,20 +507,65 @@
                         p.remaining = 0;
                         p.state = 'finished';
                         p.endTime = null;
-                        changed = true;
+                        needFullRender = true;
                         needAlarm = true;
                     } else {
+                        const oldRem = p.remaining;
                         p.remaining = diffSec;
-                        changed = true;
+                        // 60秒を跨ぐときはカードの枠色やバッジが変わるため全体再描画する
+                        if ((oldRem > 60 && diffSec <= 60) || (oldRem <= 60 && diffSec > 60)) {
+                            needFullRender = true;
+                        }
                     }
                 }
             });
 
-            if (changed) {
+            if (needFullRender) {
                 saveData();
                 renderPatients();
                 if (needAlarm) playAlarm();
+            } else {
+                updateTimersDOMOnly();
             }
+        }
+
+        function updateTimersDOMOnly() {
+            const now = Date.now();
+            patients.forEach(p => {
+                const card = document.getElementById(`patient-card-${p.id}`);
+                if (!card) return;
+
+                if (p.state === 'running' && p.endTime) {
+                    const diffSec = Math.max(0, Math.ceil((p.endTime - now) / 1000));
+                    p.remaining = diffSec;
+                }
+
+                const mins = Math.floor(p.remaining / 60);
+                const secs = p.remaining % 60;
+                const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+                const timeEl = card.querySelector('.timer-time');
+                if (timeEl) {
+                    timeEl.textContent = (p.state === 'stopped' && p.remaining === p.duration) ? `${String(Math.floor(p.duration/60)).padStart(2,'0')}:00` : timeStr;
+                }
+            });
+        }
+
+        function updateAllTimersQuiet() {
+            const now = Date.now();
+            patients.forEach(p => {
+                if (p.state === 'running' && p.endTime) {
+                    const diffSec = Math.ceil((p.endTime - now) / 1000);
+                    if (diffSec <= 0) {
+                        p.remaining = 0;
+                        p.state = 'finished';
+                        p.endTime = null;
+                    } else {
+                        p.remaining = diffSec;
+                    }
+                }
+            });
+            saveData();
         }
 
         function updateClock() {
@@ -530,7 +579,7 @@
             const ss = String(now.getSeconds()).padStart(2, '0');
             document.getElementById('current-clock').textContent = `${y}/${m}/${d}（${w}） ${hh}:${mm}:${ss}`;
 
-            updateTimers();
+            tickTimers();
         }
         setInterval(updateClock, 1000);
 
@@ -585,6 +634,7 @@
 
                 const card = document.createElement('div');
                 card.className = `patient-card ${cardClass}`;
+                card.id = `patient-card-${p.id}`; // 部分更新用のID付与
                 card.innerHTML = `
                     <div class="card-header">
                         <div class="patient-title-area">
@@ -636,7 +686,7 @@
 
                     <!-- 備考欄 -->
                     <div>
-                        <textarea class="memo-input" placeholder="備考（例：点滴残り時間、検査指示など）" oninput="updateField(${p.id}, 'memo', this.value)">${escapeHtml(p.memo)}</textarea>
+                        <textarea class="memo-input" placeholder="memo（例：点滴残り時間、検査指示など）" oninput="updateField(${p.id}, 'memo', this.value)">${escapeHtml(p.memo)}</textarea>
                     </div>
 
                     <!-- タイマー機能 -->
