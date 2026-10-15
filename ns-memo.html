@@ -15,6 +15,7 @@
             --primary-hover: #0369a1;
             --radius-main: 10px;
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         * {
@@ -23,17 +24,19 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 10px 14px;
-            max-width: 440px; /* 少しスリムに調整 */
+            padding: 10px 14px 40px 14px;
+            max-width: 440px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            position: relative;
         }
 
         /* Header */
@@ -100,6 +103,98 @@
             font-variant-numeric: tabular-nums;
         }
 
+        /* 俯瞰ナビゲーションボード（クイックジャンプ） */
+        .quick-nav-card {
+            background: var(--card-bg);
+            padding: 10px 12px;
+            border-radius: var(--radius-main);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .quick-nav-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-sub);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quick-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            max-height: 140px;
+            overflow-y: auto;
+            padding-bottom: 2px;
+        }
+
+        .nav-chip {
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.15s, border-color 0.15s;
+            text-decoration: none;
+            color: var(--text-main);
+            gap: 4px;
+        }
+        .nav-chip:hover { background: #e2e8f0; }
+
+        .nav-chip.st-running { background: #f0f9ff; border-color: #bae6fd; color: #0369a1; }
+        .nav-chip.st-warning { background: #fffbeb; border-color: #fde68a; color: #b45309; }
+        .nav-chip.st-finished { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+
+        .nav-chip-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .nav-chip-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 11px;
+            max-width: 55px;
+        }
+
+        .nav-chip-memo {
+            font-size: 10px;
+            font-weight: normal;
+            color: var(--text-sub);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 55px;
+        }
+
+        .nav-chip-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+
+        .nav-chip-time {
+            font-size: 10px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
         /* Top Action Bar */
         .top-action-bar {
             background: var(--card-bg);
@@ -161,9 +256,9 @@
             gap: 8px;
             box-shadow: var(--shadow-sm);
             position: relative;
+            scroll-margin-top: 10px;
         }
 
-        /* タイマー稼働時のカード枠色変更 */
         .patient-card.timer-running {
             border-left: 5px solid var(--primary);
             background: #f0f9ff;
@@ -434,12 +529,44 @@
         .stats-row span:last-child { font-weight: 700; color: var(--text-main); font-variant-numeric: tabular-nums; }
 
         .app-footer { text-align: center; font-size: 11px; color: var(--text-sub); padding: 10px 0; }
+
+        /* 右下のトップへ戻るポップアップボタン */
+        .back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 16px;
+            background: var(--primary);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: var(--shadow-md);
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s, visibility 0.25s, background 0.2s;
+            z-index: 999;
+            text-decoration: none;
+        }
+        .back-to-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top-btn:hover {
+            background: var(--primary-hover);
+        }
     </style>
 </head>
 <body>
 
     <!-- Header -->
-    <header>
+    <header id="top">
         <div class="header-top">
             <div class="header-title-area">
                 <div class="header-icon">📋</div>
@@ -454,6 +581,15 @@
             <span>NsTools 臨床支援</span>
         </div>
     </header>
+
+    <!-- クイックナビゲーションボード (俯瞰＆ジャンプ) -->
+    <div class="quick-nav-card">
+        <div class="quick-nav-title">
+            <span>クイックナビ（タップして移動）</span>
+            <span id="nav-total-count">0名</span>
+        </div>
+        <div class="quick-nav-grid" id="quick-nav-container"></div>
+    </div>
 
     <!-- Top Action Bar -->
     <div class="top-action-bar">
@@ -479,6 +615,9 @@
     <div class="app-footer">
         NsTools / バイタル・タイマー一体型管理システム
     </div>
+
+    <!-- 右下のトップへ戻るポップアップボタン -->
+    <a href="#top" class="back-to-top-btn" id="backToTopBtn" title="トップへ戻る">▲</a>
 
     <script>
         let patients = [];
@@ -531,7 +670,11 @@
                 }
             });
 
-            if (needFullRender) {
+            // 文字入力中（フォーカス中）は全体再描画をスキップして入力を完全保護
+            const activeEl = document.activeElement;
+            const isUserTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT');
+
+            if (needFullRender && !isUserTyping) {
                 saveData();
                 renderPatients();
                 if (needAlarm) playAlarm();
@@ -543,21 +686,29 @@
         function updateTimersDOMOnly() {
             const now = Date.now();
             patients.forEach(p => {
-                const card = document.getElementById(`patient-card-${p.id}`);
-                if (!card) return;
-
                 if (p.state === 'running' && p.endTime) {
                     const diffSec = Math.max(0, Math.ceil((p.endTime - now) / 1000));
                     p.remaining = diffSec;
                 }
 
-                const mins = Math.floor(p.remaining / 60);
-                const secs = p.remaining % 60;
-                const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                const card = document.getElementById(`patient-card-${p.id}`);
+                if (card) {
+                    const mins = Math.floor(p.remaining / 60);
+                    const secs = p.remaining % 60;
+                    const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 
-                const timeEl = card.querySelector('.timer-time');
-                if (timeEl) {
-                    timeEl.textContent = (p.state === 'stopped' && p.remaining === p.duration) ? `${String(Math.floor(p.duration/60)).padStart(2,'0')}:00` : timeStr;
+                    const timeEl = card.querySelector('.timer-time');
+                    if (timeEl) {
+                        timeEl.textContent = (p.state === 'stopped' && p.remaining === p.duration) ? `${String(Math.floor(p.duration/60)).padStart(2,'0')}:00` : timeStr;
+                    }
+                }
+
+                const navTimeEl = document.getElementById(`nav-time-${p.id}`);
+                if (navTimeEl) {
+                    const mins = Math.floor(p.remaining / 60);
+                    const secs = p.remaining % 60;
+                    const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                    navTimeEl.textContent = (p.state === 'finished') ? '終了！' : ((p.state === 'stopped' && p.remaining === p.duration) ? `${Math.floor(p.duration/60)}分` : timeStr);
                 }
             });
         }
@@ -594,9 +745,35 @@
         }
         setInterval(updateClock, 1000);
 
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTopBtn');
+            if (window.scrollY > 200) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        });
+
+        function formatMemoSnippet(memo) {
+            if (!memo || memo.trim() === '') return '';
+            const clean = memo.trim();
+            if (clean.length > 4) {
+                return clean.substring(0, 4) + '…';
+            }
+            return clean;
+        }
+
         function renderPatients() {
+            // 文字入力中の要素がある場合は再描画をスキップ（入力中のフォーカス外れ防止）
+            const activeEl = document.activeElement;
+            if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT')) {
+                return;
+            }
+
             const container = document.getElementById('patient-container');
+            const navContainer = document.getElementById('quick-nav-container');
             container.innerHTML = '';
+            navContainer.innerHTML = '';
 
             let runningCount = 0;
             let finishedCount = 0;
@@ -619,6 +796,8 @@
 
                 let cardClass = "";
                 let statusBadge = `<span class="timer-status-badge st-stop">未開始</span>`;
+                let navChipClass = "";
+                let navTimeText = `${Math.floor(p.duration / 60)}分`;
                 let timeMins = Math.floor(p.remaining / 60);
                 let timeSecs = p.remaining % 60;
                 let timeStr = `${String(timeMins).padStart(2, '0')}:${String(timeSecs).padStart(2, '0')}`;
@@ -627,19 +806,41 @@
                     if (p.remaining <= 60) {
                         cardClass = "timer-warning";
                         statusBadge = `<span class="timer-status-badge st-warn">残りわずか</span>`;
+                        navChipClass = "st-warning";
                     } else {
                         cardClass = "timer-running";
                         statusBadge = `<span class="timer-status-badge st-run">タイマー中</span>`;
+                        navChipClass = "st-running";
                     }
+                    navTimeText = timeStr;
                     runningCount++;
                 } else if (p.state === 'finished') {
                     cardClass = "timer-finished";
                     statusBadge = `<span class="timer-status-badge st-fin">終了！</span>`;
+                    navChipClass = "st-finished";
+                    navTimeText = "終了！";
                     timeStr = "00:00";
                     finishedCount++;
                 } else if (p.state === 'paused') {
                     statusBadge = `<span class="timer-status-badge st-stop">停止中</span>`;
+                    navTimeText = timeStr;
                 }
+
+                const memoSnippet = formatMemoSnippet(p.memo);
+
+                const navChip = document.createElement('a');
+                navChip.className = `nav-chip ${navChipClass}`;
+                navChip.href = `#patient-card-${p.id}`;
+                navChip.innerHTML = `
+                    <div class="nav-chip-left">
+                        <span class="nav-chip-name">${index + 1}.${escapeHtml(p.name)}</span>
+                        ${memoSnippet ? `<span class="nav-chip-memo">[${escapeHtml(memoSnippet)}]</span>` : ''}
+                    </div>
+                    <div class="nav-chip-right">
+                        <span class="nav-chip-time" id="nav-time-${p.id}">${navTimeText}</span>
+                    </div>
+                `;
+                navContainer.appendChild(navChip);
 
                 const currentMins = Math.round(p.duration / 60) || 10;
                 const presetMins = [3, 5, 10, 15, 30, 60, 120];
@@ -652,7 +853,7 @@
                     <div class="card-header">
                         <div class="patient-title-area">
                             <div class="patient-badge">${index + 1}</div>
-                            <input type="text" class="patient-name-input" lang="ja" value="${escapeHtml(p.name)}" oninput="updateField(${p.id}, 'name', this.value)" placeholder="患者名">
+                            <input type="text" class="patient-name-input" lang="ja" value="${escapeHtml(p.name)}" oninput="updateField(${p.id}, 'name', this.value)" onblur="renderPatients()" placeholder="患者名">
                         </div>
                         <button class="t-btn btn-del-card" onclick="deletePatient(${p.id})">削除</button>
                     </div>
@@ -697,9 +898,9 @@
                         </div>
                     </div>
 
-                    <!-- memo欄 -->
+                    <!-- memo欄（フォーカス外れたらナビを即時更新） -->
                     <div>
-                        <textarea class="memo-input" lang="ja" placeholder="memo（例：点滴残り時間、検査指示など）" oninput="updateField(${p.id}, 'memo', this.value)">${escapeHtml(p.memo)}</textarea>
+                        <textarea class="memo-input" lang="ja" placeholder="memo（例：点滴残り時間、検査指示など）" oninput="updateField(${p.id}, 'memo', this.value)" onblur="renderPatients()">${escapeHtml(p.memo)}</textarea>
                     </div>
 
                     <!-- タイマー機能 -->
@@ -733,6 +934,7 @@
                 container.appendChild(card);
             });
 
+            document.getElementById('nav-total-count').textContent = `${patients.length}名`;
             document.getElementById('stat-total').textContent = `${patients.length}名`;
             document.getElementById('stat-running').textContent = `${runningCount}名`;
             document.getElementById('stat-finished').textContent = `${finishedCount}名`;
