@@ -536,11 +536,18 @@
 
         .app-footer { text-align: center; font-size: 11px; color: var(--text-sub); padding: 10px 0; }
 
-        /* 右下のトップへ戻るポップアップボタン */
-        .back-to-top-btn {
+        /* 右下の固定ポップアップボタン群（重ならないように上下に配置） */
+        .floating-buttons {
             position: fixed;
             bottom: 20px;
             right: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 999;
+        }
+
+        .float-btn {
             background: var(--primary);
             color: white;
             width: 44px;
@@ -549,23 +556,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 12px;
             font-weight: bold;
             box-shadow: var(--shadow-md);
             border: none;
             cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .float-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* トップへ戻るボタン（初期は非表示） */
+        #backToTopBtn {
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.25s, visibility 0.25s, background 0.2s;
-            z-index: 999;
-            text-decoration: none;
         }
-        .back-to-top-btn.show {
+        #backToTopBtn.show {
             opacity: 1;
             visibility: visible;
-        }
-        .back-to-top-btn:hover {
-            background: var(--primary-hover);
         }
     </style>
 </head>
@@ -622,8 +633,13 @@
         NsTools / バイタル・タイマー一体型管理システム
     </div>
 
-    <!-- 右下のトップへ戻るポップアップボタン -->
-    <a href="#top" class="back-to-top-btn" id="backToTopBtn" title="トップへ戻る">▲</a>
+    <!-- 右下のフローティングボタン群（Indexに戻る ＆ 上に戻る） -->
+    <div class="floating-buttons">
+        <!-- Indexに戻るボタン（必要に応じてhrefのリンク先を変更してください。例: index.html） -->
+        <a href="index.html" class="float-btn" title="Indexに戻る">INDEX</a>
+        <!-- 上に戻るボタン -->
+        <a href="#top" class="float-btn" id="backToTopBtn" title="トップへ戻る">▲TOP</a>
+    </div>
 
     <script>
         let patients = [];
@@ -1056,7 +1072,6 @@
             }
         }
 
-        // 個別患者の入力データ（体温・脈拍・血圧・メモ等）をリセット
         function resetPatientData(id) {
             const p = patients.find(item => item.id === id);
             if (p && confirm(`${p.name}のバイタル・メモ等の入力データをリセットしますか？`)) {
